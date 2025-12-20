@@ -85,7 +85,9 @@ public final class UpdateChecker implements Listener {
                 plugin.logResponse("Checking for updates from: " + MODRINTH_API);
                 
                 // Parse JSON response to get latest version info
-                JsonObject latestVersion = JsonParser.parseReader(
+                // Using new JsonParser().parse() for compatibility with older Gson versions
+                @SuppressWarnings("deprecation")
+                JsonObject latestVersion = new JsonParser().parse(
                     new InputStreamReader(connection.getInputStream())
                 ).getAsJsonArray().get(0).getAsJsonObject();
     

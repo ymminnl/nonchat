@@ -1,5 +1,8 @@
 package com.nonxedy.nonchat.tags;
 
+import java.util.List;
+import org.bukkit.Material;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -11,4 +14,13 @@ public class Tag {
     private final String permission;
     private final String category; // Derived from filename
     private final boolean isDefault;
+    
+    // GUI Properties
+    private final Material iconMaterial;
+    private final String iconName;
+    private final List<String> iconLore;
+    private final int customModelData;
+    private final String texture; // Base64 texture for player heads
+    private final int order;
+    private final String bedrockIcon; // Path or URL for Bedrock form icon
 }

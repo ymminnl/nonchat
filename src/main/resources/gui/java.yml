@@ -1,0 +1,104 @@
+# ==================================================
+# JAVA GUI CONFIGURATION
+# Configure the layout of the tag menu for Java Edition players.
+# ==================================================
+
+# Menu title. Supports {category} and {page} placeholders.
+title: "Tags - {category} (Page {page})"
+
+# Size of the inventory. Must be a multiple of 9 (9, 18, 27, 36, 45, 54).
+size: 54
+
+# Slots where tags will be displayed.
+# Supports ranges (e.g., "10-16") and single numbers (e.g., "18").
+tag-slots:
+  - "10-16"
+  - "19-25"
+  - "28-34"
+
+# Sound to play when opening the menu
+open-sound: "block.chest.open"
+# Sound to play when clicking a tag
+click-sound: "ui.button.click"
+
+# ==================================================
+# FILLER ITEMS
+# Decorative items to fill empty spaces.
+# ==================================================
+fillers:
+  # Black glass border
+  border:
+    material: BLACK_STAINED_GLASS_PANE
+    name: " "
+    # Custom Model Data for resource packs
+    model-data: 0
+    slots:
+      - "0-9"
+      - "17-18"
+      - "26-27"
+      - "35-36"
+      - "44-53"
+
+  # Background filler (automatically fills all remaining empty slots)
+  background:
+    material: GRAY_STAINED_GLASS_PANE
+    name: " "
+    model-data: 0
+    slots: []
+
+# ==================================================
+# NAVIGATION BUTTONS
+# Buttons for pagination and closing.
+# ==================================================
+buttons:
+  previous:
+    slot: 48
+    material: PLAYER_HEAD
+    # Base64 Texture for custom heads (Arrow Left)
+    texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmQ2OWUwNmU1dadadMmU2MzllYjQyZTM5MWEyZTg0ODhjMTRhDGViMTQ4NjQ5ZTY4ODk4M2E5NzZkYjU1In19fQ=="
+    name: "&ePrevious Page"
+    lore:
+      - "&7Go to page {prev_page}"
+  
+  next:
+    slot: 50
+    material: PLAYER_HEAD
+    # Base64 Texture for custom heads (Arrow Right)
+    texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTliZjMyOTJlMTI2YTEwNWI1NGViYTcxM2FhHQ1OTQtZmVjM2JmSC41NzAzZDVlOTU5MDQ0Mzc5ZmIifX19"
+    name: "&eNext Page"
+    lore:
+      - "&7Go to page {next_page}"
+  
+  close:
+    slot: 49
+    material: BARRIER
+    name: "&cClose Menu"
+    actions:
+      - "[close]"
+
+  # Button to reset the current tag
+  reset:
+    slot: 4
+    material: TNT
+    name: "&cReset Tag"
+    lore:
+      - "&7Click to remove your current tag"
+      - "&7and return to default."
+
+  # Button to select a random tag
+  random:
+    slot: 2
+    material: ENDER_PEARL
+    name: "&dRandom Tag"
+    lore:
+      - "&7Click to select a random tag"
+      - "&7each session."
+
+  # Example of a static button available in all categories
+  info:
+    slot: 0
+    material: BOOK
+    name: "&6Tag Info"
+    lore:
+      - "&7Click on a tag to select it."
+      - "&7Selected tags appear in chat."

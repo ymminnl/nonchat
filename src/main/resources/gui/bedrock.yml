@@ -1,0 +1,44 @@
+# ==================================================
+# BEDROCK GUI CONFIGURATION (Floodgate)
+# Configure the layout of the tag menu for Bedrock Edition players.
+# ==================================================
+
+# Menu title. Supports {category} and {page} placeholders.
+title: "Tags - {category}"
+
+# Description text shown at the top of the form (optional).
+content: "Select a tag to display in chat.
+Page: {page}/{total_pages}"
+
+# Default icon for tags if not specified in category file.
+# Can be a path (textures/items/name_tag) or URL.
+default-icon: "textures/items/paper"
+
+# Number of tags to display per page.
+tags-per-page: 5
+
+# ==================================================
+# BUTTONS
+# Configure the text and icons for navigation buttons.
+# ==================================================
+buttons:
+  random:
+    text: "Random Tag"
+    icon: "textures/items/ender_pearl"
+  
+  reset:
+    text: "Reset Tag"
+    icon: "textures/blocks/tnt_side"
+  
+  previous:
+    text: "<< Previous Page"
+    # icon: "textures/ui/arrow_left"
+  
+  next:
+    text: "Next Page >>"
+    # icon: "textures/ui/arrow_right"
+  
+  close:
+    text: "Close Menu"
+    # icon: "textures/ui/cancel"
+

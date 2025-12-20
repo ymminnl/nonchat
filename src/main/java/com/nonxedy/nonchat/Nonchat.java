@@ -46,6 +46,11 @@ import com.nonxedy.nonchat.util.integration.external.IntegrationUtil;
 import com.nonxedy.nonchat.database.DatabaseManager;
 import com.nonxedy.nonchat.tags.TagManager;
 import com.nonxedy.nonchat.config.DatabaseConfig;
+import com.nonxedy.nonchat.gui.BedrockGUIConfig;
+import com.nonxedy.nonchat.gui.JavaGUIConfig;
+import com.nonxedy.nonchat.gui.TagMenuBedrock;
+import com.nonxedy.nonchat.gui.TagMenuJava;
+import com.nonxedy.nonchat.listener.MenuListener;
 import com.nonxedy.nonchat.placeholders.TagsExpansion;
 import com.nonxedy.nonchat.listener.TagListener;
 import com.nonxedy.nonchat.util.integration.metrics.Metrics;
@@ -61,6 +66,11 @@ public class Nonchat extends JavaPlugin {
     private CommandService commandService;
     private ConfigService configService;
     private DatabaseConfig databaseConfig;
+    private JavaGUIConfig javaGUIConfig;
+    private TagMenuJava tagMenuJava;
+    private BedrockGUIConfig bedrockGUIConfig;
+    private Object tagMenuBedrock; // Object to avoid class loading issues if Floodgate is missing
+    private boolean floodgateEnabled;
     private DeathConfig deathConfig;
     private DeathMessageService deathMessageService;
     private ChatManager chatManager;
@@ -98,6 +108,12 @@ public class Nonchat extends JavaPlugin {
                 saveResource("langs/messages_es.yml", false);
             }
 
+            // Check Floodgate
+            this.floodgateEnabled = Bukkit.getPluginManager().getPlugin("floodgate") != null;
+            if (floodgateEnabled) {
+                getLogger().info("Floodgate detected! Enabling Bedrock forms support.");
+            }
+
             initializeServices();
             registerPlaceholders();
             registerListeners();
@@ -115,6 +131,11 @@ public class Nonchat extends JavaPlugin {
             // First initialize configuration
             this.configService = new ConfigService(this);
             this.databaseConfig = new DatabaseConfig(this);
+            this.javaGUIConfig = new JavaGUIConfig(this);
+            
+            if (floodgateEnabled) {
+                this.bedrockGUIConfig = new BedrockGUIConfig(this);
+            }
             
             // Initialize Database and Tags
             this.databaseManager = new DatabaseManager(this, databaseConfig);
@@ -122,6 +143,12 @@ public class Nonchat extends JavaPlugin {
             
             this.tagManager = new TagManager(this, databaseManager);
             this.tagManager.loadTags();
+            
+            this.tagMenuJava = new TagMenuJava(this, javaGUIConfig, tagManager);
+            
+            if (floodgateEnabled) {
+                this.tagMenuBedrock = new TagMenuBedrock(this, bedrockGUIConfig, tagManager, configService.getMessages());
+            }
 
             // Now that config is loaded, initialize the rest of the services
             this.spyCommand = new SpyCommand(this, configService.getMessages(), configService.getConfig());
@@ -269,6 +296,9 @@ public class Nonchat extends JavaPlugin {
             
             // Register tag listener
             Bukkit.getPluginManager().registerEvents(new TagListener(tagManager), this);
+            
+            // Register menu listener
+            Bukkit.getPluginManager().registerEvents(new MenuListener(tagMenuJava, javaGUIConfig, tagManager, configService.getMessages()), this);
 
             // Log successful listener registration
             if (debugger != null) {
@@ -422,6 +452,14 @@ public class Nonchat extends JavaPlugin {
 
             if (databaseConfig != null) {
                 databaseConfig.reload();
+            }
+            
+            if (javaGUIConfig != null) {
+                javaGUIConfig.load();
+            }
+            
+            if (floodgateEnabled && bedrockGUIConfig != null) {
+                bedrockGUIConfig.load();
             }
 
             if (databaseManager != null) {
@@ -624,6 +662,18 @@ public class Nonchat extends JavaPlugin {
 
     public TagManager getTagManager() {
         return tagManager;
+    }
+    
+    public TagMenuJava getTagMenuJava() {
+        return tagMenuJava;
+    }
+    
+    public Object getTagMenuBedrock() {
+        return tagMenuBedrock;
+    }
+    
+    public boolean isFloodgateEnabled() {
+        return floodgateEnabled;
     }
 
 }

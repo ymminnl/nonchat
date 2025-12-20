@@ -6,17 +6,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.geysermc.floodgate.api.FloodgateApi;
 
 import com.nonxedy.nonchat.Nonchat;
 import com.nonxedy.nonchat.config.PluginMessages;
+import com.nonxedy.nonchat.gui.TagMenuBedrock;
 import com.nonxedy.nonchat.tags.Tag;
 import com.nonxedy.nonchat.tags.TagManager;
 import com.nonxedy.nonchat.util.core.colors.ColorUtil;
+
+import me.clip.placeholderapi.PlaceholderAPI;
+import net.kyori.adventure.text.Component;
 
 public class TagCommand implements CommandExecutor, TabCompleter {
 
@@ -48,10 +54,36 @@ public class TagCommand implements CommandExecutor, TabCompleter {
             case "set" -> handleSet(player, args);
             case "list" -> handleList(player, args);
             case "reset" -> handleReset(player, args);
+            case "menu" -> handleMenu(player, args);
             default -> sendHelp(player);
         }
 
         return true;
+    }
+
+    private void handleMenu(Player player, String[] args) {
+        if (args.length < 2) {
+            player.sendMessage(ColorUtil.parseColor(messages.getString("tags-usage-menu")));
+            return;
+        }
+        
+        String category = args[1];
+        if (tagManager.getTags(category) == null) {
+            player.sendMessage(ColorUtil.parseColor(messages.getString("tags-category-not-found").replace("{category}", category)));
+            return;
+        }
+        
+        // Check for Bedrock player
+        if (plugin.isFloodgateEnabled() && FloodgateApi.getInstance().isFloodgatePlayer(player.getUniqueId())) {
+            Object menuObj = plugin.getTagMenuBedrock();
+            if (menuObj instanceof TagMenuBedrock menu) {
+                menu.open(player, category, 1);
+                return;
+            }
+        }
+        
+        // Open Java Menu
+        plugin.getTagMenuJava().open(player, category, 1);
     }
 
     private void handleSet(Player player, String[] args) {
@@ -103,15 +135,15 @@ public class TagCommand implements CommandExecutor, TabCompleter {
         
         if (target.equals(player)) {
             player.sendMessage(ColorUtil.parseColor(messages.getString("tags-set-success")
-                .replace("{tag}", tagId)
+                .replace("{tag}", tag.getDisplay())
                 .replace("{category}", category)));
         } else {
             player.sendMessage(ColorUtil.parseColor(messages.getString("tags-set-other")
-                .replace("{tag}", tagId)
+                .replace("{tag}", tag.getDisplay())
                 .replace("{category}", category)
                 .replace("{player}", target.getName())));
             target.sendMessage(ColorUtil.parseColor(messages.getString("tags-set-success")
-                .replace("{tag}", tagId)
+                .replace("{tag}", tag.getDisplay())
                 .replace("{category}", category)));
         }
     }
@@ -168,7 +200,22 @@ public class TagCommand implements CommandExecutor, TabCompleter {
         for (Tag tag : tags.values()) {
             boolean hasPerm = tag.getPermission().isEmpty() || player.hasPermission(tag.getPermission());
             String color = hasPerm ? "&a" : "&c";
-            player.sendMessage(ColorUtil.parseColor(color + "- " + tag.getId() + ": " + tag.getDisplay()));
+            
+            // Process display
+            String display = tag.getDisplay();
+            display = display.replace("</>", "<reset>");
+            display = ColorUtil.convertCompactGradients(display);
+            
+            if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+                try {
+                    display = PlaceholderAPI.setPlaceholders(player, display);
+                } catch (Exception ignored) {}
+            }
+            
+            Component line = ColorUtil.parseComponent(color + "- " + tag.getId() + ": ")
+                .append(ColorUtil.parseComponent(display));
+                
+            player.sendMessage(line);
         }
         player.sendMessage(ColorUtil.parseColor("&8&m------------------------"));
     }
@@ -177,6 +224,7 @@ public class TagCommand implements CommandExecutor, TabCompleter {
         player.sendMessage(ColorUtil.parseColor(messages.getString("tags-help-header")));
         player.sendMessage(ColorUtil.parseColor(messages.getString("tags-help-list")));
         player.sendMessage(ColorUtil.parseColor(messages.getString("tags-help-set")));
+        player.sendMessage(ColorUtil.parseColor(messages.getString("tags-help-menu")));
         if (player.hasPermission("nonchat.command.tags.reset")) {
             player.sendMessage(ColorUtil.parseColor(messages.getString("tags-help-reset")));
         }
@@ -189,6 +237,7 @@ public class TagCommand implements CommandExecutor, TabCompleter {
             List<String> completions = new ArrayList<>();
             completions.add("set");
             completions.add("list");
+            completions.add("menu");
             if (sender.hasPermission("nonchat.command.tags.reset")) {
                 completions.add("reset");
             }
@@ -196,7 +245,7 @@ public class TagCommand implements CommandExecutor, TabCompleter {
         }
         
         if (args.length == 2) {
-            if (args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("list") || args[0].equalsIgnoreCase("reset")) {
+            if (args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("list") || args[0].equalsIgnoreCase("reset") || args[0].equalsIgnoreCase("menu")) {
                 return filter(new ArrayList<>(tagManager.getCategories()), args[1]);
             }
         }
