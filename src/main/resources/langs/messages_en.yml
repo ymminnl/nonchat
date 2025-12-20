@@ -12,6 +12,9 @@
 # ==================================================
 
 # System messages.
+plugin-enabled: "&#d0d0d0[nonchat] &#84FFB8Plugin enabled!"
+plugin-disabled: "&#d0d0d0[nonchat] &#ff0000Plugin disabled!"
+services-reloaded: "&#d0d0d0[nonchat] &#84FFB8Services reloaded successfully"
 no-permission: "&#ff0000You do not have permission!"
 player-only: "&#ff0000Only players can use this command!"
 player-offline: "&#ff0000Player is offline!"
@@ -183,3 +186,24 @@ placeholders:
   current-channel: # %nonchat_current_channel%
     format: "&#ffffffCurrent Channel: &#84FFB8{channel} (&#FFAFFB{id}&#84FFB8)"
     none: "&#ff0000No active channel"
+
+# Tag System
+tags-reloaded: "&#84FFB8Tags configuration reloaded successfully."
+tags-set-success: "&#84FFB8Set tag &#FFAFFB{tag}&#84FFB8 in category &#FFAFFB{category}&#84FFB8."
+tags-set-other: "&#84FFB8Set tag &#FFAFFB{tag}&#84FFB8 in category &#FFAFFB{category}&#84FFB8 for &#FFAFFB{player}&#84FFB8."
+tags-reset-success: "&#84FFB8Your tag in category &#FFAFFB{category}&#84FFB8 has been reset to default."
+tags-reset-target: "&#84FFB8Reset tag for player &#FFAFFB{player}&#84FFB8 in category &#FFAFFB{category}&#84FFB8."
+tags-category-not-found: "&#ff0000Category '{category}' not found."
+tags-tag-not-found: "&#ff0000Tag '{tag}' not found in category '{category}'."
+tags-list-header: "&#FFAFFBTags in {category}:"
+tags-usage: "&#ffffffUse: &#FFAFFB/tags <set|list|reset|reload>"
+tags-usage-set: "&#ffffffUse: &#FFAFFB/tags set <category> <tag> [player]"
+tags-usage-list: "&#ffffffUse: &#FFAFFB/tags list <category>"
+tags-usage-reset: "&#ffffffUse: &#FFAFFB/tags reset <category> <player>"
+
+tags-help-header: "&8&m------------------------\n&6NonChat Tags System"
+tags-help-footer: "&8&m------------------------"
+tags-help-list: "&e/tags list <category> &7- List available tags"
+tags-help-set: "&e/tags set <category> <tag> [player] &7- Select a tag"
+tags-help-reset: "&e/tags reset <category> <player> &7- Reset a player's tag"
+tags-help-reload: "&e/tags reload &7- Reload configuration"

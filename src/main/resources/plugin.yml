@@ -122,53 +122,36 @@ commands:
     description: Send a message to a player.
     aliases: [msg, tell, w, m, whisper]
     usage: /message <player> <message>
-    permission: nonchat.message
-    permission-message: You do not have <permission> to use this command!
   reply:
     description: Reply to a player.
     aliases: [r]
     usage: /reply <message>
-    permission: nonchat.reply
-    permission-message: You do not have <permission> to use this command!
   broadcast:
     description: Send a message to all players.
     aliases: [bc, broadcast]
     usage: /broadcast <message>
-    permission: nonchat.broadcast
-    permission-message: You do not have <permission> to use this command!
   nonchat:
     description: Main plugin command for nonchat.
     usage: /nonchat <reload|help|version>
-    permission: nonchat.help
-    permission-message: You do not have <permission> to use this command!
   clear:
     description: Clear chat.
     usage: /clear
-    permission: nonchat.clear
-    permission-message: You do not have <permission> to use this command!
   ignore:
     description: Ignore a player.
     usage: /ignore <player>
-    permission: nonchat.ignore
-    permission-message: You do not have <permission> to use this command!
   spy:
     description: Spy on a player.
     usage: /spy
-    permission: nonchat.spy
-    permission-message: You do not have <permission> to use this command!
   me:
     description: The character's actions are first-person.
     usage: /me <message>
-    permission: nonchat.me
-    permission-message: You do not have <permission> to use this command!
   roll:
     description: Roll a dice.
     usage: /roll <max number>
-    permission: nonchat.roll
-    permission-message: You do not have <permission> to use this command!
   channel:
     description: Manage chat channels.
     aliases: [ch]
     usage: /channel <set|list|info|create|edit|delete|default> [args]
-    permission: nonchat.channel
-    permission-message: You do not have <permission> to use this command!
+  tags:
+    description: Manage player tags.
+    usage: /tags <set|list|reset>

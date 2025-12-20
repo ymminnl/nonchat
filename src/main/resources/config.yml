@@ -133,6 +133,16 @@ interactive-placeholders:
         type: "none"
 
 # ==================================================
+# TAG SYSTEM
+# Configuration for the player tag system.
+# ==================================================
+tags:
+  # If true, tag placeholders will return legacy color codes (§a, §b) instead of MiniMessage.
+  # Enable this if you use plugins that don't support MiniMessage (like old scoreboard/tab plugins).
+  # Default: false (returns raw MiniMessage for maximum compatibility with modern plugins).
+  export-legacy: false
+
+# ==================================================
 # MENTION SOUNDS
 # Configure sound settings when players are mentioned in chat.
 # ==================================================

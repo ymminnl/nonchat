@@ -114,6 +114,16 @@
 			<artifactId>caffeine</artifactId>
 			<version>3.2.3</version>
 		</dependency>
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<version>5.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mariadb.jdbc</groupId>
+			<artifactId>mariadb-java-client</artifactId>
+			<version>3.5.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -154,6 +164,14 @@
 								<relocation>
 									<pattern>org.bstats</pattern>
 									<shadedPattern>com.nonxedy.nonchat.libs.bstats</shadedPattern>
+								</relocation>
+								<relocation>
+									<pattern>com.zaxxer.hikari</pattern>
+									<shadedPattern>com.nonxedy.nonchat.libs.hikari</shadedPattern>
+								</relocation>
+								<relocation>
+									<pattern>org.mariadb.jdbc</pattern>
+									<shadedPattern>com.nonxedy.nonchat.libs.mariadb</shadedPattern>
 								</relocation>
 							</relocations>
 						</configuration>

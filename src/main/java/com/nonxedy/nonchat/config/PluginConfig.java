@@ -120,6 +120,7 @@ public class PluginConfig {
 
         // Update checker settings
         config.set("update-checker", true);
+        config.set("update-checker", true);
         
         // Default channel setting
         config.set("default-channel", "local");
@@ -198,6 +199,9 @@ public class PluginConfig {
         config.set("caps-filter.enabled", true);
         config.set("caps-filter.max-caps-percentage", 70);
         config.set("caps-filter.min-length", 4);
+        
+        // Tag system settings
+        config.set("tags.export-legacy", false);
         
         // Broadcast settings
         config.set("broadcast.format", "\n§#FFAFFBBroadcast: §f{message}\n");
@@ -875,6 +879,15 @@ public class PluginConfig {
      */
     public BroadcastMessage createBroadcastMessage(boolean enabled, String message, int interval) {
         return new BroadcastMessage(enabled, message, interval);
+    }
+
+    /**
+     * Checks if tags should be exported as legacy text (colors converted)
+     * instead of raw MiniMessage format for PlaceholderAPI
+     * @return true if legacy export is enabled
+     */
+    public boolean isTagsExportLegacy() {
+        return config.getBoolean("tags.export-legacy", false);
     }
 
     /**

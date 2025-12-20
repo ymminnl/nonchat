@@ -58,10 +58,8 @@ public class PaperChatListener extends ChatListener {
         playerMessages.put(playerId, message);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onAsyncChat(AsyncChatEvent event) {
-        event.setCancelled(true);
-
         Player player = event.getPlayer();
         String playerId = player.getUniqueId().toString();
 
@@ -69,16 +67,26 @@ public class PaperChatListener extends ChatListener {
         final String message = playerMessages.remove(playerId); // Remove to prevent memory leaks
         final String finalMessage = message != null ? message : PlainTextComponentSerializer.plainText().serialize(event.message());
 
-        CompletableFuture.runAsync(() -> {
-            try {
-                if (chatService != null) {
-                    chatService.handleChat(player, finalMessage);
-                } else if (chatManager != null) {
-                    chatManager.processChat(player, finalMessage);
-                }
-            } catch (Exception e) {
-                plugin.logError("Async chat processing failed: " + e.getMessage());
+        // Process chat and get result
+        // Note: processChat is now blocking/synchronous in terms of logic but runs on async thread
+        net.kyori.adventure.text.Component result = null;
+        try {
+            if (chatManager != null) {
+                result = chatManager.processChat(player, finalMessage);
             }
-        });
+        } catch (Exception e) {
+            plugin.logError("Chat processing failed: " + e.getMessage());
+        }
+
+        if (result != null) {
+            // Global chat handled natively!
+            // We set the renderer to display our formatted component
+            final net.kyori.adventure.text.Component finalResult = result;
+            event.renderer((source, sourceDisplayName, msg, viewer) -> finalResult);
+        } else {
+            // Handled manually (Local/Staff) OR blocked/cancelled
+            event.viewers().clear();
+            event.setCancelled(true);
+        }
     }
 }

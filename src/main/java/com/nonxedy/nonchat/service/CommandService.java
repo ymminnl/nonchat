@@ -20,6 +20,7 @@ import com.nonxedy.nonchat.command.impl.NonchatCommand;
 import com.nonxedy.nonchat.command.impl.ReplyCommand;
 import com.nonxedy.nonchat.command.impl.RollCommand;
 import com.nonxedy.nonchat.command.impl.SpyCommand;
+import com.nonxedy.nonchat.command.impl.TagCommand;
 
 /**
  * Service for registering and managing plugin commands.
@@ -78,6 +79,9 @@ public class CommandService {
         registerCommand("me", new MeCommand(plugin, configService.getConfig(), configService.getMessages()));
         registerCommand("roll", new RollCommand(plugin, configService.getConfig(), configService.getMessages()));
     
+        // Tag command
+        registerCommand("tags", new TagCommand(plugin, plugin.getTagManager(), configService.getMessages()));
+
         // Utility commands
         registerCommand("nonchat", new NonchatCommand(plugin, configService));
         

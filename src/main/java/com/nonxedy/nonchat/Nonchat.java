@@ -43,6 +43,11 @@ import com.nonxedy.nonchat.util.chat.packets.DisplayEntityUtil;
 import com.nonxedy.nonchat.util.core.debugging.Debugger;
 import com.nonxedy.nonchat.util.core.updates.UpdateChecker;
 import com.nonxedy.nonchat.util.integration.external.IntegrationUtil;
+import com.nonxedy.nonchat.database.DatabaseManager;
+import com.nonxedy.nonchat.tags.TagManager;
+import com.nonxedy.nonchat.config.DatabaseConfig;
+import com.nonxedy.nonchat.placeholders.TagsExpansion;
+import com.nonxedy.nonchat.listener.TagListener;
 import com.nonxedy.nonchat.util.integration.metrics.Metrics;
 
 import lombok.extern.slf4j.Slf4j;
@@ -55,11 +60,14 @@ public class Nonchat extends JavaPlugin {
     private ChatService chatService;
     private CommandService commandService;
     private ConfigService configService;
+    private DatabaseConfig databaseConfig;
     private DeathConfig deathConfig;
     private DeathMessageService deathMessageService;
     private ChatManager chatManager;
     private MessageManager messageManager;
     private BroadcastManager broadcastManager;
+    private DatabaseManager databaseManager;
+    private TagManager tagManager;
     private SpyCommand spyCommand;
     private Debugger debugger;
     private ChatListener chatListener;
@@ -95,7 +103,7 @@ public class Nonchat extends JavaPlugin {
             registerListeners();
             setupIntegrations();
 
-            Bukkit.getConsoleSender().sendMessage("§d[nonchat] §aplugin enabled");
+            Bukkit.getConsoleSender().sendMessage(com.nonxedy.nonchat.util.core.colors.ColorUtil.parseColor(configService.getMessages().getString("plugin-enabled")));
         } catch (Exception e) {
             getLogger().log(Level.SEVERE, "Failed to enable plugin: {0}", e.getMessage());
              throw new RuntimeException("Failed to enable plugin", e);
@@ -106,6 +114,14 @@ public class Nonchat extends JavaPlugin {
         try {
             // First initialize configuration
             this.configService = new ConfigService(this);
+            this.databaseConfig = new DatabaseConfig(this);
+            
+            // Initialize Database and Tags
+            this.databaseManager = new DatabaseManager(this, databaseConfig);
+            this.databaseManager.initialize();
+            
+            this.tagManager = new TagManager(this, databaseManager);
+            this.tagManager.loadTags();
 
             // Now that config is loaded, initialize the rest of the services
             this.spyCommand = new SpyCommand(this, configService.getMessages(), configService.getConfig());
@@ -250,6 +266,9 @@ public class Nonchat extends JavaPlugin {
 
             // Register join/quit listener
             Bukkit.getPluginManager().registerEvents(new JoinQuitListener(configService.getConfig(), chatManager.getChannelManager()), this);
+            
+            // Register tag listener
+            Bukkit.getPluginManager().registerEvents(new TagListener(tagManager), this);
 
             // Log successful listener registration
             if (debugger != null) {
@@ -266,6 +285,7 @@ public class Nonchat extends JavaPlugin {
         try {
             if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
                 new NonchatExpansion(this).register();
+                new TagsExpansion(this, tagManager).register();
                 getLogger().info("PlaceholderAPI expansion registered successfully");
             } else {
                 getLogger().info("PlaceholderAPI not available - placeholders will be disabled");
@@ -367,9 +387,13 @@ public class Nonchat extends JavaPlugin {
             // Cancel all remaining Bukkit tasks for this plugin
             Bukkit.getScheduler().cancelTasks(this);
 
-            Bukkit.getConsoleSender().sendMessage(Component.text()
-                    .append(Component.text("[nonchat] ", TextColor.fromHexString("#E088FF")))
-                    .append(Component.text("plugin disabled", TextColor.fromHexString("#FF5252"))));
+            if (configService != null) {
+                Bukkit.getConsoleSender().sendMessage(com.nonxedy.nonchat.util.core.colors.ColorUtil.parseColor(configService.getMessages().getString("plugin-disabled")));
+            } else {
+                Bukkit.getConsoleSender().sendMessage(Component.text()
+                        .append(Component.text("[nonchat] ", TextColor.fromHexString("#E088FF")))
+                        .append(Component.text("plugin disabled", TextColor.fromHexString("#FF5252"))));
+            }
         } catch (Exception e) {
             getLogger().log(Level.WARNING, "Error during plugin shutdown: {0}", e.getMessage());
         }
@@ -377,37 +401,16 @@ public class Nonchat extends JavaPlugin {
 
     @Override
     public void reloadConfig() {
-        try {
-            super.reloadConfig();
-
-            if (configService != null) {
-                configService.reload();
-            }
-
-            if (broadcastManager != null) {
-                broadcastManager.reload();
-            }
-
-            // Reinitialize LinkDetector with updated messages before reloading commands
-            if (configService != null) {
-                LinkDetector.initialize(configService.getMessages());
-            }
-
-            if (commandService != null) {
-                commandService.reloadCommands();
-            }
-
-            // Reload interactive placeholders
-            reloadInteractivePlaceholders();
-
-            getLogger().info("Configuration reloaded successfully");
-        } catch (Exception e) {
-            getLogger().log(Level.SEVERE, "Failed to reload configuration: {0}", e.getMessage());
-            throw new RuntimeException("Failed to reload configuration", e);
-        }
+        super.reloadConfig();
+        reloadServices();
     }
 
     public void reloadServices() {
+        // Prevent infinite recursion during initialization
+        if (configService == null) {
+            return;
+        }
+
         try {
             // Stop services that need clean shutdown
             if (broadcastManager != null) {
@@ -415,8 +418,19 @@ public class Nonchat extends JavaPlugin {
             }
 
             // Reload configuration
-            if (configService != null) {
-                configService.reload();
+            configService.reload();
+
+            if (databaseConfig != null) {
+                databaseConfig.reload();
+            }
+
+            if (databaseManager != null) {
+                databaseManager.close();
+                databaseManager.initialize();
+            }
+
+            if (tagManager != null) {
+                tagManager.loadTags();
             }
 
             // Reinitialize services that need it
@@ -425,9 +439,7 @@ public class Nonchat extends JavaPlugin {
             }
 
             // Reinitialize LinkDetector with updated messages before reloading commands
-            if (configService != null) {
-                LinkDetector.initialize(configService.getMessages());
-            }
+            LinkDetector.initialize(configService.getMessages());
 
             // Reload commands and channels after LinkDetector is reinitialized
             if (commandService != null) {
@@ -455,7 +467,7 @@ public class Nonchat extends JavaPlugin {
             }
 
             // Reinitialize debugger if needed
-            if (configService != null && configService.getConfig().isDebug()) {
+            if (configService.getConfig().isDebug()) {
                 if (debugger == null) {
                     debugger = new Debugger(this, configService.getConfig().getDebugLogRetentionDays());
                 }
@@ -463,7 +475,7 @@ public class Nonchat extends JavaPlugin {
                 debugger = null;
             }
             
-            getLogger().info("Services reloaded successfully");
+            Bukkit.getConsoleSender().sendMessage(com.nonxedy.nonchat.util.core.colors.ColorUtil.parseColor(configService.getMessages().getString("services-reloaded")));
         } catch (Exception e) {
             getLogger().log(Level.SEVERE, "Failed to reload services: {0}", e.getMessage());
             throw new RuntimeException("Failed to reload services", e);
@@ -602,5 +614,16 @@ public class Nonchat extends JavaPlugin {
         }
     }
     
+    public DatabaseManager getDatabaseManager() {
+        return databaseManager;
+    }
+    
+    public DatabaseConfig getDatabaseConfig() {
+        return databaseConfig;
+    }
+
+    public TagManager getTagManager() {
+        return tagManager;
+    }
 
 }

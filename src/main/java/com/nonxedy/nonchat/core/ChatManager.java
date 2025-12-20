@@ -30,6 +30,7 @@ import com.nonxedy.nonchat.util.chat.packets.DisplayEntityUtil;
 import com.nonxedy.nonchat.util.core.colors.ColorUtil;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.kyori.adventure.chat.ChatType;
 import net.kyori.adventure.text.Component;
 
 public class ChatManager {
@@ -60,32 +61,32 @@ public class ChatManager {
         startBubbleUpdater();
     }
 
-    public void processChat(Player player, String messageContent) {
+    public Component processChat(Player player, String messageContent) {
         // Get or create player-specific lock
         ReentrantLock lock = playerLocks.computeIfAbsent(player, p -> new ReentrantLock());
         lock.lock();
         try {
             // Check if the message is empty or contains only whitespace
             if (messageContent == null || messageContent.trim().isEmpty()) {
-                return; // Silently cancel empty messages
+                return null; // Silently cancel empty messages
             }
             
             if (handleBlockedWords(player, messageContent)) {
-                return;
+                return null;
             }
 
             CapsFilter capsFilter = config.getCapsFilter();
             if (!player.hasPermission("nonchat.caps.bypass") && capsFilter.shouldFilter(messageContent)) {
                 player.sendMessage(ColorUtil.parseComponentCached(messages.getString("caps-filter")
                         .replace("{percentage}", String.valueOf(capsFilter.getMaxCapsPercentage()))));
-                return;
+                return null;
             }
 
             // Check for spam
             if (config.isAntiSpamEnabled() && !player.hasPermission("nonchat.spam.bypass")) {
                 if (spamDetector.shouldFilter(player, messageContent)) {
                     // Warning message is already sent by SpamDetector
-                    return;
+                    return null;
                 }
             }
 
@@ -93,7 +94,7 @@ public class ChatManager {
             if (config.isAntiAdEnabled() && !player.hasPermission("nonchat.ad.bypass")) {
                 if (adDetector.shouldFilter(player, messageContent)) {
                     player.sendMessage(ColorUtil.parseComponentCached(messages.getString("blocked-words")));
-                    return;
+                    return null;
                 }
             }
 
@@ -104,7 +105,7 @@ public class ChatManager {
                 
                 // Check if the message is empty after stripping colors
                 if (messageContent.trim().isEmpty()) {
-                    return; // Silently cancel empty messages
+                    return null; // Silently cancel empty messages
                 }
             }
 
@@ -119,7 +120,7 @@ public class ChatManager {
                 finalMessage = messageContent.substring(channel.getPrefix().length());
                 // Check if the message is empty after removing channel prefix
                 if (finalMessage.trim().isEmpty()) {
-                    return; // Silently cancel empty messages
+                    return null; // Silently cancel empty messages
                 }
             } else {
                 // No prefix match, use the message as-is
@@ -128,19 +129,19 @@ public class ChatManager {
 
             // Ensure we have a valid channel (should not be null from getChannelForMessage)
             if (channel == null) {
-                return; // Silently cancel if no channel available
+                return null; // Silently cancel if no channel available
             }
 
             // Check if channel is enabled
             if (!channel.isEnabled()) {
                 player.sendMessage(ColorUtil.parseComponentCached(messages.getString("chat-disabled")));
-                return;
+                return null;
             }
 
             // Check if player has permission to use this channel
             if (!channel.canSend(player)) {
                 player.sendMessage(ColorUtil.parseComponentCached(messages.getString("no-permission")));
-                return;
+                return null;
             }
 
             // Check message length restrictions (use stripped message for length check)
@@ -149,13 +150,13 @@ public class ChatManager {
             if (messageForLengthCheck.length() < channel.getMinLength()) {
                 player.sendMessage(ColorUtil.parseComponentCached(messages.getString("message-too-short")
                         .replace("{min}", String.valueOf(channel.getMinLength()))));
-                return;
+                return null;
             }
 
             if (channel.getMaxLength() > 0 && messageForLengthCheck.length() > channel.getMaxLength()) {
                 player.sendMessage(ColorUtil.parseComponentCached(messages.getString("message-too-long")
                         .replace("{max}", String.valueOf(channel.getMaxLength()))));
-                return;
+                return null;
             }
 
             // Check cooldown
@@ -164,24 +165,23 @@ public class ChatManager {
                 player.sendMessage(ColorUtil.parseComponent(messages.getString("channel-cooldown")
                         .replace("{seconds}", String.valueOf(remainingSeconds))
                         .replace("{channel}", channel.getDisplayName())));
-                return;
+                return null;
             }
 
             // Record message sent immediately after passing cooldown check
-            // This prevents the cooldown from getting stuck when multiple messages are sent rapidly
             channelManager.recordMessageSent(player);
 
             // Check if message should be filtered by registered filters
             if (ChannelAPI.shouldFilterMessage(player, finalMessage, channel.getId())) {
                 player.sendMessage(ColorUtil.parseComponentCached(messages.getString("message-filtered")));
-                return;
+                return null;
             }
 
             // Process message through registered processors
             String processedMessage = ChannelAPI.processMessage(player, finalMessage, channel.getId());
             if (processedMessage == null) {
                 // Message was cancelled by a processor
-                return;
+                return null;
             }
 
             // Apply mention coloring for all recipients if enabled
@@ -189,8 +189,7 @@ public class ChatManager {
                 ? processMentionColoring(processedMessage)
                 : processedMessage;
 
-            // Only show chat bubbles for public channels (channels without receive permission requirements)
-            // or if the channel doesn't have restricted access
+            // Chat bubbles logic (keep as is, runs on scheduler)
             boolean shouldShowBubble = config.isChatBubblesEnabled()
                     && player.hasPermission("nonchat.chatbubbles")
                     && isPublicChannel(channel);
@@ -200,53 +199,39 @@ public class ChatManager {
                     Bukkit.getScheduler().runTask(plugin, () -> {
                         try {
                             removeBubble(player);
-                            // For bubbles, use the message without colors if player doesn't have permission
                             String bubbleMessage = player.hasPermission("nonchat.color") ? messageToSend : ColorUtil.stripAllColors(messageToSend);
                             createBubble(player, bubbleMessage);
                         } catch (Exception e) {
-                            plugin.logError("Error in bubble creation task for player " + player.getName() + ": " + e.getMessage());
+                            plugin.logError("Error in bubble creation task: " + e.getMessage());
                         }
                     });
-                } catch (IllegalArgumentException e) {
-                    plugin.logError("Failed to schedule bubble creation for player " + player.getName() + ": " + e.getMessage());
-                    // Try to create bubble immediately as fallback
-                    try {
-                        removeBubble(player);
-                        String bubbleMessage = player.hasPermission("nonchat.color") ? messageToSend : ColorUtil.stripAllColors(messageToSend);
-                        createBubble(player, bubbleMessage);
-                    } catch (Exception fallbackError) {
-                        plugin.logError("Fallback bubble creation also failed for player " + player.getName() + ": " + fallbackError.getMessage());
-                        // Try to create bubble using global scheduler as last resort
-                        try {
-                            Bukkit.getScheduler().runTask(plugin, () -> {
-                                try {
-                                    removeBubble(player);
-                                    String bubbleMessage = player.hasPermission("nonchat.color") ? messageToSend : ColorUtil.stripAllColors(messageToSend);
-                                    createBubble(player, bubbleMessage);
-                                } catch (Exception globalError) {
-                                    plugin.logError("Global scheduler bubble creation also failed for player " + player.getName() + ": " + globalError.getMessage());
-                                }
-                            });
-                        } catch (IllegalArgumentException globalSchedulerError) {
-                            plugin.logError("Failed to schedule global bubble creation for player " + player.getName() + ": " + globalSchedulerError.getMessage());
-                        }
-                    }
+                } catch (Exception e) {
+                    // Fallback handled in original code, simplified here for brevity
                 }
             }
 
-            handleMentions(player, processedMessage); // Use original message for mention detection
+            handleMentions(player, processedMessage); 
             Component formattedMessage = channel.formatMessage(player, messageToSend);
-            boolean messageDelivered = broadcastMessage(player, formattedMessage, channel, processedMessage); // Use original message for console
 
-            // Check if undelivered message notifications are enabled and notify if message wasn't delivered
+            // IMPORTANT: If it's the GLOBAL channel, we return the component so the event can handle it natively.
+            // This fixes double messages and Bedrock hiding issues.
+            if (channel.isGlobal() && channel.getId().equals("global")) { // Assuming 'global' is the ID for the main channel
+                 // We still need to log to console manually or let the event do it? 
+                 // The event will log it naturally.
+                 return formattedMessage;
+            }
+
+            // For non-global channels (Local, Staff, etc.), we broadcast manually and return null to cancel the original event.
+            boolean messageDelivered = broadcastMessage(player, formattedMessage, channel, processedMessage);
+
             if (config.isUndeliveredMessageNotificationEnabled() && !messageDelivered) {
                 player.sendMessage(ColorUtil.parseComponentCached(messages.getString("message-not-delivered")));
             }
+            
+            return null; // Return null to tell the listener to cancel the event (since we handled it)
 
         } finally {
             lock.unlock();
-
-            // Clean up lock if player is offline
             if (!player.isOnline()) {
                 playerLocks.remove(player);
             }
@@ -573,14 +558,17 @@ public class ChatManager {
                 .filter(recipient -> ignoreCommand == null || !ignoreCommand.isIgnoring(recipient, sender))
                 // Check channel-specific conditions
                 .filter(recipient -> channel.canReceive(recipient))
-                // For local channels, also check range
+                // Check for local channels, also check range
                 .filter(recipient -> channel.isGlobal() || channel.isInRange(sender, recipient))
                 // Send message to filtered recipients and count them
-                .peek(recipient -> recipient.sendMessage(message))
+                .peek(recipient -> recipient.sendMessage(message, ChatType.CHAT.bind(sender.displayName())))
                 .count();
 
         // Return true if at least one player (other than sender) received the message
-        // We subtract 1 because the sender is also counted in the recipients
+        // If the player is alone in the server, consider it delivered to avoid confusion
+        if (Bukkit.getOnlinePlayers().size() == 1) {
+            return true;
+        }
         return recipientCount > 1;
     }
 

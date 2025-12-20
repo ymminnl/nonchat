@@ -23,6 +23,7 @@ import com.nonxedy.nonchat.util.special.ping.PingDetector;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.format.NamedTextColor;
 
 /**
@@ -645,37 +646,16 @@ public class BaseChannel implements Channel {
      * @return Component with hover only on the player name
      */
     private Component parseBeforeMessageWithHover(String beforeMessage, Player player) {
-        String playerName = player.getName();
-        int nameIndex = beforeMessage.indexOf(playerName);
-
-        if (nameIndex == -1) {
-            // If player name not found, add hover to the entire beforeMessage
-            return hoverTextUtil.addHoverToComponent(ColorUtil.parseConfigComponent(beforeMessage), player);
-        }
-
-        String beforeName = beforeMessage.substring(0, nameIndex);
-        String afterName = beforeMessage.substring(nameIndex + playerName.length());
-
-        // Extract trailing color from beforeName to apply to the player name
-        String trailingColor = extractTrailingColor(beforeName);
-
-        Component nameComponent;
-        if (!trailingColor.isEmpty()) {
-            // Remove the trailing color from beforeName if it's at the end
-            if (beforeName.endsWith(trailingColor)) {
-                beforeName = beforeName.substring(0, beforeName.length() - trailingColor.length());
-            }
-            // Create name component with the trailing color applied
-            Component coloredNameComponent = ColorUtil.parseConfigComponent(trailingColor + playerName);
-            nameComponent = hoverTextUtil.addHoverToComponent(coloredNameComponent, player);
-        } else {
-            nameComponent = hoverTextUtil.createHoverableText(playerName, player);
-        }
-
-        Component beforeComponent = ColorUtil.parseConfigComponent(beforeName);
-        Component afterComponent = ColorUtil.parseConfigComponent(afterName);
-
-        return beforeComponent.append(nameComponent).append(afterComponent);
+        Component component = ColorUtil.parseConfigComponent(beforeMessage);
+        
+        // Use Adventure's replaceText to find and modify the player name
+        // This preserves MiniMessage styles (gradients, etc.) that might wrap the name
+        return component.replaceText(TextReplacementConfig.builder()
+            .matchLiteral(player.getName())
+            .replacement((result, builder) -> {
+                return hoverTextUtil.addHoverToComponent(builder.build(), player);
+            })
+            .build());
     }
 
     /**
@@ -685,36 +665,14 @@ public class BaseChannel implements Channel {
      * @return Component with hover only on the player name
      */
     private Component parseFullFormatWithHover(String fullFormat, Player player) {
-        String playerName = player.getName();
-        int nameIndex = fullFormat.indexOf(playerName);
-
-        if (nameIndex == -1) {
-            // If player name not found, add hover to the entire format
-            return hoverTextUtil.addHoverToComponent(ColorUtil.parseConfigComponent(fullFormat), player);
-        }
-
-        String beforeName = fullFormat.substring(0, nameIndex);
-        String afterName = fullFormat.substring(nameIndex + playerName.length());
-
-        // Extract trailing color from beforeName to apply to the player name
-        String trailingColor = extractTrailingColor(beforeName);
-
-        Component nameComponent;
-        if (!trailingColor.isEmpty()) {
-            // Remove the trailing color from beforeName if it's at the end
-            if (beforeName.endsWith(trailingColor)) {
-                beforeName = beforeName.substring(0, beforeName.length() - trailingColor.length());
-            }
-            // Create name component with the trailing color applied
-            Component coloredNameComponent = ColorUtil.parseConfigComponent(trailingColor + playerName);
-            nameComponent = hoverTextUtil.addHoverToComponent(coloredNameComponent, player);
-        } else {
-            nameComponent = hoverTextUtil.createHoverableText(playerName, player);
-        }
-
-        Component beforeComponent = ColorUtil.parseConfigComponent(beforeName);
-        Component afterComponent = ColorUtil.parseConfigComponent(afterName);
-
-        return beforeComponent.append(nameComponent).append(afterComponent);
+        Component component = ColorUtil.parseConfigComponent(fullFormat);
+        
+        // Use Adventure's replaceText to find and modify the player name
+        return component.replaceText(TextReplacementConfig.builder()
+            .matchLiteral(player.getName())
+            .replacement((result, builder) -> {
+                return hoverTextUtil.addHoverToComponent(builder.build(), player);
+            })
+            .build());
     }
 }

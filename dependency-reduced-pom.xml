@@ -69,6 +69,14 @@
                   <pattern>org.bstats</pattern>
                   <shadedPattern>com.nonxedy.nonchat.libs.bstats</shadedPattern>
                 </relocation>
+                <relocation>
+                  <pattern>com.zaxxer.hikari</pattern>
+                  <shadedPattern>com.nonxedy.nonchat.libs.hikari</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.mariadb.jdbc</pattern>
+                  <shadedPattern>com.nonxedy.nonchat.libs.mariadb</shadedPattern>
+                </relocation>
               </relocations>
             </configuration>
           </execution>

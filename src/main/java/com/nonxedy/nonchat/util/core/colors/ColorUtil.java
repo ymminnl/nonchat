@@ -64,6 +64,9 @@ public class ColorUtil {
     
     // Pattern for detecting gradient tags specifically
     private static final Pattern GRADIENT_PATTERN = Pattern.compile("<gradient:[^>]+>");
+
+    // Pattern for compact gradient format <#HEX#HEX...>
+    private static final Pattern COMPACT_GRADIENT_PATTERN = Pattern.compile("<#([A-Fa-f0-9]{6}(?:#[A-Fa-f0-9]{6})+)>");
     
     // MiniMessage instance for parsing MiniMessage format
     private static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
@@ -103,7 +106,7 @@ public class ColorUtil {
         if (message == null || message.isEmpty()) return Component.empty();
         
         return COMPONENT_CACHE.computeIfAbsent(message, m -> {
-            if (containsMiniMessageTags(m)) {
+            if (containsMiniMessageTags(m) || COMPACT_GRADIENT_PATTERN.matcher(m).find()) {
                 // Parse with MiniMessage if it contains MiniMessage format tags
                 return parseMiniMessageComponent(m);
             } else {
@@ -123,8 +126,8 @@ public class ColorUtil {
     public static Component parseComponent(String message) {
         if (message == null || message.isEmpty()) return Component.empty();
         
-        // Check if the message contains any MiniMessage format tags
-        if (containsMiniMessageTags(message)) {
+        // Check if the message contains any MiniMessage format tags or compact gradients
+        if (containsMiniMessageTags(message) || COMPACT_GRADIENT_PATTERN.matcher(message).find()) {
             // Parse with MiniMessage if it contains MiniMessage format tags
             return parseMiniMessageComponent(message);
         } else {
@@ -158,11 +161,19 @@ public class ColorUtil {
     public static Component parseMiniMessageComponent(String message) {
         if (message == null || message.isEmpty()) return Component.empty();
 
+        // Support for non-standard </> closing tag, mapping it to <reset>
+        message = message.replace("</>", "<reset>");
+
+        // Always convert compact gradients (<#HEX#HEX...>) if present
+        if (COMPACT_GRADIENT_PATTERN.matcher(message).find()) {
+            message = convertCompactGradients(message);
+        }
+
         try {
             // Check if message contains legacy codes that need conversion
             if (containsLegacyCodes(message)) {
                 // Convert legacy codes to MiniMessage format before parsing
-                message = prepareMixedFormatMessage(message);
+                message = convertToMiniMessageFormat(message);
             }
             // Parse with MiniMessage
             return MINI_MESSAGE.deserialize(message);
@@ -193,10 +204,13 @@ public class ColorUtil {
      * @param message The mixed format message
      * @return A message with all color codes in MiniMessage format
      */
-    private static String prepareMixedFormatMessage(String message) {
+    public static String convertToMiniMessageFormat(String message) {
         if (message == null || message.isEmpty()) return "";
         
         String result = message;
+
+        // Convert compact gradients first (<#HEX#HEX...>)
+        result = convertCompactGradients(result);
         
         // Check if the message already has valid MiniMessage hex colors
         boolean hasMiniMessageHex = result.matches(".*<#[0-9a-fA-F]{6}>.*");
@@ -221,6 +235,33 @@ public class ColorUtil {
         result = safelyConvertLegacyColors(result);
         
         return result;
+    }
+
+    /**
+     * Converts compact gradient format <#HEX#HEX...> to MiniMessage <gradient:#HEX:#HEX...>
+     * @param message The message to convert
+     * @return Message with converted gradients
+     */
+    public static String convertCompactGradients(String message) {
+        if (message == null || message.isEmpty()) return message;
+
+        Matcher matcher = COMPACT_GRADIENT_PATTERN.matcher(message);
+        // Use StringBuilder/StringBuffer for replacement
+        StringBuilder buffer = new StringBuilder(message.length());
+
+        while (matcher.find()) {
+            // Group 1 is the content like "AA00AA#BB00BB" (without the leading <#)
+            String hexChain = matcher.group(1);
+
+            // We need to format this into gradient:#AA00AA:#BB00BB
+            // The input chain is "AA00AA#BB00BB".
+            // We need to prepend '#' to the first one, and replace internal '#' with ':#'.
+            String formattedColors = "#" + hexChain.replace("#", ":#");
+
+            matcher.appendReplacement(buffer, "<gradient:" + formattedColors + ">");
+        }
+        matcher.appendTail(buffer);
+        return buffer.toString();
     }
     
     /**
@@ -408,7 +449,7 @@ public class ColorUtil {
         
         // For config strings, always try MiniMessage first if it contains any MiniMessage-like tags
         // This ensures gradients and other MiniMessage features work properly in config
-        if (containsMiniMessageTags(message) || containsGradient(message)) {
+        if (containsMiniMessageTags(message) || containsGradient(message) || COMPACT_GRADIENT_PATTERN.matcher(message).find()) {
             try {
                 // Try to parse as MiniMessage first
                 return parseMiniMessageComponent(message);
