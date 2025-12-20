@@ -1,0 +1,340 @@
+title: "Ranks"
+default-value: ""
+selection-message: "&b&lTAGS &f» &7Has seleccionado el tag {tag}"
+
+# Expiration Messages
+expiration-message: "&c¡Tu rango ha expirado! El tag {tag} &cserá removido."
+expiration-title: "&c&lRANGO EXPIRADO"
+expiration-subtitle: "&7Tag {tag} removido"
+expiration-actionbar: "&cTag removido por falta de permisos"
+
+# Java GUI Settings
+menu-title: "&8Selecciona un tag"
+menu-rows: 5
+tag-slots:
+  - "10-16"
+  - "19-25"
+  - "28-34"
+
+# Buttons Configuration
+buttons:
+  info:
+    slot: 36
+    material: BOOK
+    name: "&e¿Cómo obtener un tag?"
+    lore:
+      - "&7Puedes adquirir tags premium"
+      - "&7comprando un rango en:"
+      - ""
+      - "&6https://tienda.onedam.net"
+
+  reset:
+    slot: 40
+    material: BRUSH
+    name: "&eLimpiar tu tag"
+    lore:
+      - "&7Elimina tu tag de rango"
+      - "&7y vuelve al estado por defecto."
+      - ""
+      - "&6➥ Click para limpiar"
+    actions:
+      - "[sound] UI_BUTTON_CLICK"
+
+  random:
+    slot: 42
+    material: ENDER_PEARL
+    name: "&dTag Aleatorio"
+    lore:
+      - "&7Selecciona un tag al azar"
+      - "&7automáticamente."
+      - ""
+      - "&d➥ Click para activar"
+    actions:
+      - "[sound] UI_BUTTON_CLICK"
+
+  close:
+    slot: 44
+    material: PLAYER_HEAD
+    texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTE4YTJkZDViZWYwYjA3M2IxMzI3MWE3ZWViOWNmZWE3YWZlODU5M2M1N2E5MzgyMWU0MzE3NTU3MjQ2MTgxMiJ9fX0="
+    name: "&c&lCerrar"
+    lore:
+      - "&7Cerrar el menú"
+      - ""
+      - "&c➥ Click para cerrar"
+    actions:
+      - "[close]"
+      - "[sound] UI_BUTTON_CLICK"
+
+# Bedrock GUI Settings
+bedrock-title: "&8Selecciona un tag"
+tags-per-page: 10
+
+tags:
+  notag:
+    value: "&r"
+    permission: "tags.ranks.notag"
+    order: 1
+    display-item:
+      material: BRUSH
+      name: "&6&lLimpiar tu tag"
+      lore:
+        - "&7Elimina tu tag de rango"
+        - "&7y vuelve al estado por defecto."
+        - ""
+        - "&6➥ Click para limpiar"
+      bedrock-icon: "textures/items/brush"
+
+  booster:
+    value: "&7[&9&lBo&d&lost&9&ler&r&d] "
+    permission: "tags.ranks.booster"
+    order: 2
+    display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0="
+      name: "&7[&9&lBo&d&lost&9&ler&r&d]"
+      lore:
+        - "&7Tag de Discord Booster"
+        - "&8Seleccionar"
+      bedrock-icon: "https://mc-heads.net/head/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756/64.png"
+    locked-display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0="
+      name: "&7[&9&lBo&d&lost&9&ler&r&d]"
+      lore:
+        - "&7Tag de Discord Booster"
+        - ""
+        - "&c➥ Bloqueado"
+        - "&8(Requiere boostear nuestro Discord)"
+      bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"
+
+  vip:
+    value: " "
+    permission: "tags.ranks.vip"
+    order: 3
+    display-item:
+      material: PAPER
+      name: " &7%tags_playername%"
+      lore:
+        - "&7Tag de Rango VIP"
+        - "&a➥ Click para seleccionar"
+    locked-display-item:
+      material: PAPER
+      name: " &7%tags_playername%"
+      lore:
+        - "&7Tag de Rango VIP"
+        - "&c➥ Bloqueado (Requiere rango)"
+
+  epic:
+    value: "&d&lEPIC "
+    permission: "tags.ranks.epic"
+    order: 4
+    display-item:
+      material: PAPER
+      name: "&d&lEPIC &7%tags_playername%"
+      lore:
+        - "&7Tag de Rango Epic"
+        - "&a➥ Click para seleccionar"
+    locked-display-item:
+      material: PAPER
+      name: "&d&lEPIC &7%tags_playername%"
+      lore:
+        - "&7Tag de Rango Epic"
+        - "&c➥ Bloqueado (Requiere rango)"
+
+  legendary:
+    value: " "
+    permission: "tags.ranks.legendary"
+    order: 5
+    display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0="
+      name: ""
+      lore:
+        - "&7Tag de Rango Legendary"
+        - "&8Seleccionar"
+      bedrock-icon: "https://mc-heads.net/head/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756/64.png"
+    locked-display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0="
+      name: ""
+      lore:
+        - "&7Tag de Rango Legendary"
+        - ""
+        - "&c➥ Bloqueado (Requiere rango)"
+      bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"
+
+  mythical:
+    value: " "
+    permission: "tags.ranks.mythical"
+    order: 6
+    display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0="
+      name: ""
+      lore:
+        - "&7Tag de Rango Mythical"
+        - "&8Seleccionar"
+      bedrock-icon: "https://mc-heads.net/head/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756/64.png"
+    locked-display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0="
+      name: ""
+      lore:
+        - "&7Tag de Rango Mythical"
+        - ""
+        - "&c➥ Bloqueado (Requiere rango)"
+      bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"
+
+  leyenda:
+    value: " "
+    permission: "tags.ranks.leyenda"
+    order: 7
+    display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0="
+      name: ""
+      lore:
+        - "&7Tag de Rango Leyenda"
+        - "&8Seleccionar"
+      bedrock-icon: "https://mc-heads.net/head/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756/64.png"
+    locked-display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0="
+      name: ""
+      lore:
+        - "&7Tag de Rango Leyenda"
+        - ""
+        - "&c➥ Bloqueado (Requiere rango)"
+      bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"
+
+  titan:
+    value: " "
+    permission: "tags.ranks.titan"
+    order: 8
+    display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0="
+      name: ""
+      lore:
+        - "&7Tag de Rango Titan"
+        - "&8Seleccionar"
+      bedrock-icon: "https://mc-heads.net/head/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756/64.png"
+    locked-display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0="
+      name: ""
+      lore:
+        - "&7Tag de Rango Titan"
+        - ""
+        - "&c➥ Bloqueado (Requiere rango)"
+      bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"
+
+  emperador:
+    value: " "
+    permission: "tags.ranks.emperador"
+    order: 9
+    display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0="
+      name: ""
+      lore:
+        - "&7Tag de Rango Emperador"
+        - "&8Seleccionar"
+      bedrock-icon: "https://mc-heads.net/head/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756/64.png"
+    locked-display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0="
+      name: ""
+      lore:
+        - "&7Tag de Rango Emperador"
+        - ""
+        - "&c➥ Bloqueado (Requiere rango)"
+      bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"
+
+  helper:
+    value: " "
+    permission: "tags.ranks.helper"
+    order: 10
+    display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0="
+      name: ""
+      lore:
+        - "&7Tag de Helper"
+        - "&8Seleccionar"
+      bedrock-icon: "https://mc-heads.net/head/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756/64.png"
+    locked-display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0="
+      name: ""
+      lore:
+        - "&7Tag de Helper"
+        - ""
+        - "&c➥ Bloqueado"
+      bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"
+
+  mod:
+    value: " "
+    permission: "tags.ranks.mod"
+    order: 11
+    display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0="
+      name: ""
+      lore:
+        - "&7Tag de Moderador"
+        - "&8Seleccionar"
+      bedrock-icon: "https://mc-heads.net/head/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756/64.png"
+    locked-display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0="
+      name: ""
+      lore:
+        - "&7Tag de Moderador"
+        - ""
+        - "&c➥ Bloqueado"
+      bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"
+
+  srmod:
+    value: " "
+    permission: "tags.ranks.srmod"
+    order: 12
+    display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0="
+      name: ""
+      lore:
+        - "&7Tag de Senior Moderador"
+        - "&8Seleccionar"
+      bedrock-icon: "https://mc-heads.net/head/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756/64.png"
+    locked-display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0="
+      name: ""
+      lore:
+        - "&7Tag de Senior Moderador"
+        - ""
+        - "&c➥ Bloqueado"
+      bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"
+
+  admin:
+    value: " "
+    permission: "tags.ranks.admin"
+    order: 13
+    display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0="
+      name: ""
+      lore:
+        - "&7Tag de Administrador"
+        - "&8Seleccionar"
+      bedrock-icon: "https://mc-heads.net/head/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756/64.png"
+    locked-display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0="
+      name: ""
+      lore:
+        - "&7Tag de Administrador"
+        - ""
+        - "&c➥ Bloqueado"
+      bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"

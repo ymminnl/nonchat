@@ -23,4 +23,12 @@ public class Tag {
     private final String texture; // Base64 texture for player heads
     private final int order;
     private final String bedrockIcon; // Path or URL for Bedrock form icon
+    
+    // Locked GUI Properties
+    private final Material lockedIconMaterial;
+    private final String lockedIconName;
+    private final List<String> lockedIconLore;
+    private final int lockedCustomModelData;
+    private final String lockedTexture;
+    private final String lockedBedrockIcon;
 }

@@ -1,5 +1,6 @@
 package com.nonxedy.nonchat.listener;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
@@ -8,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 
 import com.nonxedy.nonchat.config.PluginMessages;
 import com.nonxedy.nonchat.gui.JavaGUIConfig;
@@ -54,6 +56,13 @@ public class MenuListener implements Listener {
         // Check for Button click
         handleButtonClick(player, slot, holder);
     }
+    
+    @EventHandler
+    public void onClose(InventoryCloseEvent event) {
+        if (event.getInventory().getHolder() instanceof TagMenuJava.TagHolder && event.getPlayer() instanceof Player player) {
+            playSound(player, config.getCloseSound());
+        }
+    }
 
     private void handleTagClick(Player player, Tag tag, String category) {
         // Check permission
@@ -96,8 +105,17 @@ public class MenuListener implements Listener {
     }
 
     private void handleButtonClick(Player player, int slot, TagMenuJava.TagHolder holder) {
+        // Get category metadata to access custom buttons
+        TagManager.CategoryMeta meta = tagManager.getCategoryMeta(holder.getCategory());
+        
+        // Merge buttons (Global + Category specific)
+        Map<String, JavaGUIConfig.GUIItem> buttons = new HashMap<>(config.getButtons());
+        if (meta != null && meta.getButtons() != null) {
+            buttons.putAll(meta.getButtons());
+        }
+
         // Find which button was clicked
-        for (Map.Entry<String, JavaGUIConfig.GUIItem> entry : config.getButtons().entrySet()) {
+        for (Map.Entry<String, JavaGUIConfig.GUIItem> entry : buttons.entrySet()) {
             String key = entry.getKey();
             JavaGUIConfig.GUIItem btn = entry.getValue();
 
@@ -147,6 +165,15 @@ public class MenuListener implements Listener {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), action.substring(10).replace("{player}", player.getName()));
         } else if (action.startsWith("[message] ")) {
             player.sendMessage(ColorUtil.parseColor(action.substring(10)));
+        } else if (action.startsWith("[msg] ")) {
+            player.sendMessage(ColorUtil.parseColor(action.substring(6)));
+        } else if (action.startsWith("[open] ")) {
+            player.performCommand(action.substring(7));
+        } else if (action.startsWith("[sound] ")) {
+            playSound(player, action.substring(8));
+        } else if (action.startsWith("[opencp] ")) {
+            String panel = action.substring(9);
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "cp open " + panel + " " + player.getName());
         }
     }
     

@@ -25,11 +25,13 @@ public class JavaGUIConfig {
 
     private String title;
     private int size;
+    private int rows; // Default rows
     private List<Integer> tagSlots;
     private Map<String, GUIItem> buttons;
     private Map<String, GUIItem> fillers;
     private String openSound;
     private String clickSound;
+    private String closeSound;
 
     public JavaGUIConfig(Nonchat plugin) {
         this.plugin = plugin;
@@ -45,9 +47,12 @@ public class JavaGUIConfig {
         config = YamlConfiguration.loadConfiguration(configFile);
         
         this.title = config.getString("title", "Tags - {category}");
-        this.size = config.getInt("size", 54);
+        this.rows = config.getInt("rows", 6);
+        this.size = rows * 9;
+        
         this.openSound = config.getString("open-sound", "block.chest.open");
         this.clickSound = config.getString("click-sound", "ui.button.click");
+        this.closeSound = config.getString("close-sound", "block.chest.close");
         
         loadTagSlots();
         loadButtons();
@@ -59,7 +64,7 @@ public class JavaGUIConfig {
         List<String> rawSlots = config.getStringList("tag-slots");
         
         for (String slotStr : rawSlots) {
-            parseSlots(slotStr, this.tagSlots);
+            GUIUtil.parseSlots(slotStr, this.tagSlots);
         }
     }
 
@@ -71,7 +76,7 @@ public class JavaGUIConfig {
         for (String key : section.getKeys(false)) {
             ConfigurationSection btnSection = section.getConfigurationSection(key);
             if (btnSection != null) {
-                buttons.put(key, parseGUIItem(btnSection));
+                buttons.put(key, GUIUtil.parseGUIItem(btnSection));
             }
         }
     }
@@ -84,50 +89,8 @@ public class JavaGUIConfig {
         for (String key : section.getKeys(false)) {
             ConfigurationSection fillerSection = section.getConfigurationSection(key);
             if (fillerSection != null) {
-                fillers.put(key, parseGUIItem(fillerSection));
+                fillers.put(key, GUIUtil.parseGUIItem(fillerSection));
             }
-        }
-    }
-
-    private GUIItem parseGUIItem(ConfigurationSection section) {
-        String matName = section.getString("material", "STONE");
-        Material material = Material.matchMaterial(matName);
-        if (material == null) material = Material.STONE;
-
-        String name = section.getString("name", "");
-        List<String> lore = section.getStringList("lore");
-        int modelData = section.getInt("model-data", 0);
-        String texture = section.getString("texture", "");
-        
-        // Parse slots for this item (for fillers)
-        List<Integer> slots = new ArrayList<>();
-        if (section.contains("slots")) {
-            List<String> slotList = section.getStringList("slots");
-            for (String s : slotList) parseSlots(s, slots);
-        } else if (section.contains("slot")) {
-            slots.add(section.getInt("slot"));
-        }
-        
-        List<String> actions = section.getStringList("actions");
-
-        ItemStack itemStack = ItemUtil.createItem(material, name, lore, modelData, texture);
-        return new GUIItem(itemStack, slots, actions, material, name, lore, modelData, texture);
-    }
-
-    private void parseSlots(String slotStr, List<Integer> targetList) {
-        if (slotStr.contains("-")) {
-            String[] parts = slotStr.split("-");
-            try {
-                int start = Integer.parseInt(parts[0].trim());
-                int end = Integer.parseInt(parts[1].trim());
-                for (int i = start; i <= end; i++) {
-                    targetList.add(i);
-                }
-            } catch (NumberFormatException ignored) {}
-        } else {
-            try {
-                targetList.add(Integer.parseInt(slotStr.trim()));
-            } catch (NumberFormatException ignored) {}
         }
     }
 
@@ -143,9 +106,10 @@ public class JavaGUIConfig {
         private final List<String> lore;
         private final int modelData;
         private final String texture;
+        private final String bedrockIcon;
 
         public GUIItem(ItemStack item, List<Integer> slots, List<String> actions, 
-                       Material material, String name, List<String> lore, int modelData, String texture) {
+                       Material material, String name, List<String> lore, int modelData, String texture, String bedrockIcon) {
             this.item = item;
             this.slots = slots;
             this.actions = actions;
@@ -154,10 +118,11 @@ public class JavaGUIConfig {
             this.lore = lore;
             this.modelData = modelData;
             this.texture = texture;
+            this.bedrockIcon = bedrockIcon;
         }
         
         public GUIItem(ItemStack item, List<Integer> slots, List<String> actions) {
-            this(item, slots, actions, Material.AIR, "", new ArrayList<>(), 0, "");
+            this(item, slots, actions, Material.AIR, "", new ArrayList<>(), 0, "", "");
         }
         
         public int getSingleSlot() {

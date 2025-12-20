@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -41,32 +42,72 @@ public class TagMenuJava {
         List<Tag> tags = new ArrayList<>(tagsMap.values());
         tags.sort(Comparator.comparingInt(Tag::getOrder));
 
+        // Get category metadata (dynamic title and size)
+        TagManager.CategoryMeta meta = tagManager.getCategoryMeta(category);
+        
+        // Determine Size
+        int size = config.getSize();
+        if (meta != null && meta.getRows() > 0) {
+            size = meta.getRows() * 9;
+        }
+
         // Calculate pagination
         List<Integer> tagSlots = config.getTagSlots();
+        if (meta != null && meta.getTagSlots() != null && !meta.getTagSlots().isEmpty()) {
+            tagSlots = meta.getTagSlots();
+        }
+        
         int tagsPerPage = tagSlots.size();
+        
+        // Filter slots that are out of bounds for the current size
+        List<Integer> validTagSlots = new ArrayList<>();
+        for (int slot : tagSlots) {
+            if (isValidSlot(slot, size)) {
+                validTagSlots.add(slot);
+            }
+        }
+        tagsPerPage = validTagSlots.size();
+        if (tagsPerPage == 0) tagsPerPage = 1; // Prevent div by zero
+
         int totalPages = (int) Math.ceil((double) tags.size() / tagsPerPage);
         
         if (page < 1) page = 1;
         if (page > totalPages && totalPages > 0) page = totalPages;
 
         // Create Inventory with Placeholders in Title
-        String titleRaw = config.getTitle()
+        // Priority: menu-title > title > global config
+        String titleFormat = config.getTitle();
+        if (meta != null) {
+            if (meta.getMenuTitle() != null) {
+                titleFormat = meta.getMenuTitle();
+            } else if (meta.getDisplayName() != null) {
+                titleFormat = meta.getDisplayName();
+            }
+        }
+        
+        String titleRaw = titleFormat
                 .replace("{category}", category)
                 .replace("{page}", String.valueOf(page));
         String title = IntegrationUtil.processPlaceholders(player, titleRaw);
         
         TagHolder holder = new TagHolder(category, page, totalPages);
-        Inventory inv = Bukkit.createInventory(holder, config.getSize(), ColorUtil.parseComponent(title));
+        Inventory inv = Bukkit.createInventory(holder, size, ColorUtil.parseComponent(title));
 
         // 1. Explicit Fillers (Borders, etc.)
         List<JavaGUIConfig.GUIItem> backgroundFillers = new ArrayList<>();
         
-        for (JavaGUIConfig.GUIItem filler : config.getFillers().values()) {
+        // Determine fillers to use (Category specific or Global)
+        Map<String, JavaGUIConfig.GUIItem> fillersToUse = config.getFillers();
+        if (meta != null && meta.getFillers() != null && !meta.getFillers().isEmpty()) {
+            fillersToUse = meta.getFillers();
+        }
+        
+        for (JavaGUIConfig.GUIItem filler : fillersToUse.values()) {
             if (filler.getSlots().isEmpty()) {
                 backgroundFillers.add(filler);
             } else {
                 for (int slot : filler.getSlots()) {
-                    if (isValidSlot(slot)) {
+                    if (isValidSlot(slot, size)) {
                         inv.setItem(slot, filler.getItem());
                     }
                 }
@@ -74,12 +115,17 @@ public class TagMenuJava {
         }
 
         // 2. Buttons (Static & Navigation)
-        for (Map.Entry<String, JavaGUIConfig.GUIItem> entry : config.getButtons().entrySet()) {
+        Map<String, JavaGUIConfig.GUIItem> buttonsToUse = new java.util.HashMap<>(config.getButtons());
+        if (meta != null && meta.getButtons() != null) {
+            buttonsToUse.putAll(meta.getButtons());
+        }
+
+        for (Map.Entry<String, JavaGUIConfig.GUIItem> entry : buttonsToUse.entrySet()) {
             String key = entry.getKey();
             JavaGUIConfig.GUIItem btn = entry.getValue();
             int slot = btn.getSingleSlot();
 
-            if (!isValidSlot(slot)) continue;
+            if (!isValidSlot(slot, size)) continue;
 
             if (key.equalsIgnoreCase("previous")) {
                 if (page > 1) {
@@ -106,9 +152,9 @@ public class TagMenuJava {
             for (int i = startIndex; i < endIndex; i++) {
                 Tag tag = tags.get(i);
                 int slotIndex = i - startIndex;
-                if (slotIndex >= tagSlots.size()) break;
+                if (slotIndex >= validTagSlots.size()) break;
                 
-                int slot = tagSlots.get(slotIndex);
+                int slot = validTagSlots.get(slotIndex);
                 ItemStack tagItem = createTagItem(tag, player);
                 inv.setItem(slot, tagItem);
                 
@@ -119,7 +165,7 @@ public class TagMenuJava {
         
         // 4. Background Fillers (Fill remaining empty slots)
         for (JavaGUIConfig.GUIItem bgFiller : backgroundFillers) {
-            for (int i = 0; i < config.getSize(); i++) {
+            for (int i = 0; i < size; i++) {
                 ItemStack current = inv.getItem(i);
                 if (current == null || current.getType().isAir()) {
                     inv.setItem(i, bgFiller.getItem());
@@ -132,15 +178,35 @@ public class TagMenuJava {
     }
 
     private ItemStack createTagItem(Tag tag, Player player) {
-        // Process placeholders in name and lore
-        String name = IntegrationUtil.processPlaceholders(player, tag.getIconName());
+        boolean hasPermission = tag.getPermission().isEmpty() || player.hasPermission(tag.getPermission());
+        boolean useLocked = !hasPermission && tag.getLockedIconMaterial() != null;
+        
+        String rawName = useLocked ? tag.getLockedIconName() : tag.getIconName();
+        if (rawName == null) rawName = tag.getIconName();
+        
+        List<String> rawLore = useLocked && tag.getLockedIconLore() != null ? tag.getLockedIconLore() : tag.getIconLore();
+        
+        Material material = useLocked ? tag.getLockedIconMaterial() : tag.getIconMaterial();
+        int modelData = useLocked ? tag.getLockedCustomModelData() : tag.getCustomModelData();
+        String texture = useLocked ? tag.getLockedTexture() : tag.getTexture();
+
+        // Process placeholders in name and and lore
+        String name = IntegrationUtil.processPlaceholders(player, rawName);
+        
+        // Java Item Name: Remove anything after \n (subtitle for Bedrock)
+        if (name.contains("\n")) {
+            name = name.split("\n")[0];
+        } else if (name.contains("\\n")) {
+            name = name.split("\\\\n")[0];
+        }
+
         // Fix shorthands explicitly
         name = name.replace("</>", "<reset>");
         name = ColorUtil.convertCompactGradients(name);
         
         List<String> lore = new ArrayList<>();
-        if (tag.getIconLore() != null) {
-            for (String line : tag.getIconLore()) {
+        if (rawLore != null) {
+            for (String line : rawLore) {
                 String processed = IntegrationUtil.processPlaceholders(player, line);
                 processed = processed.replace("</>", "<reset>");
                 processed = ColorUtil.convertCompactGradients(processed);
@@ -149,11 +215,11 @@ public class TagMenuJava {
         }
 
         return ItemUtil.createItem(
-            tag.getIconMaterial(), 
+            material, 
             name, 
             lore, 
-            tag.getCustomModelData(), 
-            tag.getTexture()
+            modelData, 
+            texture
         );
     }
     
@@ -165,6 +231,14 @@ public class TagMenuJava {
             .replace("{total_pages}", String.valueOf(totalPages));
             
         name = IntegrationUtil.processPlaceholders(player, name);
+        
+        // Java Item Name: Remove anything after \n (subtitle for Bedrock)
+        if (name.contains("\n")) {
+            name = name.split("\n")[0];
+        } else if (name.contains("\\n")) {
+            name = name.split("\\\\n")[0];
+        }
+
         name = name.replace("</>", "<reset>");
         name = ColorUtil.convertCompactGradients(name);
         
@@ -192,14 +266,8 @@ public class TagMenuJava {
         );
     }
 
-    private boolean isValidSlot(int slot) {
-        return slot >= 0 && slot < config.getSize();
-    }
-    
-    private void replacePlaceholders(ItemStack item, int page, int totalPages) {
-        if (item.getItemMeta() == null || item.getItemMeta().getLore() == null) return;
-        // Basic placeholder replacement for pagination buttons
-        // Advanced replacement would require recreating the item with ItemUtil
+    private boolean isValidSlot(int slot, int size) {
+        return slot >= 0 && slot < size;
     }
     
     private void playSound(Player player, String soundName) {
@@ -235,6 +303,6 @@ public class TagMenuJava {
         public int getTotalPages() { return totalPages; }
 
         @Override
-        public @NotNull Inventory getInventory() { return null; } // Not needed for custom holder logic
+        public @NotNull Inventory getInventory() { return null; } 
     }
 }

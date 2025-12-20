@@ -12,10 +12,12 @@ import org.geysermc.floodgate.api.FloodgateApi;
 
 import com.nonxedy.nonchat.Nonchat;
 import com.nonxedy.nonchat.config.PluginMessages;
+import com.nonxedy.nonchat.gui.JavaGUIConfig;
 import com.nonxedy.nonchat.tags.Tag;
 import com.nonxedy.nonchat.tags.TagManager;
 import com.nonxedy.nonchat.util.core.colors.ColorUtil;
 import com.nonxedy.nonchat.util.integration.external.IntegrationUtil;
+import com.nonxedy.nonchat.config.JavaGUIConfig;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
@@ -42,20 +44,37 @@ public class TagMenuBedrock {
         // Sort tags
         List<Tag> tags = new ArrayList<>(tagsMap.values());
         tags.sort(Comparator.comparingInt(Tag::getOrder));
+        
+        // Get metadata
+        TagManager.CategoryMeta meta = tagManager.getCategoryMeta(category);
 
         // Pagination
-        int tagsPerPage = config.getConfig().getInt("tags-per-page", 5);
+        int tagsPerPage = (meta != null && meta.getTagsPerPage() > 0) ? meta.getTagsPerPage() : config.getConfig().getInt("tags-per-page", 5);
         int totalPages = (int) Math.ceil((double) tags.size() / tagsPerPage);
         
         if (page < 1) page = 1;
         if (page > totalPages && totalPages > 0) page = totalPages;
 
-        String titleRaw = config.getTitle()
-                .replace("{category}", category)
-                .replace("{page}", String.valueOf(page));
+        // Title Priority: bedrock-title > menu-title > title > global config
+        String titleRaw = config.getTitle();
+        if (config.getTitle() != null && config.getTitle().contains("{category}")) {
+             // If global config is a format, we use it as base if no specific override
+             // BUT user requested strict override from category file.
+        }
+        
+        // Strict override logic
+        if (meta != null) {
+            if (meta.getBedrockTitle() != null) titleRaw = meta.getBedrockTitle();
+            else if (meta.getMenuTitle() != null) titleRaw = meta.getMenuTitle();
+            else if (meta.getDisplayName() != null) titleRaw = meta.getDisplayName();
+        }
+        
+        titleRaw = titleRaw.replace("{category}", category).replace("{page}", String.valueOf(page));
         String title = formatForBedrock(IntegrationUtil.processPlaceholders(player, titleRaw));
         
-        String contentRaw = config.getContent()
+        String contentRaw = (meta != null && meta.getBedrockContent() != null) 
+                ? meta.getBedrockContent() : config.getContent();
+        contentRaw = contentRaw
                 .replace("{category}", category)
                 .replace("{page}", String.valueOf(page))
                 .replace("{total_pages}", String.valueOf(totalPages));
@@ -68,9 +87,9 @@ public class TagMenuBedrock {
         List<Runnable> actions = new ArrayList<>();
 
         // 1. Random Button
-        if (config.getButtons().containsKey("random")) {
-            BedrockGUIConfig.BedrockButton btn = config.getButtons().get("random");
-            addButton(builder, btn);
+        BedrockGUIConfig.BedrockButton randomBtn = getButton("random", meta);
+        if (randomBtn != null) {
+            addButton(builder, randomBtn);
             actions.add(() -> {
                 tagManager.setPlayerTag(player, category, "__random__");
                 player.sendMessage(ColorUtil.parseColor("&aRandom tag mode enabled for " + category));
@@ -78,9 +97,9 @@ public class TagMenuBedrock {
         }
 
         // 2. Reset Button
-        if (config.getButtons().containsKey("reset")) {
-            BedrockGUIConfig.BedrockButton btn = config.getButtons().get("reset");
-            addButton(builder, btn);
+        BedrockGUIConfig.BedrockButton resetBtn = getButton("reset", meta);
+        if (resetBtn != null) {
+            addButton(builder, resetBtn);
             actions.add(() -> {
                 tagManager.resetPlayerTag(player, category);
                 String msg = messages.getString("tags-reset-success").replace("{category}", category);
@@ -89,17 +108,33 @@ public class TagMenuBedrock {
         }
 
         // 3. Tags
+        String defaultIcon = (meta != null && meta.getBedrockDefaultIcon() != null && !meta.getBedrockDefaultIcon().isEmpty())
+                ? meta.getBedrockDefaultIcon() : config.getDefaultIcon();
+                
         if (!tags.isEmpty()) {
             int startIndex = (page - 1) * tagsPerPage;
             int endIndex = Math.min(startIndex + tagsPerPage, tags.size());
 
             for (int i = startIndex; i < endIndex; i++) {
                 Tag tag = tags.get(i);
-                String rawName = IntegrationUtil.processPlaceholders(player, tag.getIconName());
+                
+                boolean hasPermission = tag.getPermission().isEmpty() || player.hasPermission(tag.getPermission());
+                // Check if locked properties exist (we check material as a proxy for existence)
+                boolean useLocked = !hasPermission && tag.getLockedIconMaterial() != null;
+                
+                String rawNameConfig = useLocked ? tag.getLockedIconName() : tag.getIconName();
+                if (rawNameConfig == null) rawNameConfig = tag.getIconName();
+                
+                String rawName = IntegrationUtil.processPlaceholders(player, rawNameConfig);
                 String tagName = formatForBedrock(rawName);
                 
-                String icon = tag.getBedrockIcon();
-                if (icon == null || icon.isEmpty()) icon = config.getDefaultIcon();
+                // Ensure newlines are processed for Bedrock buttons and reset colors
+                tagName = tagName.replace("\\n", "\n").replace("\n", "&r\n");
+                
+                String icon = useLocked && tag.getLockedBedrockIcon() != null && !tag.getLockedBedrockIcon().isEmpty() 
+                            ? tag.getLockedBedrockIcon() : tag.getBedrockIcon();
+                            
+                if (icon == null || icon.isEmpty()) icon = defaultIcon;
 
                 if (icon != null && !icon.isEmpty()) {
                     FormImage.Type type = icon.startsWith("http") ? FormImage.Type.URL : FormImage.Type.PATH;
@@ -113,24 +148,24 @@ public class TagMenuBedrock {
         }
 
         // 4. Navigation
-        if (page > 1 && config.getButtons().containsKey("previous")) {
-            BedrockGUIConfig.BedrockButton btn = config.getButtons().get("previous");
-            addButton(builder, btn);
+        BedrockGUIConfig.BedrockButton prevBtn = getButton("previous", meta);
+        if (page > 1 && prevBtn != null) {
+            addButton(builder, prevBtn);
             int finalPage = page;
             actions.add(() -> open(player, category, finalPage - 1));
         }
 
-        if (page < totalPages && config.getButtons().containsKey("next")) {
-            BedrockGUIConfig.BedrockButton btn = config.getButtons().get("next");
-            addButton(builder, btn);
+        BedrockGUIConfig.BedrockButton nextBtn = getButton("next", meta);
+        if (page < totalPages && nextBtn != null) {
+            addButton(builder, nextBtn);
             int finalPage = page;
             actions.add(() -> open(player, category, finalPage + 1));
         }
 
         // 5. Close
-        if (config.getButtons().containsKey("close")) {
-            BedrockGUIConfig.BedrockButton btn = config.getButtons().get("close");
-            addButton(builder, btn);
+        BedrockGUIConfig.BedrockButton closeBtn = getButton("close", meta);
+        if (closeBtn != null) {
+            addButton(builder, closeBtn);
             actions.add(() -> {}); // Do nothing, just close
         }
 
@@ -142,6 +177,24 @@ public class TagMenuBedrock {
         });
 
         FloodgateApi.getInstance().sendForm(player.getUniqueId(), builder.build());
+    }
+
+    private BedrockGUIConfig.BedrockButton getButton(String key, TagManager.CategoryMeta meta) {
+        // Check overrides in category meta
+        if (meta != null && meta.getButtons() != null && meta.getButtons().containsKey(key)) {
+            JavaGUIConfig.GUIItem item = meta.getButtons().get(key);
+            // Use 'name' from Java config as 'text' for Bedrock
+            String text = item.getName();
+            String icon = item.getBedrockIcon();
+            return new BedrockGUIConfig.BedrockButton(text, icon);
+        }
+        
+        // Fallback to global bedrock config
+        if (config.getButtons().containsKey(key)) {
+            return config.getButtons().get(key);
+        }
+        
+        return null;
     }
 
     private void addButton(SimpleForm.Builder builder, BedrockGUIConfig.BedrockButton btn) {

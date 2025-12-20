@@ -1,0 +1,486 @@
+title: "Player Name Colors"
+default-value: "%player_displayname%"
+selection-message: "&b&lCOSMÉTICOS &f» &7Has seleccionado el color {tag}"
+
+# Expiration Messages
+expiration-message: "&c¡Ya no tienes permiso para el color {tag}&c!"
+expiration-title: "&c&lCOLOR EXPIRADO"
+expiration-subtitle: "&7Color {tag} removido"
+expiration-actionbar: "&cColor removido por falta de permisos"
+
+# Java GUI Settings
+menu-title: "&8Selecciona un color"
+menu-rows: 6
+tag-slots:
+  - "10-16"
+  - "19-25"
+  - "28-31"
+
+# Buttons Configuration
+buttons:
+  info:
+    slot: 45
+    material: BOOK
+    name: "&e¿Cómo obtener un color?"
+    lore:
+      - "&7Puedes adquirir colores premium"
+      - "&7comprando un rango en:"
+      - ""
+      - "&6https://tienda.onedam.net"
+
+  reset:
+    slot: 49
+    material: BRUSH
+    name: "&eLimpiar tu color"
+    lore:
+      - "&7Elimina tu color personalizado"
+      - "&7y vuelve al color por defecto."
+      - ""
+      - "&6➥ Click para limpiar"
+    actions:
+      - "[sound] UI_BUTTON_CLICK"
+
+  random:
+    slot: 51
+    material: ENDER_PEARL
+    name: "&dColor Aleatorio"
+    lore:
+      - "&7Selecciona un color al azar"
+      - "&7automáticamente."
+      - ""
+      - "&d➥ Click para activar"
+    bedrock-icon: "textures/items/ender_pearl"
+    actions:
+      - "[sound] UI_BUTTON_CLICK"
+
+  close:
+    slot: 53
+    material: PLAYER_HEAD
+    texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTE4YTJkZDViZWYwYjA3M2IxMzI3MWE3ZWViOWNmZWE3YWZlODU5M2M1N2E5MzgyMWU0MzE3NTU3MjQ2MTgxMiJ9fX0="
+    name: "&c&lVolver"
+    lore:
+      - "&7Regresar a cosméticos"
+      - ""
+      - "&c➥ Click para volver"
+    actions:
+      - "[open] cosmeticos"
+      - "[sound] UI_BUTTON_CLICK"
+
+# Bedrock GUI Settings
+bedrock-title: "&8Selecciona un color"
+tags-per-page: 10
+
+tags:
+  cyan:
+    value: "&8%player_displayname%</>"
+    permission: "tags.name.cyan"
+    order: 1
+    display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0="
+      name: "&b&lCyan\n&8Seleccionar"
+      lore:
+        - "&7Color Cyan"
+        - ""
+        - "&a➥ Click para seleccionar"
+      bedrock-icon: "https://mc-heads.net/head/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756/64.png"
+    locked-display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0="
+      name: "&b&lCyan\n&8Bloqueado"
+      lore:
+        - "&7Color Cyan"
+        - ""
+        - "&c➥ Bloqueado (Requiere rango)"
+      bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"
+
+  blue:
+    value: "<#5555FF>%player_displayname%</>"
+    permission: "tags.name.blue"
+    order: 2
+    display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0="
+      name: "&9&lAzul\n&8Seleccionar"
+      lore:
+        - "&7Color Azul"
+        - ""
+        - "&a➥ Click para seleccionar"
+      bedrock-icon: "https://mc-heads.net/head/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756/64.png"
+    locked-display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0="
+      name: "&9&lAzul\n&8Bloqueado"
+      lore:
+        - "&7Color Azul"
+        - ""
+        - "&c➥ Bloqueado (Requiere rango)"
+      bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"
+
+  lightblue:
+    value: "<#00AAAA>%player_displayname%</>"
+    permission: "tags.name.lightblue"
+    order: 3
+    display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0="
+      name: "&3&lAzul Claro\n&8Seleccionar"
+      lore:
+        - "&7Color Azul Claro"
+        - ""
+        - "&a➥ Click para seleccionar"
+      bedrock-icon: "https://mc-heads.net/head/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756/64.png"
+    locked-display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0="
+      name: "&3&lAzul Claro\n&8Bloqueado"
+      lore:
+        - "&7Color Azul Claro"
+        - ""
+        - "&c➥ Bloqueado (Requiere rango)"
+      bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"
+
+  purple:
+    value: "<#AA00AA>%player_displayname%</>"
+    permission: "tags.name.purple"
+    order: 4
+    display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0="
+      name: "&5&lMorado\n&8Seleccionar"
+      lore:
+        - "&7Color Morado"
+        - ""
+        - "&a➥ Click para seleccionar"
+      bedrock-icon: "https://mc-heads.net/head/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756/64.png"
+    locked-display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0="
+      name: "&5&lMorado\n&8Bloqueado"
+      lore:
+        - "&7Color Morado"
+        - ""
+        - "&c➥ Bloqueado (Requiere rango)"
+      bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"
+
+  green:
+    value: "<#00AA00>%player_displayname%</>"
+    permission: "tags.name.green"
+    order: 5
+    display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0="
+      name: "&2&lVerde\n&8Seleccionar"
+      lore:
+        - "&7Color Verde"
+        - ""
+        - "&a➥ Click para seleccionar"
+      bedrock-icon: "https://mc-heads.net/head/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756/64.png"
+    locked-display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0="
+      name: "&2&lVerde\n&8Bloqueado"
+      lore:
+        - "&7Color Verde"
+        - ""
+        - "&c➥ Bloqueado (Requiere rango)"
+      bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"
+
+  gray:
+    value: "<#555555>%player_displayname%</>"
+    permission: "tags.name.gray"
+    order: 6
+    display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0="
+      name: "&8&lGris\n&8Seleccionar"
+      lore:
+        - "&7Color Gris"
+        - ""
+        - "&a➥ Click para seleccionar"
+      bedrock-icon: "https://mc-heads.net/head/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756/64.png"
+    locked-display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0="
+      name: "&8&lGris\n&8Bloqueado"
+      lore:
+        - "&7Color Gris"
+        - ""
+        - "&c➥ Bloqueado (Requiere rango)"
+      bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"
+
+  darkred:
+    value: "<#AA0000>%player_displayname%</>"
+    permission: "tags.name.darkred"
+    order: 7
+    display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0="
+      name: "&4&lRojo Oscuro\n&8Seleccionar"
+      lore:
+        - "&7Color Rojo Oscuro"
+        - ""
+        - "&a➥ Click para seleccionar"
+      bedrock-icon: "https://mc-heads.net/head/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756/64.png"
+    locked-display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0="
+      name: "&4&lRojo Oscuro\n&8Bloqueado"
+      lore:
+        - "&7Color Rojo Oscuro"
+        - ""
+        - "&c➥ Bloqueado (Requiere rango)"
+      bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"
+
+  lightgreen:
+    value: "<#55FF55>%player_displayname%</>"
+    permission: "tags.name.lightgreen"
+    order: 8
+    display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0="
+      name: "&a&lVerde Lima\n&8Seleccionar"
+      lore:
+        - "&7Color Verde Lima"
+        - ""
+        - "&a➥ Click para seleccionar"
+      bedrock-icon: "https://mc-heads.net/head/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756/64.png"
+    locked-display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0="
+      name: "&a&lVerde Lima\n&8Bloqueado"
+      lore:
+        - "&7Color Verde Lima"
+        - ""
+        - "&c➥ Bloqueado (Requiere rango)"
+      bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"
+
+  lightgray:
+    value: "<#AAAAAA>%player_displayname%</>"
+    permission: "tags.name.lightgray"
+    order: 9
+    display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0="
+      name: "&7&lGris Claro\n&8Seleccionar"
+      lore:
+        - "&7Color Gris Claro"
+        - ""
+        - "&a➥ Click para seleccionar"
+      bedrock-icon: "https://mc-heads.net/head/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756/64.png"
+    locked-display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0="
+      name: "&7&lGris Claro\n&8Bloqueado"
+      lore:
+        - "&7Color Gris Claro"
+        - ""
+        - "&c➥ Bloqueado (Requiere rango)"
+      bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"
+
+  gold:
+    value: "<#FFAA00>%player_displayname%</>"
+    permission: "tags.name.gold"
+    order: 10
+    display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0="
+      name: "&6&lDorado\n&8Seleccionar"
+      lore:
+        - "&7Color Dorado"
+        - ""
+        - "&a➥ Click para seleccionar"
+      bedrock-icon: "https://mc-heads.net/head/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756/64.png"
+    locked-display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0="
+      name: "&6&lDorado\n&8Bloqueado"
+      lore:
+        - "&7Color Dorado"
+        - ""
+        - "&c➥ Bloqueado (Requiere rango)"
+      bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"
+
+  pink:
+    value: "<#FF55FF>%player_displayname%</>"
+    permission: "tags.name.pink"
+    order: 11
+    display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0="
+      name: "&d&lRosa\n&8Seleccionar"
+      lore:
+        - "&7Color Rosa"
+        - ""
+        - "&a➥ Click para seleccionar"
+      bedrock-icon: "https://mc-heads.net/head/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756/64.png"
+    locked-display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0="
+      name: "&d&lRosa\n&8Bloqueado"
+      lore:
+        - "&7Color Rosa"
+        - ""
+        - "&c➥ Bloqueado (Requiere rango)"
+      bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"
+
+  red:
+    value: "<#FF5555>%player_displayname%</>"
+    permission: "tags.name.red"
+    order: 12
+    display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0="
+      name: "&c&lRojo\n&8Seleccionar"
+      lore:
+        - "&7Color Rojo"
+        - ""
+        - "&a➥ Click para seleccionar"
+      bedrock-icon: "https://mc-heads.net/head/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756/64.png"
+    locked-display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0="
+      name: "&c&lRojo\n&8Bloqueado"
+      lore:
+        - "&7Color Rojo"
+        - ""
+        - "&c➥ Bloqueado (Requiere rango)"
+      bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"
+
+  white:
+    value: "<#FFFFFF>%player_displayname%</>"
+    permission: "tags.name.white"
+    order: 13
+    display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0="
+      name: "&f&lBlanco\n&8Seleccionar"
+      lore:
+        - "&7Color Blanco"
+        - ""
+        - "&a➥ Click para seleccionar"
+      bedrock-icon: "https://mc-heads.net/head/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756/64.png"
+    locked-display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0="
+      name: "&f&lBlanco\n&8Bloqueado"
+      lore:
+        - "&7Color Blanco"
+        - ""
+        - "&c➥ Bloqueado (Requiere rango)"
+      bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"
+
+  purple-gradient:
+    value: "<#AA00AA#AA00AA#AA00AA#FF55FF#FF55FF#FF55FF#FF55FF#AA00AA#AA00AA#AA00AA#AA00AA>%player_displayname%</>"
+    permission: "tags.name.purple-gradient"
+    order: 14
+    display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0="
+      name: "&5&lMorado Degradado\n&8Seleccionar"
+      lore:
+        - "&7Degradado Morado"
+        - ""
+        - "&a➥ Click para seleccionar"
+      bedrock-icon: "https://mc-heads.net/head/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756/64.png"
+    locked-display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0="
+      name: "&5&lMorado Degradado\n&8Bloqueado"
+      lore:
+        - "&7Degradado Morado"
+        - ""
+        - "&c➥ Bloqueado (Requiere rango)"
+      bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"
+
+  gray-gradient:
+    value: "<#494949#d3d3d3#494949#d3d3d3#494949#d3d3d3#494949#d3d3d3#494949#d3d3d3#494949>%player_displayname%</>"
+    permission: "tags.name.gray-gradient"
+    order: 15
+    display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0="
+      name: "&8&lGris Degradado\n&8Seleccionar"
+      lore:
+        - "&7Degradado Gris"
+        - ""
+        - "&a➥ Click para seleccionar"
+      bedrock-icon: "https://mc-heads.net/head/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756/64.png"
+    locked-display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0="
+      name: "&8&lGris Degradado\n&8Bloqueado"
+      lore:
+        - "&7Degradado Gris"
+        - ""
+        - "&c➥ Bloqueado (Requiere rango)"
+      bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"
+
+  green-gradient:
+    value: "<#38e822#4b9442#38e822#4b9442#38e822#4b9442#38e822#4b9442#38e822#4b9442#38e822>%player_displayname%</>"
+    permission: "tags.name.green-gradient"
+    order: 16
+    display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0="
+      name: "&2&lVerde Degradado\n&8Seleccionar"
+      lore:
+        - "&7Degradado Verde"
+        - ""
+        - "&a➥ Click para seleccionar"
+      bedrock-icon: "https://mc-heads.net/head/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756/64.png"
+    locked-display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0="
+      name: "&2&lVerde Degradado\n&8Bloqueado"
+      lore:
+        - "&7Degradado Verde"
+        - ""
+        - "&c➥ Bloqueado (Requiere rango)"
+      bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"
+
+  cyan-gradient:
+    value: "<#00AAAA#00AAAA#00AAAA#55FFFF#55FFFF#55FFFF#55FFFF#FFFFFF#FFFFFF#FFFFFF>%player_displayname%</>"
+    permission: "tags.name.cyan-gradient"
+    order: 17
+    display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0="
+      name: "&b&lCyan Degradado\n&8Seleccionar"
+      lore:
+        - "&7Degradado Cyan"
+        - ""
+        - "&a➥ Click para seleccionar"
+      bedrock-icon: "https://mc-heads.net/head/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756/64.png"
+    locked-display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0="
+      name: "&b&lCyan Degradado\n&8Bloqueado"
+      lore:
+        - "&7Degradado Cyan"
+        - ""
+        - "&c➥ Bloqueado (Requiere rango)"
+      bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"
+
+  orange-gradient:
+    value: "<#FFFF55#00AA00#FF5555#AA0000>%player_displayname%</>"
+    permission: "tags.name.orange-gradient"
+    order: 18
+    display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0="
+      name: "&6&lNaranja Degradado\n&8Seleccionar"
+      lore:
+        - "&7Degradado Naranja"
+        - ""
+        - "&a➥ Click para seleccionar"
+      bedrock-icon: "https://mc-heads.net/head/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756/64.png"
+    locked-display-item:
+      material: PLAYER_HEAD
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0="
+      name: "&6&lNaranja Degradado\n&8Bloqueado"
+      lore:
+        - "&7Degradado Naranja"
+        - ""
+        - "&c➥ Bloqueado (Requiere rango)"
+      bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"
