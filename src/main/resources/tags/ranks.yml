@@ -41,6 +41,7 @@ buttons:
       - "[sound] UI_BUTTON_CLICK"
 
   random:
+    enabled: false
     slot: 42
     material: ENDER_PEARL
     name: "&dTag Aleatorio"
@@ -67,6 +68,7 @@ buttons:
 
 # Bedrock GUI Settings
 bedrock-title: "&8Selecciona un tag"
+bedrock-content: "Selecciona tu tag de rango:"
 tags-per-page: 10
 
 tags:

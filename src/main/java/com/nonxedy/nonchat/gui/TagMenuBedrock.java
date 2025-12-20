@@ -17,7 +17,6 @@ import com.nonxedy.nonchat.tags.Tag;
 import com.nonxedy.nonchat.tags.TagManager;
 import com.nonxedy.nonchat.util.core.colors.ColorUtil;
 import com.nonxedy.nonchat.util.integration.external.IntegrationUtil;
-import com.nonxedy.nonchat.config.JavaGUIConfig;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
@@ -88,7 +87,7 @@ public class TagMenuBedrock {
 
         // 1. Random Button
         BedrockGUIConfig.BedrockButton randomBtn = getButton("random", meta);
-        if (randomBtn != null) {
+        if (randomBtn != null && isButtonEnabled("random", meta)) {
             addButton(builder, randomBtn);
             actions.add(() -> {
                 tagManager.setPlayerTag(player, category, "__random__");
@@ -98,7 +97,7 @@ public class TagMenuBedrock {
 
         // 2. Reset Button
         BedrockGUIConfig.BedrockButton resetBtn = getButton("reset", meta);
-        if (resetBtn != null) {
+        if (resetBtn != null && isButtonEnabled("reset", meta)) {
             addButton(builder, resetBtn);
             actions.add(() -> {
                 tagManager.resetPlayerTag(player, category);
@@ -128,8 +127,8 @@ public class TagMenuBedrock {
                 String rawName = IntegrationUtil.processPlaceholders(player, rawNameConfig);
                 String tagName = formatForBedrock(rawName);
                 
-                // Ensure newlines are processed for Bedrock buttons and reset colors
-                tagName = tagName.replace("\\n", "\n").replace("\n", "&r\n");
+                // Ensure newlines are processed for Bedrock buttons and reset colors using section symbol
+                tagName = tagName.replace("\\n", "\n").replace("\n", "§r\n");
                 
                 String icon = useLocked && tag.getLockedBedrockIcon() != null && !tag.getLockedBedrockIcon().isEmpty() 
                             ? tag.getLockedBedrockIcon() : tag.getBedrockIcon();
@@ -149,14 +148,14 @@ public class TagMenuBedrock {
 
         // 4. Navigation
         BedrockGUIConfig.BedrockButton prevBtn = getButton("previous", meta);
-        if (page > 1 && prevBtn != null) {
+        if (page > 1 && prevBtn != null && isButtonEnabled("previous", meta)) {
             addButton(builder, prevBtn);
             int finalPage = page;
             actions.add(() -> open(player, category, finalPage - 1));
         }
 
         BedrockGUIConfig.BedrockButton nextBtn = getButton("next", meta);
-        if (page < totalPages && nextBtn != null) {
+        if (page < totalPages && nextBtn != null && isButtonEnabled("next", meta)) {
             addButton(builder, nextBtn);
             int finalPage = page;
             actions.add(() -> open(player, category, finalPage + 1));
@@ -164,7 +163,7 @@ public class TagMenuBedrock {
 
         // 5. Close
         BedrockGUIConfig.BedrockButton closeBtn = getButton("close", meta);
-        if (closeBtn != null) {
+        if (closeBtn != null && isButtonEnabled("close", meta)) {
             addButton(builder, closeBtn);
             actions.add(() -> {}); // Do nothing, just close
         }
@@ -177,6 +176,13 @@ public class TagMenuBedrock {
         });
 
         FloodgateApi.getInstance().sendForm(player.getUniqueId(), builder.build());
+    }
+    
+    private boolean isButtonEnabled(String key, TagManager.CategoryMeta meta) {
+        if (meta != null && meta.getButtons() != null && meta.getButtons().containsKey(key)) {
+            return meta.getButtons().get(key).isEnabled();
+        }
+        return true;
     }
 
     private BedrockGUIConfig.BedrockButton getButton(String key, TagManager.CategoryMeta meta) {

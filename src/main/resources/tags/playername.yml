@@ -19,6 +19,7 @@ tag-slots:
 # Buttons Configuration
 buttons:
   info:
+    enabled: true
     slot: 45
     material: BOOK
     name: "&e¿Cómo obtener un color?"
@@ -29,6 +30,7 @@ buttons:
       - "&6https://tienda.onedam.net"
 
   reset:
+    enabled: true
     slot: 49
     material: BRUSH
     name: "&eLimpiar tu color"
@@ -41,6 +43,7 @@ buttons:
       - "[sound] UI_BUTTON_CLICK"
 
   random:
+    enabled: true
     slot: 51
     material: ENDER_PEARL
     name: "&dColor Aleatorio"
@@ -54,6 +57,7 @@ buttons:
       - "[sound] UI_BUTTON_CLICK"
 
   close:
+    enabled: true
     slot: 53
     material: PLAYER_HEAD
     texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTE4YTJkZDViZWYwYjA3M2IxMzI3MWE3ZWViOWNmZWE3YWZlODU5M2M1N2E5MzgyMWU0MzE3NTU3MjQ2MTgxMiJ9fX0="
@@ -68,6 +72,7 @@ buttons:
 
 # Bedrock GUI Settings
 bedrock-title: "&8Selecciona un color"
+bedrock-content: "Selecciona tu color:"
 tags-per-page: 10
 
 tags:

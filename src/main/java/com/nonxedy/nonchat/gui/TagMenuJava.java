@@ -123,6 +123,9 @@ public class TagMenuJava {
         for (Map.Entry<String, JavaGUIConfig.GUIItem> entry : buttonsToUse.entrySet()) {
             String key = entry.getKey();
             JavaGUIConfig.GUIItem btn = entry.getValue();
+            
+            if (!btn.isEnabled()) continue;
+            
             int slot = btn.getSingleSlot();
 
             if (!isValidSlot(slot, size)) continue;

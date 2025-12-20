@@ -23,6 +23,7 @@ public class GUIUtil {
         int modelData = section.getInt("model-data", 0);
         String texture = section.getString("texture", "");
         String bedrockIcon = section.getString("bedrock-icon", "");
+        boolean enabled = section.getBoolean("enabled", true);
         
         // Parse slots
         List<Integer> slots = new ArrayList<>();
@@ -36,7 +37,7 @@ public class GUIUtil {
         List<String> actions = section.getStringList("actions");
 
         ItemStack itemStack = ItemUtil.createItem(material, name, lore, modelData, texture);
-        return new JavaGUIConfig.GUIItem(itemStack, slots, actions, material, name, lore, modelData, texture, bedrockIcon);
+        return new JavaGUIConfig.GUIItem(itemStack, slots, actions, material, name, lore, modelData, texture, bedrockIcon, enabled);
     }
 
     public static void parseSlots(String slotStr, List<Integer> targetList) {

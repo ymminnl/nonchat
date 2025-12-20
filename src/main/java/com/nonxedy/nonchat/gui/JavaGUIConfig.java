@@ -107,9 +107,10 @@ public class JavaGUIConfig {
         private final int modelData;
         private final String texture;
         private final String bedrockIcon;
+        private final boolean enabled;
 
         public GUIItem(ItemStack item, List<Integer> slots, List<String> actions, 
-                       Material material, String name, List<String> lore, int modelData, String texture, String bedrockIcon) {
+                       Material material, String name, List<String> lore, int modelData, String texture, String bedrockIcon, boolean enabled) {
             this.item = item;
             this.slots = slots;
             this.actions = actions;
@@ -119,10 +120,11 @@ public class JavaGUIConfig {
             this.modelData = modelData;
             this.texture = texture;
             this.bedrockIcon = bedrockIcon;
+            this.enabled = enabled;
         }
         
         public GUIItem(ItemStack item, List<Integer> slots, List<String> actions) {
-            this(item, slots, actions, Material.AIR, "", new ArrayList<>(), 0, "", "");
+            this(item, slots, actions, Material.AIR, "", new ArrayList<>(), 0, "", "", true);
         }
         
         public int getSingleSlot() {
