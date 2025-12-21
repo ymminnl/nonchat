@@ -139,7 +139,18 @@ public class Nonchat extends JavaPlugin {
             
             // Initialize Database and Tags
             this.databaseManager = new DatabaseManager(this, databaseConfig);
-            this.databaseManager.initialize();
+            try {
+                this.databaseManager.initialize();
+            } catch (Exception e) {
+                getLogger().severe("========================================");
+                getLogger().severe("CRITICAL ERROR: Database Connection Failed!");
+                getLogger().severe("Nonchat requires a valid MySQL/MariaDB database to function.");
+                getLogger().severe("Please configure database.yml with correct credentials.");
+                getLogger().severe("Disabling plugin to prevent data loss...");
+                getLogger().severe("========================================");
+                getServer().getPluginManager().disablePlugin(this);
+                return;
+            }
             
             this.tagManager = new TagManager(this, databaseManager);
             this.tagManager.loadTags();

@@ -77,15 +77,7 @@ public class TagManager {
         copyDefaultResource("tags/playername.yml");
 
         if (!loadedFromDB) {
-            plugin.getLogger().warning("No tags found in database. Loading from local files as fallback/setup mode.");
-            File[] files = tagsFolder.listFiles((dir, name) -> name.endsWith(".yml"));
-            if (files != null) {
-                for (File file : files) {
-                    String category = file.getName().replace(".yml", "");
-                    YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-                    loadTagsFromConfig(config, category);
-                }
-            }
+            plugin.getLogger().warning("No tags found in database. Please use '/tags import <category>' to load tags from local files.");
         }
         
         plugin.getLogger().info("Loaded " + tagsByCategory.size() + " tag categories.");
@@ -123,8 +115,6 @@ public class TagManager {
             org.bukkit.Bukkit.getScheduler().runTask(plugin, this::loadTags);
         });
     }
-    
-    public void syncFromDatabase() {
 
     private void copyDefaultResource(String path) {
         File file = new File(plugin.getDataFolder(), path);
