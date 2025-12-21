@@ -55,10 +55,38 @@ public class TagCommand implements CommandExecutor, TabCompleter {
             case "list" -> handleList(player, args);
             case "reset" -> handleReset(player, args);
             case "menu" -> handleMenu(player, args);
+            case "import" -> handleImport(player, args);
+            case "delete" -> handleDelete(player, args);
             default -> sendHelp(player);
         }
 
         return true;
+    }
+    
+    private void handleImport(CommandSender sender, String[] args) {
+        if (!sender.hasPermission("nonchat.admin")) {
+            sender.sendMessage(ColorUtil.parseColor(messages.getString("no-permission")));
+            return;
+        }
+        if (args.length < 2) {
+            sender.sendMessage(ColorUtil.parseColor("&cUsage: /tags import <category>"));
+            return;
+        }
+        tagManager.importToDatabase(args[1]);
+        sender.sendMessage(ColorUtil.parseColor("&aImporting category '" + args[1] + "' to database..."));
+    }
+    
+    private void handleDelete(CommandSender sender, String[] args) {
+        if (!sender.hasPermission("nonchat.admin")) {
+            sender.sendMessage(ColorUtil.parseColor(messages.getString("no-permission")));
+            return;
+        }
+        if (args.length < 2) {
+            sender.sendMessage(ColorUtil.parseColor("&cUsage: /tags delete <category>"));
+            return;
+        }
+        tagManager.deleteCategoryFromDatabase(args[1]);
+        sender.sendMessage(ColorUtil.parseColor("&aDeleting category '" + args[1] + "' from database..."));
     }
 
     private void handleMenu(Player player, String[] args) {
@@ -241,11 +269,15 @@ public class TagCommand implements CommandExecutor, TabCompleter {
             if (sender.hasPermission("nonchat.command.tags.reset")) {
                 completions.add("reset");
             }
+            if (sender.hasPermission("nonchat.admin")) {
+                completions.add("import");
+                completions.add("delete");
+            }
             return filter(completions, args[0]);
         }
         
         if (args.length == 2) {
-            if (args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("list") || args[0].equalsIgnoreCase("reset") || args[0].equalsIgnoreCase("menu")) {
+            if (args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("list") || args[0].equalsIgnoreCase("reset") || args[0].equalsIgnoreCase("menu") || args[0].equalsIgnoreCase("import") || args[0].equalsIgnoreCase("delete")) {
                 return filter(new ArrayList<>(tagManager.getCategories()), args[1]);
             }
         }

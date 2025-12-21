@@ -1,6 +1,10 @@
 package com.nonxedy.nonchat.tags;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,25 +46,85 @@ public class TagManager {
         categorySelectionMessages.clear();
         categoryMeta.clear();
         
+        // 1. Try to load from Database (Primary Source)
+        boolean loadedFromDB = false;
+        if (databaseManager != null) {
+            Map<String, String> dbConfigs = databaseManager.getAllTagConfigs();
+            if (!dbConfigs.isEmpty()) {
+                plugin.getLogger().info("Loading tags from database (" + dbConfigs.size() + " categories)...");
+                for (Map.Entry<String, String> entry : dbConfigs.entrySet()) {
+                    String category = entry.getKey();
+                    String content = entry.getValue();
+                    try {
+                        YamlConfiguration config = YamlConfiguration.loadConfiguration(new StringReader(content));
+                        loadTagsFromConfig(config, category);
+                    } catch (Exception e) {
+                        plugin.getLogger().log(Level.SEVERE, "Failed to parse tag config from DB for category: " + category, e);
+                    }
+                }
+                loadedFromDB = true;
+            }
+        }
+        
+        // 2. Fallback to local files (Only for initial setup/importing or if DB is empty)
         File tagsFolder = new File(plugin.getDataFolder(), "tags");
         if (!tagsFolder.exists()) {
             tagsFolder.mkdirs();
         }
         
-        // Copy default resources if they don't exist
+        // Copy defaults for admin convenience (to edit and import)
         copyDefaultResource("tags/ranks.yml");
         copyDefaultResource("tags/playername.yml");
 
-        File[] files = tagsFolder.listFiles((dir, name) -> name.endsWith(".yml"));
-        if (files == null) return;
-
-        for (File file : files) {
-            String category = file.getName().replace(".yml", "");
-            loadTagsFromFile(file, category);
+        if (!loadedFromDB) {
+            plugin.getLogger().warning("No tags found in database. Loading from local files as fallback/setup mode.");
+            File[] files = tagsFolder.listFiles((dir, name) -> name.endsWith(".yml"));
+            if (files != null) {
+                for (File file : files) {
+                    String category = file.getName().replace(".yml", "");
+                    YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+                    loadTagsFromConfig(config, category);
+                }
+            }
         }
         
         plugin.getLogger().info("Loaded " + tagsByCategory.size() + " tag categories.");
     }
+    
+    public void importToDatabase(String category) {
+        if (databaseManager == null) return;
+        
+        CompletableFuture.runAsync(() -> {
+            File file = new File(plugin.getDataFolder(), "tags/" + category + ".yml");
+            if (file.exists()) {
+                try {
+                    String content = Files.readString(file.toPath(), StandardCharsets.UTF_8);
+                    databaseManager.saveTagConfig(category, content);
+                    plugin.getLogger().info("Imported category '" + category + "' to database.");
+                    // Optional: Reload tags to reflect changes immediately
+                    org.bukkit.Bukkit.getScheduler().runTask(plugin, this::loadTags);
+                } catch (IOException e) {
+                    plugin.getLogger().log(Level.SEVERE, "Failed to read tag file for import: " + category, e);
+                }
+            } else {
+                plugin.getLogger().warning("File not found for import: " + category);
+            }
+        });
+    }
+    
+    public void deleteCategoryFromDatabase(String category) {
+        if (databaseManager == null) return;
+        
+        CompletableFuture.runAsync(() -> {
+            databaseManager.deleteTagConfig(category);
+            plugin.getLogger().info("Deleted category '" + category + "' from database.");
+            
+            // Reload tags to reflect changes (remove from memory)
+            org.bukkit.Bukkit.getScheduler().runTask(plugin, this::loadTags);
+        });
+    }
+    
+    public void syncFromDatabase() {
 
     private void copyDefaultResource(String path) {
         File file = new File(plugin.getDataFolder(), path);
@@ -73,63 +137,7 @@ public class TagManager {
         }
     }
 
-    private void loadTagsFromFile(File file, String category) {
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        
-        // Ensure default settings exist and update file if needed
-        boolean saveNeeded = false;
-        
-        if (!config.contains("title")) {
-            config.set("title", "Tags - " + category);
-            saveNeeded = true;
-        }
-        if (!config.contains("default-value")) {
-            config.set("default-value", "");
-            saveNeeded = true;
-        }
-        if (!config.contains("selection-message")) {
-            config.set("selection-message", "&aYou selected the tag: {tag}");
-            saveNeeded = true;
-        }
-        
-        // Expiration defaults
-        if (!config.contains("expiration-message")) {
-            config.set("expiration-message", "&cYou no longer have permission for tag: {tag}");
-            saveNeeded = true;
-        }
-        
-        // Java GUI Defaults
-        if (!config.contains("menu-rows")) {
-            config.set("menu-rows", 6);
-            saveNeeded = true;
-        }
-        if (!config.contains("tag-slots")) {
-            config.set("tag-slots", java.util.Arrays.asList("10-16", "19-25", "28-34"));
-            saveNeeded = true;
-        }
-        
-        // Bedrock GUI Defaults
-        if (!config.contains("bedrock-content")) {
-            config.set("bedrock-content", "");
-            saveNeeded = true;
-        }
-        if (!config.contains("bedrock-default-icon")) {
-            config.set("bedrock-default-icon", "textures/items/paper");
-            saveNeeded = true;
-        }
-        if (!config.contains("tags-per-page")) {
-            config.set("tags-per-page", 10);
-            saveNeeded = true;
-        }
-        
-        if (saveNeeded) {
-            try {
-                config.save(file);
-            } catch (Exception e) {
-                plugin.getLogger().warning("Failed to update tag file " + file.getName() + ": " + e.getMessage());
-            }
-        }
-        
+    private void loadTagsFromConfig(YamlConfiguration config, String category) {
         String selectionMsg = config.getString("selection-message");
         if (selectionMsg != null && !selectionMsg.isEmpty()) {
             categorySelectionMessages.put(category, selectionMsg);
@@ -183,7 +191,7 @@ public class TagManager {
         
         ConfigurationSection tagsSection = config.getConfigurationSection("tags");
         if (tagsSection == null) {
-            plugin.getLogger().warning("File " + file.getName() + " does not have a 'tags' section.");
+            plugin.getLogger().warning("Configuration for " + category + " does not have a 'tags' section.");
             return;
         }
 
@@ -248,6 +256,7 @@ public class TagManager {
                 categoryTags.put(key, tag);
                 
             } else {
+                // Fallback for empty tag
                 display = "";
                 permission = "";
                 Tag tag = new Tag(key, display, permission, category, false, material, iconName, lore, modelData, texture, order, bedrockIcon,
