@@ -1,0 +1,404 @@
+title: "Time Levels"
+default-value: ""
+selection-message: "&b&lTIEMPO &f» &7Has seleccionado el tag de nivel {tag}"
+
+# Expiration Messages
+expiration-message: "&c¡Tu nivel ha expirado! El tag {tag} &cserá removido."
+expiration-title: "&c&lNIVEL EXPIRADO"
+expiration-subtitle: "&7Tag {tag} removido"
+expiration-actionbar: "&cTag removido por falta de permisos"
+
+# Java GUI Settings
+menu-title: "&8Selecciona tu Nivel"
+menu-rows: 6
+tag-slots:
+  - "10-16"
+  - "19-25"
+  - "28-34"
+
+# Default Items (For new tags without explicit items)
+default-display-item:
+  material: MINECART
+  name: "&l&6{tag}\n&8Click para seleccionar"
+  lore:
+    - "&7Tag desbloqueado."
+    - "&a➥ Click para seleccionar"
+  bedrock-icon: "https://mc-heads.net/head/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756/64.png"
+
+default-locked-display-item:
+  material: TNT_MINECART
+  name: "&l&6{tag}\n&8Bloqueado"
+  lore:
+    - "&c➥ Bloqueado"
+  bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"
+
+# Buttons Configuration
+buttons:
+  info:
+    enabled: true
+    slot: 45
+    material: BOOK
+    name: "&eInformación"
+    lore:
+      - "&7Tags desbloqueados por tiempo de juego."
+  
+  reset:
+    enabled: true
+    slot: 49
+    material: BRUSH
+    name: "&eLimpiar Nivel"
+    lore:
+      - "&7Quitar tag de nivel."
+    actions:
+      - "[sound] UI_BUTTON_CLICK"
+
+  close:
+    enabled: true
+    slot: 53
+    material: BARRIER
+    name: "&cCerrar"
+    actions:
+      - "[close]"
+      - "[sound] UI_BUTTON_CLICK"
+
+# Bedrock GUI Settings
+bedrock-title: "&8Selecciona tu Nivel"
+bedrock-content: "Tags por tiempo de juego:"
+tags-per-page: 10
+
+tags:
+  nivel-1:
+    value: "<glyph:level_1> "
+    permission: "meta.playtimelevels.1"
+    order: 1
+    display-item:
+      material: MINECART
+      name: "&l&6Nivel 1\n&8Click para seleccionar"
+      lore:
+        - "&7Tag de 1 Hora de juego"
+        - "&a➥ Click para seleccionar"
+    locked-display-item:
+      material: TNT_MINECART
+      name: "&l&6Nivel 1\n&8Bloqueado"
+      lore:
+        - "&c➥ Bloqueado"
+
+  nivel-2:
+    value: "<glyph:level_2> "
+    permission: "meta.playtimelevels.2"
+    order: 2
+    display-item:
+      material: MINECART
+      name: "&l&6Nivel 2\n&8Click para seleccionar"
+      lore:
+        - "&7Tag de 3 Horas de juego"
+        - "&a➥ Click para seleccionar"
+    locked-display-item:
+      material: TNT_MINECART
+      name: "&l&6Nivel 2\n&8Bloqueado"
+      lore:
+        - "&c➥ Bloqueado"
+
+  nivel-3:
+    value: "<glyph:level_3> "
+    permission: "meta.playtimelevels.3"
+    order: 3
+    display-item:
+      material: MINECART
+      name: "&l&6Nivel 3\n&8Click para seleccionar"
+      lore:
+        - "&7Tag de 5 Horas de juego"
+        - "&a➥ Click para seleccionar"
+    locked-display-item:
+      material: TNT_MINECART
+      name: "&l&6Nivel 3\n&8Bloqueado"
+      lore:
+        - "&c➥ Bloqueado"
+
+  nivel-4:
+    value: "<glyph:level_4> "
+    permission: "meta.playtimelevels.4"
+    order: 4
+    display-item:
+      material: MINECART
+      name: "&l&6Nivel 4\n&8Click para seleccionar"
+      lore:
+        - "&7Tag de 10 Horas de juego"
+        - "&a➥ Click para seleccionar"
+    locked-display-item:
+      material: TNT_MINECART
+      name: "&l&6Nivel 4\n&8Bloqueado"
+      lore:
+        - "&c➥ Bloqueado"
+
+  nivel-5:
+    value: "<glyph:level_5> "
+    permission: "meta.playtimelevels.5"
+    order: 5
+    display-item:
+      material: MINECART
+      name: "&l&6Nivel 5\n&8Click para seleccionar"
+      lore:
+        - "&7Tag de 15 Horas de juego"
+        - "&a➥ Click para seleccionar"
+    locked-display-item:
+      material: TNT_MINECART
+      name: "&l&6Nivel 5\n&8Bloqueado"
+      lore:
+        - "&c➥ Bloqueado"
+
+  nivel-6:
+    value: "<glyph:level_6> "
+    permission: "meta.playtimelevels.6"
+    order: 6
+    display-item:
+      material: MINECART
+      name: "&l&6Nivel 6\n&8Click para seleccionar"
+      lore:
+        - "&7Tag de 25 Horas de juego"
+        - "&a➥ Click para seleccionar"
+    locked-display-item:
+      material: TNT_MINECART
+      name: "&l&6Nivel 6\n&8Bloqueado"
+      lore:
+        - "&c➥ Bloqueado"
+
+  nivel-7:
+    value: "<glyph:level_7> "
+    permission: "meta.playtimelevels.7"
+    order: 7
+    display-item:
+      material: MINECART
+      name: "&l&6Nivel 7\n&8Click para seleccionar"
+      lore:
+        - "&7Tag de 35 Horas de juego"
+        - "&a➥ Click para seleccionar"
+    locked-display-item:
+      material: TNT_MINECART
+      name: "&l&6Nivel 7\n&8Bloqueado"
+      lore:
+        - "&c➥ Bloqueado"
+
+  nivel-8:
+    value: "<glyph:level_8> "
+    permission: "meta.playtimelevels.8"
+    order: 8
+    display-item:
+      material: MINECART
+      name: "&l&6Nivel 8\n&8Click para seleccionar"
+      lore:
+        - "&7Tag de 50 Horas de juego"
+        - "&a➥ Click para seleccionar"
+    locked-display-item:
+      material: TNT_MINECART
+      name: "&l&6Nivel 8\n&8Bloqueado"
+      lore:
+        - "&c➥ Bloqueado"
+
+  nivel-9:
+    value: "<glyph:level_9> "
+    permission: "meta.playtimelevels.9"
+    order: 9
+    display-item:
+      material: MINECART
+      name: "&l&6Nivel 9\n&8Click para seleccionar"
+      lore:
+        - "&7Tag de 70 Horas de juego"
+        - "&a➥ Click para seleccionar"
+    locked-display-item:
+      material: TNT_MINECART
+      name: "&l&6Nivel 9\n&8Bloqueado"
+      lore:
+        - "&c➥ Bloqueado"
+
+  nivel-10:
+    value: "<glyph:level_10> "
+    permission: "meta.playtimelevels.10"
+    order: 10
+    display-item:
+      material: MINECART
+      name: "&l&6Nivel 10\n&8Click para seleccionar"
+      lore:
+        - "&7Tag de 100 Horas de juego"
+        - "&a➥ Click para seleccionar"
+    locked-display-item:
+      material: TNT_MINECART
+      name: "&l&6Nivel 10\n&8Bloqueado"
+      lore:
+        - "&c➥ Bloqueado"
+
+  nivel-11:
+    value: "<glyph:level_11> "
+    permission: "meta.playtimelevels.11"
+    order: 11
+    display-item:
+      material: MINECART
+      name: "&l&6Nivel 11\n&8Click para seleccionar"
+      lore:
+        - "&7Tag de 130 Horas de juego"
+        - "&a➥ Click para seleccionar"
+    locked-display-item:
+      material: TNT_MINECART
+      name: "&l&6Nivel 11\n&8Bloqueado"
+      lore:
+        - "&c➥ Bloqueado"
+
+  nivel-12:
+    value: "<glyph:level_12> "
+    permission: "meta.playtimelevels.12"
+    order: 12
+    display-item:
+      material: MINECART
+      name: "&l&6Nivel 12\n&8Click para seleccionar"
+      lore:
+        - "&7Tag de 150 Horas de juego"
+        - "&a➥ Click para seleccionar"
+    locked-display-item:
+      material: TNT_MINECART
+      name: "&l&6Nivel 12\n&8Bloqueado"
+      lore:
+        - "&c➥ Bloqueado"
+
+  nivel-13:
+    value: "<glyph:level_13> "
+    permission: "meta.playtimelevels.13"
+    order: 13
+    display-item:
+      material: MINECART
+      name: "&l&6Nivel 13\n&8Click para seleccionar"
+      lore:
+        - "&7Tag de 180 Horas de juego"
+        - "&a➥ Click para seleccionar"
+    locked-display-item:
+      material: TNT_MINECART
+      name: "&l&6Nivel 13\n&8Bloqueado"
+      lore:
+        - "&c➥ Bloqueado"
+
+  nivel-14:
+    value: "<glyph:level_14> "
+    permission: "meta.playtimelevels.14"
+    order: 14
+    display-item:
+      material: MINECART
+      name: "&l&6Nivel 14\n&8Click para seleccionar"
+      lore:
+        - "&7Tag de 200 Horas de juego"
+        - "&a➥ Click para seleccionar"
+    locked-display-item:
+      material: TNT_MINECART
+      name: "&l&6Nivel 14\n&8Bloqueado"
+      lore:
+        - "&c➥ Bloqueado"
+
+  nivel-15:
+    value: "<glyph:level_15> "
+    permission: "meta.playtimelevels.15"
+    order: 15
+    display-item:
+      material: MINECART
+      name: "&l&6Nivel 15\n&8Click para seleccionar"
+      lore:
+        - "&7Tag de 250 Horas de juego"
+        - "&a➥ Click para seleccionar"
+    locked-display-item:
+      material: TNT_MINECART
+      name: "&l&6Nivel 15\n&8Bloqueado"
+      lore:
+        - "&c➥ Bloqueado"
+
+  nivel-16:
+    value: "<glyph:level_16> "
+    permission: "meta.playtimelevels.16"
+    order: 16
+    display-item:
+      material: MINECART
+      name: "&l&6Nivel 16\n&8Click para seleccionar"
+      lore:
+        - "&7Tag de 300 Horas de juego"
+        - "&a➥ Click para seleccionar"
+    locked-display-item:
+      material: TNT_MINECART
+      name: "&l&6Nivel 16\n&8Bloqueado"
+      lore:
+        - "&c➥ Bloqueado"
+
+  nivel-17:
+    value: "<glyph:level_17> "
+    permission: "meta.playtimelevels.17"
+    order: 17
+    display-item:
+      material: MINECART
+      name: "&l&6Nivel 17\n&8Click para seleccionar"
+      lore:
+        - "&7Tag de 350 Horas de juego"
+        - "&a➥ Click para seleccionar"
+    locked-display-item:
+      material: TNT_MINECART
+      name: "&l&6Nivel 17\n&8Bloqueado"
+      lore:
+        - "&c➥ Bloqueado"
+
+  nivel-18:
+    value: "<glyph:level_18> "
+    permission: "meta.playtimelevels.18"
+    order: 18
+    display-item:
+      material: MINECART
+      name: "&l&6Nivel 18\n&8Click para seleccionar"
+      lore:
+        - "&7Tag de 400 Horas de juego"
+        - "&a➥ Click para seleccionar"
+    locked-display-item:
+      material: TNT_MINECART
+      name: "&l&6Nivel 18\n&8Bloqueado"
+      lore:
+        - "&c➥ Bloqueado"
+
+  nivel-19:
+    value: "<glyph:level_19> "
+    permission: "meta.playtimelevels.19"
+    order: 19
+    display-item:
+      material: MINECART
+      name: "&l&6Nivel 19\n&8Click para seleccionar"
+      lore:
+        - "&7Tag de 450 Horas de juego"
+        - "&a➥ Click para seleccionar"
+    locked-display-item:
+      material: TNT_MINECART
+      name: "&l&6Nivel 19\n&8Bloqueado"
+      lore:
+        - "&c➥ Bloqueado"
+
+  nivel-20:
+    value: "<glyph:level_20> "
+    permission: "meta.playtimelevels.20"
+    order: 20
+    display-item:
+      material: MINECART
+      name: "&l&6Nivel 20\n&8Click para seleccionar"
+      lore:
+        - "&7Tag de 500 Horas de juego"
+        - "&a➥ Click para seleccionar"
+    locked-display-item:
+      material: TNT_MINECART
+      name: "&l&6Nivel 20\n&8Bloqueado"
+      lore:
+        - "&c➥ Bloqueado"
+
+  nivel-21:
+    value: "<glyph:level_21> "
+    permission: "meta.playtimelevels.21"
+    order: 21
+    display-item:
+      material: MINECART
+      name: "&l&6Nivel 21\n&8Click para seleccionar"
+      lore:
+        - "&7Tag de 550 Horas de juego"
+        - "&a➥ Click para seleccionar"
+    locked-display-item:
+      material: TNT_MINECART
+      name: "&l&6Nivel 21\n&8Bloqueado"
+      lore:
+        - "&c➥ Bloqueado"

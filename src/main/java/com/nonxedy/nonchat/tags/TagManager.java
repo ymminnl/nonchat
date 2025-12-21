@@ -152,6 +152,21 @@ public class TagManager {
         String expirationSubtitle = config.getString("expiration-subtitle", "");
         String expirationActionBar = config.getString("expiration-actionbar", "");
         
+        // Default Display Items
+        String defMat = config.getString("default-display-item.material", "PAPER");
+        String defName = config.getString("default-display-item.name", "{tag}");
+        List<String> defLore = config.getStringList("default-display-item.lore");
+        int defModel = config.getInt("default-display-item.model-data", 0);
+        String defTexture = config.getString("default-display-item.texture", "");
+        String defBedrock = config.getString("default-display-item.bedrock-icon", "");
+        
+        String defLockMat = config.getString("default-locked-display-item.material", "BARRIER");
+        String defLockName = config.getString("default-locked-display-item.name", "{tag}");
+        List<String> defLockLore = config.getStringList("default-locked-display-item.lore");
+        int defLockModel = config.getInt("default-locked-display-item.model-data", 0);
+        String defLockTexture = config.getString("default-locked-display-item.texture", "");
+        String defLockBedrock = config.getString("default-locked-display-item.bedrock-icon", "");
+        
         // Fillers
         Map<String, JavaGUIConfig.GUIItem> fillers = new HashMap<>();
         ConfigurationSection fillersSection = config.getConfigurationSection("fillers");
@@ -189,9 +204,9 @@ public class TagManager {
 
         for (String key : tagsSection.getKeys(false)) {
             ConfigurationSection section = tagsSection.getConfigurationSection(key);
-            String display, permission;
+            String display, permission, tagName;
             org.bukkit.Material material = org.bukkit.Material.PAPER;
-            String iconName = key;
+            String iconName = "";
             java.util.List<String> lore = new java.util.ArrayList<>();
             int modelData = 0;
             String texture = "";
@@ -202,43 +217,68 @@ public class TagManager {
                 display = section.getString("value", "");
                 permission = section.getString("permission", "");
                 order = section.getInt("order", 0);
+                tagName = section.getString("name", key); // Friendly name for placeholders
                 
-                String matName = section.getString("display-item.material", "PAPER");
-                try {
-                    material = org.bukkit.Material.valueOf(matName.toUpperCase());
-                } catch (IllegalArgumentException e) {
-                    plugin.getLogger().warning("Invalid material '" + matName + "' for tag " + key + ". Using PAPER.");
+                // Display Item
+                if (section.contains("display-item")) {
+                    String matName = section.getString("display-item.material", defMat);
+                    try {
+                        material = org.bukkit.Material.valueOf(matName.toUpperCase());
+                    } catch (IllegalArgumentException e) {
+                        material = org.bukkit.Material.PAPER;
+                    }
+                    iconName = section.getString("display-item.name", defName).replace("{tag}", tagName);
+                    lore = section.contains("display-item.lore") ? section.getStringList("display-item.lore") : defLore;
+                    modelData = section.getInt("display-item.model-data", defModel);
+                    texture = section.getString("display-item.texture", defTexture);
+                    bedrockIcon = section.getString("display-item.bedrock-icon", defBedrock);
+                } else {
+                    // Use Defaults
+                    try {
+                        material = org.bukkit.Material.valueOf(defMat.toUpperCase());
+                    } catch (IllegalArgumentException e) {
+                        material = org.bukkit.Material.PAPER;
+                    }
+                    iconName = defName.replace("{tag}", tagName);
+                    lore = defLore;
+                    modelData = defModel;
+                    texture = defTexture;
+                    bedrockIcon = defBedrock;
                 }
                 
-                iconName = section.getString("display-item.name", display);
-                lore = section.getStringList("display-item.lore");
-                modelData = section.getInt("display-item.model-data", 0);
-                texture = section.getString("display-item.texture", "");
-                bedrockIcon = section.getString("display-item.bedrock-icon", "");
-                
                 // Locked properties
-                org.bukkit.Material lockedMaterial = null;
-                String lockedIconName = null;
-                java.util.List<String> lockedLore = null;
-                int lockedModelData = 0;
-                String lockedTexture = null;
-                String lockedBedrockIcon = null;
+                org.bukkit.Material lockedMaterial;
+                String lockedIconName;
+                java.util.List<String> lockedLore;
+                int lockedModelData;
+                String lockedTexture;
+                String lockedBedrockIcon;
                 
                 if (section.contains("locked-display-item")) {
                     ConfigurationSection lockedSection = section.getConfigurationSection("locked-display-item");
-                    if (lockedSection != null) {
-                        String lMatName = lockedSection.getString("material", "BARRIER");
-                        try {
-                            lockedMaterial = org.bukkit.Material.valueOf(lMatName.toUpperCase());
-                        } catch (IllegalArgumentException e) {
-                            lockedMaterial = org.bukkit.Material.BARRIER;
-                        }
-                        lockedIconName = lockedSection.getString("name", iconName);
-                        lockedLore = lockedSection.getStringList("lore");
-                        lockedModelData = lockedSection.getInt("model-data", 0);
-                        lockedTexture = lockedSection.getString("texture", "");
-                        lockedBedrockIcon = lockedSection.getString("bedrock-icon", "");
+                    String lMatName = lockedSection.getString("material", defLockMat);
+                    try {
+                        lockedMaterial = org.bukkit.Material.valueOf(lMatName.toUpperCase());
+                    } catch (IllegalArgumentException e) {
+                        lockedMaterial = org.bukkit.Material.BARRIER;
                     }
+                    lockedIconName = lockedSection.getString("name", defLockName).replace("{tag}", tagName);
+                    lockedLore = lockedSection.contains("lore") ? lockedSection.getStringList("lore") : defLockLore;
+                    lockedModelData = lockedSection.getInt("model-data", defLockModel);
+                    lockedTexture = lockedSection.getString("texture", defLockTexture);
+                    lockedBedrockIcon = lockedSection.getString("bedrock-icon", defLockBedrock);
+                } else {
+                    // Use Defaults
+                    try {
+                        lockedMaterial = org.bukkit.Material.valueOf(defLockMat.toUpperCase());
+                    } catch (IllegalArgumentException e) {
+                        lockedMaterial = org.bukkit.Material.BARRIER;
+                    }
+                    lockedIconName = defLockName.replace("{tag}", tagName);
+                    lockedLore = defLockLore;
+                    lockedModelData = defLockModel;
+                    lockedTexture = defLockTexture;
+                    lockedBedrockIcon = defLockBedrock;
                 }
 
                 Tag tag = new Tag(key, display, permission, category, false, material, iconName, lore, modelData, texture, order, bedrockIcon,

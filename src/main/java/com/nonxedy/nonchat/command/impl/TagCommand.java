@@ -20,6 +20,7 @@ import com.nonxedy.nonchat.gui.TagMenuBedrock;
 import com.nonxedy.nonchat.tags.Tag;
 import com.nonxedy.nonchat.tags.TagManager;
 import com.nonxedy.nonchat.util.core.colors.ColorUtil;
+import com.nonxedy.nonchat.util.integration.external.IntegrationUtil;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
@@ -161,17 +162,25 @@ public class TagCommand implements CommandExecutor, TabCompleter {
 
         tagManager.setPlayerTag(target, category, tagId);
         
+        // Process tag display for clean output
+        String tagDisplay = tag.getDisplay();
+        tagDisplay = tagDisplay.replace("</>", "<reset>");
+        tagDisplay = ColorUtil.convertCompactGradients(tagDisplay);
+        
+        // Apply placeholders to tag display
+        tagDisplay = IntegrationUtil.processPlaceholders(target, tagDisplay);
+        
         if (target.equals(player)) {
             player.sendMessage(ColorUtil.parseColor(messages.getString("tags-set-success")
-                .replace("{tag}", tag.getDisplay())
+                .replace("{tag}", tagDisplay)
                 .replace("{category}", category)));
         } else {
             player.sendMessage(ColorUtil.parseColor(messages.getString("tags-set-other")
-                .replace("{tag}", tag.getDisplay())
+                .replace("{tag}", tagDisplay)
                 .replace("{category}", category)
                 .replace("{player}", target.getName())));
             target.sendMessage(ColorUtil.parseColor(messages.getString("tags-set-success")
-                .replace("{tag}", tag.getDisplay())
+                .replace("{tag}", tagDisplay)
                 .replace("{category}", category)));
         }
     }
