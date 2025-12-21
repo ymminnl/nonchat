@@ -139,8 +139,14 @@ public class MenuListener implements Listener {
                     playSound(player, config.getClickSound());
                     player.closeInventory();
                 } else if (key.equalsIgnoreCase("random")) {
-                    tagManager.setPlayerTag(player, holder.getCategory(), "__random__");
-                    player.sendMessage(ColorUtil.parseColor("&aRandom tag mode enabled for " + holder.getCategory()));
+                    String currentTag = tagManager.getPlayerActiveTagId(player, holder.getCategory());
+                    if ("__random__".equals(currentTag)) {
+                        tagManager.resetPlayerTag(player, holder.getCategory());
+                        player.sendMessage(ColorUtil.parseColor(messages.getString("random-disabled").replace("{category}", holder.getCategory())));
+                    } else {
+                        tagManager.setPlayerTag(player, holder.getCategory(), "__random__");
+                        player.sendMessage(ColorUtil.parseColor(messages.getString("random-enabled").replace("{category}", holder.getCategory())));
+                    }
                     playSound(player, config.getClickSound());
                     player.closeInventory();
                 }

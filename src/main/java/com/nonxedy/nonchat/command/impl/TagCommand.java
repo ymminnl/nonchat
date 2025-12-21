@@ -39,26 +39,21 @@ public class TagCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
-            sender.sendMessage(ColorUtil.parseColor(messages.getString("player-only")));
-            return true;
-        }
-
         if (args.length == 0) {
-            sendHelp(player);
+            sendHelp(sender);
             return true;
         }
 
         String sub = args[0].toLowerCase();
 
         switch (sub) {
-            case "set" -> handleSet(player, args);
-            case "list" -> handleList(player, args);
-            case "reset" -> handleReset(player, args);
-            case "menu" -> handleMenu(player, args);
-            case "import" -> handleImport(player, args);
-            case "delete" -> handleDelete(player, args);
-            default -> sendHelp(player);
+            case "set" -> handleSet(sender, args);
+            case "list" -> handleList(sender, args);
+            case "reset" -> handleReset(sender, args);
+            case "menu" -> handleMenu(sender, args);
+            case "import" -> handleImport(sender, args);
+            case "delete" -> handleDelete(sender, args);
+            default -> sendHelp(sender);
         }
 
         return true;
@@ -90,7 +85,12 @@ public class TagCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(ColorUtil.parseColor("&aDeleting category '" + args[1] + "' from database..."));
     }
 
-    private void handleMenu(Player player, String[] args) {
+    private void handleMenu(CommandSender sender, String[] args) {
+        if (!(sender instanceof Player player)) {
+            sender.sendMessage(ColorUtil.parseColor(messages.getString("player-only")));
+            return;
+        }
+
         if (args.length < 2) {
             player.sendMessage(ColorUtil.parseColor(messages.getString("tags-usage-menu")));
             return;
@@ -115,38 +115,47 @@ public class TagCommand implements CommandExecutor, TabCompleter {
         plugin.getTagMenuJava().open(player, category, 1);
     }
 
-    private void handleSet(Player player, String[] args) {
+    private void handleSet(CommandSender sender, String[] args) {
         if (args.length < 3) {
-            player.sendMessage(ColorUtil.parseColor(messages.getString("tags-usage-set")));
+            sender.sendMessage(ColorUtil.parseColor(messages.getString("tags-usage-set")));
             return;
         }
 
         String category = args[1];
         String tagId = args[2];
-        Player target = player; // Default to self
+        Player target = null;
+        
+        if (sender instanceof Player player) {
+            target = player;
+        }
 
         // Check for optional target argument
         if (args.length >= 4) {
-            if (!player.hasPermission("nonchat.command.tags.set.others")) {
-                player.sendMessage(ColorUtil.parseColor(messages.getString("no-permission")));
+            if (!sender.hasPermission("nonchat.command.tags.set.others")) {
+                sender.sendMessage(ColorUtil.parseColor(messages.getString("no-permission")));
                 return;
             }
             target = org.bukkit.Bukkit.getPlayer(args[3]);
             if (target == null) {
-                player.sendMessage(ColorUtil.parseColor(messages.getString("player-not-found")));
+                sender.sendMessage(ColorUtil.parseColor(messages.getString("player-not-found")));
                 return;
             }
+        }
+        
+        if (target == null) {
+            sender.sendMessage(ColorUtil.parseColor("&cUsage: /tags set <category> <tag> <player>"));
+            return;
         }
 
         Map<String, Tag> tags = tagManager.getTags(category);
         if (tags == null) {
-            player.sendMessage(ColorUtil.parseColor(messages.getString("tags-category-not-found").replace("{category}", category)));
+            sender.sendMessage(ColorUtil.parseColor(messages.getString("tags-category-not-found").replace("{category}", category)));
             return;
         }
 
         Tag tag = tags.get(tagId);
         if (tag == null) {
-            player.sendMessage(ColorUtil.parseColor(messages.getString("tags-tag-not-found")
+            sender.sendMessage(ColorUtil.parseColor(messages.getString("tags-tag-not-found")
                 .replace("{tag}", tagId)
                 .replace("{category}", category)));
             return;
@@ -155,8 +164,8 @@ public class TagCommand implements CommandExecutor, TabCompleter {
         // Check permissions:
         // If setting for self: check if player has permission for the tag
         // If setting for others: bypass tag permission check (admin override)
-        if (target.equals(player) && !tag.getPermission().isEmpty() && !player.hasPermission(tag.getPermission())) {
-            player.sendMessage(ColorUtil.parseColor(messages.getString("no-permission")));
+        if (target.equals(sender) && !tag.getPermission().isEmpty() && !sender.hasPermission(tag.getPermission())) {
+            sender.sendMessage(ColorUtil.parseColor(messages.getString("no-permission")));
             return;
         }
 
@@ -170,12 +179,12 @@ public class TagCommand implements CommandExecutor, TabCompleter {
         // Apply placeholders to tag display
         tagDisplay = IntegrationUtil.processPlaceholders(target, tagDisplay);
         
-        if (target.equals(player)) {
-            player.sendMessage(ColorUtil.parseColor(messages.getString("tags-set-success")
+        if (target.equals(sender)) {
+            sender.sendMessage(ColorUtil.parseColor(messages.getString("tags-set-success")
                 .replace("{tag}", tagDisplay)
                 .replace("{category}", category)));
         } else {
-            player.sendMessage(ColorUtil.parseColor(messages.getString("tags-set-other")
+            sender.sendMessage(ColorUtil.parseColor(messages.getString("tags-set-other")
                 .replace("{tag}", tagDisplay)
                 .replace("{category}", category)
                 .replace("{player}", target.getName())));
@@ -185,14 +194,14 @@ public class TagCommand implements CommandExecutor, TabCompleter {
         }
     }
     
-    private void handleReset(Player player, String[] args) {
-        if (!player.hasPermission("nonchat.command.tags.reset")) {
-            player.sendMessage(ColorUtil.parseColor(messages.getString("no-permission")));
+    private void handleReset(CommandSender sender, String[] args) {
+        if (!sender.hasPermission("nonchat.command.tags.reset")) {
+            sender.sendMessage(ColorUtil.parseColor(messages.getString("no-permission")));
             return;
         }
 
         if (args.length < 3) {
-            player.sendMessage(ColorUtil.parseColor(messages.getString("tags-usage-reset")));
+            sender.sendMessage(ColorUtil.parseColor(messages.getString("tags-usage-reset")));
             return;
         }
 
@@ -200,26 +209,26 @@ public class TagCommand implements CommandExecutor, TabCompleter {
         String targetName = args[2];
 
         if (tagManager.getTags(category) == null) {
-            player.sendMessage(ColorUtil.parseColor(messages.getString("tags-category-not-found").replace("{category}", category)));
+            sender.sendMessage(ColorUtil.parseColor(messages.getString("tags-category-not-found").replace("{category}", category)));
             return;
         }
 
         Player target = org.bukkit.Bukkit.getPlayer(targetName);
         if (target == null) {
-            player.sendMessage(ColorUtil.parseColor(messages.getString("player-not-found")));
+            sender.sendMessage(ColorUtil.parseColor(messages.getString("player-not-found")));
             return;
         }
 
         tagManager.resetPlayerTag(target, category);
-        player.sendMessage(ColorUtil.parseColor(messages.getString("tags-reset-target")
+        sender.sendMessage(ColorUtil.parseColor(messages.getString("tags-reset-target")
             .replace("{player}", target.getName())
             .replace("{category}", category)));
         target.sendMessage(ColorUtil.parseColor(messages.getString("tags-reset-success").replace("{category}", category)));
     }
     
-    private void handleList(Player player, String[] args) {
+    private void handleList(CommandSender sender, String[] args) {
         if (args.length < 2) {
-             player.sendMessage(ColorUtil.parseColor(messages.getString("tags-usage-list")));
+             sender.sendMessage(ColorUtil.parseColor(messages.getString("tags-usage-list")));
              return;
         }
         
@@ -227,15 +236,15 @@ public class TagCommand implements CommandExecutor, TabCompleter {
         Map<String, Tag> tags = tagManager.getTags(category);
         
         if (tags == null) {
-            player.sendMessage(ColorUtil.parseColor(messages.getString("tags-category-not-found").replace("{category}", category)));
+            sender.sendMessage(ColorUtil.parseColor(messages.getString("tags-category-not-found").replace("{category}", category)));
             return;
         }
         
-        player.sendMessage(ColorUtil.parseColor("&8&m------------------------"));
-        player.sendMessage(ColorUtil.parseColor(messages.getString("tags-list-header").replace("{category}", category)));
+        sender.sendMessage(ColorUtil.parseColor("&8&m------------------------"));
+        sender.sendMessage(ColorUtil.parseColor(messages.getString("tags-list-header").replace("{category}", category)));
         
         for (Tag tag : tags.values()) {
-            boolean hasPerm = tag.getPermission().isEmpty() || player.hasPermission(tag.getPermission());
+            boolean hasPerm = tag.getPermission().isEmpty() || sender.hasPermission(tag.getPermission());
             String color = hasPerm ? "&a" : "&c";
             
             // Process display
@@ -245,6 +254,7 @@ public class TagCommand implements CommandExecutor, TabCompleter {
             
             if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
                 try {
+                    Player player = (sender instanceof Player) ? (Player) sender : null;
                     display = PlaceholderAPI.setPlaceholders(player, display);
                 } catch (Exception ignored) {}
             }
@@ -252,20 +262,20 @@ public class TagCommand implements CommandExecutor, TabCompleter {
             Component line = ColorUtil.parseComponent(color + "- " + tag.getId() + ": ")
                 .append(ColorUtil.parseComponent(display));
                 
-            player.sendMessage(line);
+            sender.sendMessage(line);
         }
-        player.sendMessage(ColorUtil.parseColor("&8&m------------------------"));
+        sender.sendMessage(ColorUtil.parseColor("&8&m------------------------"));
     }
 
-    private void sendHelp(Player player) {
-        player.sendMessage(ColorUtil.parseColor(messages.getString("tags-help-header")));
-        player.sendMessage(ColorUtil.parseColor(messages.getString("tags-help-list")));
-        player.sendMessage(ColorUtil.parseColor(messages.getString("tags-help-set")));
-        player.sendMessage(ColorUtil.parseColor(messages.getString("tags-help-menu")));
-        if (player.hasPermission("nonchat.command.tags.reset")) {
-            player.sendMessage(ColorUtil.parseColor(messages.getString("tags-help-reset")));
+    private void sendHelp(CommandSender sender) {
+        sender.sendMessage(ColorUtil.parseColor(messages.getString("tags-help-header")));
+        sender.sendMessage(ColorUtil.parseColor(messages.getString("tags-help-list")));
+        sender.sendMessage(ColorUtil.parseColor(messages.getString("tags-help-set")));
+        sender.sendMessage(ColorUtil.parseColor(messages.getString("tags-help-menu")));
+        if (sender.hasPermission("nonchat.command.tags.reset")) {
+            sender.sendMessage(ColorUtil.parseColor(messages.getString("tags-help-reset")));
         }
-        player.sendMessage(ColorUtil.parseColor(messages.getString("tags-help-footer")));
+        sender.sendMessage(ColorUtil.parseColor(messages.getString("tags-help-footer")));
     }
 
     @Override

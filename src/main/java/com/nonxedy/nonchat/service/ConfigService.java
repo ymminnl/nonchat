@@ -25,7 +25,7 @@ public class ConfigService implements IConfigurable {
         this.plugin = plugin;
         this.config = new PluginConfig(plugin);
         this.languageManager = new LanguageManager(plugin.getDataFolder());
-        this.messages = new PluginMessages(plugin);
+        this.messages = new PluginMessages(plugin, this.config);
         load();
         this.messages.loadLanguage();
     }

@@ -14,10 +14,12 @@ public class PluginMessages {
     private final MessageFormatter formatter;
     private final LanguageManager languageManager;
     private final Nonchat plugin;
+    private final PluginConfig pluginConfig;
 
     // Constructor initializes the messages system
-    public PluginMessages(Nonchat plugin) {
+    public PluginMessages(Nonchat plugin, PluginConfig pluginConfig) {
         this.plugin = plugin;
+        this.pluginConfig = pluginConfig;
         this.languageManager = new LanguageManager(plugin.getDataFolder());
         this.formatter = new MessageFormatter(this);
     }
@@ -26,7 +28,7 @@ public class PluginMessages {
      * Loads language configuration from plugin settings
      */
     public void loadLanguage() {
-        String lang = plugin.getConfig().getString("language", "en");
+        String lang = pluginConfig.getLanguage();
         languageManager.setLanguage(lang);
     }
 

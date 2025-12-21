@@ -90,8 +90,14 @@ public class TagMenuBedrock {
         if (randomBtn != null && isButtonEnabled("random", meta)) {
             addButton(builder, randomBtn);
             actions.add(() -> {
-                tagManager.setPlayerTag(player, category, "__random__");
-                player.sendMessage(ColorUtil.parseColor("&aRandom tag mode enabled for " + category));
+                String currentTag = tagManager.getPlayerActiveTagId(player, category);
+                if ("__random__".equals(currentTag)) {
+                    tagManager.resetPlayerTag(player, category);
+                    player.sendMessage(ColorUtil.parseColor(messages.getString("random-disabled").replace("{category}", category)));
+                } else {
+                    tagManager.setPlayerTag(player, category, "__random__");
+                    player.sendMessage(ColorUtil.parseColor(messages.getString("random-enabled").replace("{category}", category)));
+                }
             });
         }
 

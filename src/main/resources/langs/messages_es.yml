@@ -1,5 +1,5 @@
 # ==================================================
-# ARCHIVO DE CONFIGURACIÓN NONCHAT
+# ARCHIVO DE CONFIGURACIÓN DE NONCHAT
 # Plugin creado por nonxedy (@nonxedy).
 # Publicado en github https://github.com/nonxedy/nonchat
 # Publicado en modrinth https://modrinth.com/plugin/nonchat
@@ -9,25 +9,27 @@
 # - Soporte para Vault.
 # - Soporte para PlaceHolderAPI.
 # - Soporte para DiscordSRV
-#
-# Traducido por: https://github.com/JainaGam3r45
 # ==================================================
 
 # Mensajes del sistema.
-no-permission: "&#ff0000¡No tienes permisos para hacer esto!"
+plugin-enabled: "&#d0d0d0[nonchat] &#84FFB8¡Plugin habilitado!"
+plugin-disabled: "&#d0d0d0[nonchat] &#ff0000¡Plugin deshabilitado!"
+services-reloaded: "&#d0d0d0[nonchat] &#84FFB8Servicios recargados correctamente"
+no-permission: "&#ff0000¡No tienes permiso para hacer eso!"
 player-only: "&#ff0000¡Solo los jugadores pueden usar este comando!"
 player-offline: "&#ff0000¡El jugador está desconectado!"
-blocked-words: "&#ff0000¡No puedes usar esa palabra!"
-message-filtered: "&#ff0000Tu mensaje fue filtrado por un filtro de canal."
+blocked-words: "&#ff0000¡No tienes permitido usar esa palabra!"
+message-filtered: "&#ff0000Tu mensaje fue filtrado por un filtro del canal."
 mentioned: "&#ffffff¡Fuiste mencionado en el chat por &#84FFB8{player}!"
 player-not-found: "&#ff0000Jugador no encontrado."
 command-disabled: "&#ff0000Este comando está deshabilitado."
-caps-filter: "&#ff0000¡Demasiadas letras mayúsculas! Máximo permitido: {percentage}%"
-message-not-delivered: "&#ff0000Tu mensaje no pudo ser entregado."
+chat-disabled: "&#ff0000El chat está deshabilitado."
+caps-filter: "&#ff0000¡Demasiadas mayúsculas! Máximo permitido: {percentage}%"
+message-not-delivered: "&#ff0000Tu mensaje no fue entregado."
 
-# Recargar.
+# Recarga.
 reloading: "&#FFAFFBRecargando..."
-reloaded: "&#84FFB8¡Plugin recargado exitosamente!"
+reloaded: "&#84FFB8¡Plugin recargado!"
 reload-failed: "&#ff0000¡Error al recargar el plugin!"
 
 # Versión.
@@ -35,27 +37,27 @@ version: "&#FFAFFBnonchat v{version}\n&#ffffffGitHub: https://github.com/nonxedy
 
 # Ayuda.
 help: "&#FFAFFBnonchat | comandos:"
-nreload: "&#FFAFFB/nonchat reload&#ffffff - recarga el plugin"
+nreload: "&#FFAFFB/nonchat reload&#ffffff - recargar plugin"
 help-command: "&#FFAFFB/nonchat help&#ffffff - lista de comandos"
-version-command: "&#FFAFFB/nonchat version&#ffffff - mostrar la versión del plugin"
+version-command: "&#FFAFFB/nonchat version&#ffffff - mostrar versión del plugin"
 server-command: "&#FFAFFB/server&#ffffff - información del servidor"
-message-command: "&#FFAFFB/m <jugador> <mensaje>&#ffffff - envía un mensaje privado a un jugador"
-broadcast-command: "&#FFAFFB/bc <mensaje>&#ffffff - envía un mensaje a todo el servidor"
-ignore-command: "&#FFAFFB/ignore <jugador>&#ffffff - ignora a un jugador"
-spy-command: "&#FFAFFB/spy&#ffffff - activa/desactiva el modo espía"
-me-command: "&#FFAFFB/me <mensaje>&#ffffff - envía un mensaje desde tu personaje"
-roll-command: "&#FFAFFB/roll <número máximo>&#ffffff - lanza un dado"
-channel-command: "&#FFAFFB/channel help&#ffffff - muestra comandos de canales"
-reply-command: "&#FFAFFB/reply <mensaje>&#ffffff - responde al último jugador"
+message-command: "&#FFAFFB/m <jugador> <mensaje>&#ffffff - enviar un mensaje a un jugador"
+broadcast-command: "&#FFAFFB/bc <mensaje>&#ffffff - enviar un mensaje a todo el servidor"
+ignore-command: "&#FFAFFB/ignore <jugador>&#ffffff - ignorar a un jugador"
+spy-command: "&#FFAFFB/spy&#ffffff - activar/desactivar modo espía"
+me-command: "&#FFAFFB/me <mensaje>&#ffffff - enviar un mensaje desde tu personaje"
+roll-command: "&#FFAFFB/roll <número máximo>&#ffffff - tirar un dado"
+channel-command: "&#FFAFFB/channel help&#ffffff - mostrar comandos de canales"
+reply-command: "&#FFAFFB/reply <mensaje>&#ffffff - responder al último jugador"
 
 # Limpiar Chat.
-clear-chat: "&#FFAFFBLimpiando el chat..."
+clear-chat: "&#FFAFFBLimpiando chat..."
 chat-cleared: "&#84FFB8¡Chat limpiado!"
 
-# Anuncio.
-broadcast: "&#FFAFFBAnuncio: &#ffffff{message}"
+# Broadcast.
+broadcast: "&#FFAFFBBroadcast: &#ffffff{message}"
 
-# Mensaje.
+# Mensaje Privado.
 invalid-usage-message: "&#ffffffUso: &#FFAFFB/m <jugador> <mensaje>"
 
 # Responder.
@@ -63,11 +65,11 @@ no-reply-target: "&#ff0000No tienes a quién responder."
 invalid-usage-reply: "&#ffffffUso: &#FFAFFB/reply <mensaje>"
 
 # Ignorar.
-ignored-player: "&#84FFB8Ahora estás ignorando al jugador {player}."
+ignored-player: "&#84FFB8Has comenzado a ignorar al jugador {player}."
 unignored-player: "&#ff0000Ya no ignoras al jugador {player}."
-ignored-by-target: "&#FFAFFBEste jugador te está ignorando y no puedes enviarle mensajes."
+ignored-by-target: "&#FFAFFBEste jugador te ignora y no puedes enviarle mensajes."
 invalid-usage-ignore: "&#ffffffUso: &#FFAFFB/ignore <jugador>"
-you-are-ignoring-player: "&#ff0000Estás ignorando a {player}. Primero deja de ignorarlo para enviar mensajes."
+you-are-ignoring-player: "&#ff0000Estás ignorando a {player}. Deja de ignorarlo primero para enviar mensajes."
 cannot-ignore-self: "&#ff0000No puedes ignorarte a ti mismo."
 
 # Espía.
@@ -75,54 +77,54 @@ spy-mode-enabled: "&#84FFB8Modo espía activado"
 spy-mode-disabled: "&#ff0000Modo espía desactivado"
 invalid-usage-spy: "&#ffffffUso: &#FFAFFB/spy"
 
-# Yo.
+# Me.
 invalid-usage-me: "&#ffffffUso: &#FFAFFB/me <mensaje>"
 
-# Dado.
-invalid-usage-roll: "&#ffffffUso: &#FFAFFB/roll <número máximo>"
+# Roll.
+invalid-usage-roll: "&#ffffffUso: &#FFAFFB/roll <número máx>"
 invalid-number: "&#ff0000Por favor ingresa un número positivo válido"
 
 # Errores generales de comandos
 command-error: "&#ff0000Ocurrió un error al ejecutar el comando."
 
-# Formato del mensaje de coordenadas de muerte
+# Coordenadas de muerte
 death-coordinates: "&fMoriste en &#FFAFFB%s &fen las coordenadas: &fx:&#FFAFFB%d &fy:&#FFAFFB%d &fz:&#FFAFFB%d"
 
-# Nombres de mundos para coordenadas de muerte
-dimension-overworld: "Mundo Superior"
-dimension-nether: "El Inframundo"
-dimension-end: "El Fin"
+# Nombres de mundos
+dimension-overworld: "Overworld"
+dimension-nether: "Nether"
+dimension-end: "The End"
 
-# Texto al pasar el cursor sobre enlaces
-link-hover: "Haz clic para abrir: {url}"
+# Texto hover de enlaces
+link-hover: "Click para abrir: {url}"
 
 # Sistema de mensajes de muerte
 death-messages-reloading: "&#FFAFFBRecargando mensajes de muerte..."
-death-messages-reloaded: "&#84FFB8¡Mensajes de muerte recargados! Se cargaron {count} variantes de mensajes en {causes} causas de muerte."
-death-messages-reloaded-simple: "&#84FFB8¡Mensajes de muerte recargados exitosamente!"
-death-messages-reload-failed: "&#ff0000¡Error al recargar los mensajes de muerte!"
-death-messages-load-error: "&#ff0000Error al cargar mensajes de muerte: {error}"
+death-messages-reloaded: "&#84FFB8¡Mensajes de muerte recargados! Cargadas {count} variantes en {causes} causas de muerte."
+death-messages-reloaded-simple: "&#84FFB8¡Mensajes de muerte recargados correctamente!"
+death-messages-reload-failed: "&#ff0000¡Error al recargar mensajes de muerte!"
+death-messages-load-error: "&#ff0000Error cargando mensajes de muerte: {error}"
 death-messages-validation-warning: "&#FFAFFBAdvertencia: {warning}"
 
 # Notificaciones de detección de spam
-spam-detected-repetitive: "§#FFAFFB[nonchat] §f{player} detectó spam repetitivo: §#ff0000{message}"
-spam-detected-similar: "§#FFAFFB[nonchat] §f{player} detectó spam similar: §#ff0000{message}"
-spam-detected-flood: "§#FFAFFB[nonchat] §f{player} detectó spam por flood: §#ff0000{message}"
+spam-detected-repetitive: "§#FFAFFB[nonchat] §f{player} detectado spam repetitivo: §#ff0000{message}"
+spam-detected-similar: "§#FFAFFB[nonchat] §f{player} detectado spam similar: §#ff0000{message}"
+spam-detected-flood: "§#FFAFFB[nonchat] §f{player} detectado flood spam: §#ff0000{message}"
 
-# Comando de Canal
-channel-help-header: "&#FFAFFBComandos de Canales:"
-channel-help-set: "&#FFAFFB/channel set <canal>&#ffffff - establece tu canal activo"
-channel-help-list: "&#FFAFFB/channel list&#ffffff - lista los canales disponibles"
-channel-help-info: "&#FFAFFB/channel info <canal>&#ffffff - muestra información del canal"
+# Comandos de Canales
+channel-help-header: "&#FFAFFBComandos de Canal:"
+channel-help-set: "&#FFAFFB/channel set <canal>&#ffffff - establecer tu canal activo"
+channel-help-list: "&#FFAFFB/channel list&#ffffff - listar canales disponibles"
+channel-help-info: "&#FFAFFB/channel info <canal>&#ffffff - mostrar información del canal"
 channel-set-usage: "&#ffffffUso: &#FFAFFB/channel set <canal>"
 channel-info-usage: "&#ffffffUso: &#FFAFFB/channel info <canal>"
-channel-set: "&#84FFB8Canal activo establecido como {channel}"
-channel-set-failed: "&#ff0000Error al establecer el canal activo como {channel}"
+channel-set: "&#84FFB8Canal activo establecido a {channel}"
+channel-set-failed: "&#ff0000Error al establecer canal activo a {channel}"
 channel-not-found: "&#ff0000Canal {channel} no encontrado"
 channel-disabled: "&#ff0000El canal {channel} está deshabilitado"
 channel-list-header: "&#FFAFFBCanales Disponibles:"
 channel-list-entry: "&#FFAFFB{id}&#ffffff - {display} {current}"
-channel-list-no-permission: "&#ff5555{id} - {display} (Sin Permisos)"
+channel-list-no-permission: "&#ff5555{id} - {display} (Sin Permiso)"
 channel-current: "&#84FFB8(Actual)"
 channel-info-header: "&#FFAFFBCanal: {channel}"
 channel-info-id: "&#FFAFFBIdentificador:&#ffffff {id}"
@@ -134,17 +136,17 @@ channel-info-no: "&#ff0000No"
 channel-info-global: "&#84FFB8Global"
 channel-info-none: "&#ff5555Ninguno"
 no-channels: "&#ff0000No hay canales disponibles"
-message-too-short: "&#ff0000El mensaje es demasiado corto. Longitud mínima: {min}"
-message-too-long: "&#ff0000El mensaje es demasiado largo. Longitud máxima: {max}"
+message-too-short: "&#ff0000El mensaje es muy corto. Longitud mínima: {min}"
+message-too-long: "&#ff0000El mensaje es muy largo. Longitud máxima: {max}"
 channel-cooldown: "&#ff0000Debes esperar {seconds} segundos antes de enviar otro mensaje en {channel}"
 
-# Comandos de gestión de canales
-channel-help-create: "&#FFAFFB/channel create <id> <nombre-mostrar> [opciones]&#ffffff - crea un nuevo canal"
-channel-help-edit: "&#FFAFFB/channel edit <id> [opciones]&#ffffff - edita un canal"
-channel-help-delete: "&#FFAFFB/channel delete <id>&#ffffff - elimina un canal"
-channel-help-default: "&#FFAFFB/channel default <id>&#ffffff - establece el canal predeterminado"
+# Gestión de canales
+channel-help-create: "&#FFAFFB/channel create <id> <nombre> [opciones]&#ffffff - crear un canal"
+channel-help-edit: "&#FFAFFB/channel edit <id> [opciones]&#ffffff - editar un canal"
+channel-help-delete: "&#FFAFFB/channel delete <id>&#ffffff - borrar un canal"
+channel-help-default: "&#FFAFFB/channel default <id>&#ffffff - establecer canal por defecto"
 
-channel-create-usage: "&#ffffffUso: &#FFAFFB/channel create <id> <nombre-mostrar> [opciones]"
+channel-create-usage: "&#ffffffUso: &#FFAFFB/channel create <id> <nombre> [opciones]"
 channel-edit-usage: "&#ffffffUso: &#FFAFFB/channel edit <id> [opciones]"
 channel-delete-usage: "&#ffffffUso: &#FFAFFB/channel delete <id>"
 channel-default-usage: "&#ffffffUso: &#FFAFFB/channel default <id>"
@@ -156,32 +158,61 @@ channel-created: "&#84FFB8Canal {channel} creado"
 channel-updated: "&#84FFB8Canal {channel} actualizado"
 channel-update-failed: "&#ff0000Error al actualizar el canal {channel}"
 channel-deleted: "&#84FFB8Canal {channel} eliminado"
-channel-delete-failed: "&#ff0000Error al eliminar el canal {channel}. El canal puede ser el canal predeterminado."
-channel-default-set: "&#84FFB8Canal predeterminado establecido como {channel}"
-channel-default-failed: "&#ff0000Error al establecer el canal predeterminado como {channel}"
+channel-delete-failed: "&#ff0000Error al eliminar canal {channel}. Puede ser el canal por defecto."
+channel-default-set: "&#84FFB8Canal por defecto establecido a {channel}"
+channel-default-failed: "&#ff0000Error al establecer canal por defecto a {channel}"
 channel-prefix-no-spaces: "&#ff0000Error: El prefijo del canal no puede contener espacios"
 channel-prefix-too-long: "&#ff0000Error: El prefijo del canal no puede tener más de 10 caracteres"
-channel-prefix-exists: "&#ff0000Error: Ya existe un canal con el prefijo '{prefix}'"
+channel-prefix-exists: "&#ff0000Error: Un canal con el prefijo '{prefix}' ya existe"
 
-# Variables de reemplazo.
+# Placeholders.
 placeholders:
-  # Variables del comando espía.
-  spy: # %nonchat_spy_enabled%
+  spy:
     enabled: "&#ffffffModo Espía: &#84FFB8Activado"
     disabled: "&#ffffffModo Espía: &#ff0000Desactivado"
-  # Variables de burbujas de chat.
-  bubble: # %nonchat_bubble_enabled%
-    enabled: "&#ffffffBurbujas de Chat: &#84FFB8Activadas"
-    disabled: "&#ffffffBurbujas de Chat: &#ff0000Desactivadas"
-  # Variables del filtro de mayúsculas.
-  caps-filter: # %nonchat_caps_filter_enabled%
-    enabled: "&#ffffffFiltro de Mayúsculas: &#84FFB8Activado"
-    disabled: "&#ffffffFiltro de Mayúsculas: &#ff0000Desactivado"
-  # Variables del comando ignorar.
-  ignored: # %nonchat_ignored%
+  bubble:
+    enabled: "&#ffffffBurbujas de Chat: &#84FFB8Activado"
+    disabled: "&#ffffffBurbujas de Chat: &#ff0000Desactivado"
+  caps-filter:
+    enabled: "&#ffffffFiltro Mayúsculas: &#84FFB8Activado"
+    disabled: "&#ffffffFiltro Mayúsculas: &#ff0000Desactivado"
+  ignored:
     true: "&#84FFB8Estás ignorando jugadores"
     false: "&#ff0000No estás ignorando a nadie"
-  # Variables del canal actual.
-  current-channel: # %nonchat_current_channel%
-    format: "&#ffffffCanal actual: &#84FFB8{channel} (&#FFAFFB{id}&#84FFB8)"
-    none: "&#ff0000No hay ningún canal activo"
+  current-channel:
+    format: "&#ffffffCanal Actual: &#84FFB8{channel} (&#FFAFFB{id}&#84FFB8)"
+    none: "&#ff0000Sin canal activo"
+
+# Sistema de Tags
+tags-reloaded: "&#84FFB8Configuración de tags recargada correctamente."
+tags-set-success: "&#84FFB8Tag establecido &#FFAFFB{tag}&#84FFB8 en categoría &#FFAFFB{category}&#84FFB8."
+tags-set-other: "&#84FFB8Tag establecido &#FFAFFB{tag}&#84FFB8 en categoría &#FFAFFB{category}&#84FFB8 para &#FFAFFB{player}&#84FFB8."
+tags-reset-success: "&#84FFB8Tu tag en la categoría &#FFAFFB{category}&#84FFB8 ha sido reseteado."
+tags-reset-target: "&#84FFB8Tag reseteado para &#FFAFFB{player}&#84FFB8 en categoría &#FFAFFB{category}&#84FFB8."
+tags-category-not-found: "&#ff0000Categoría '{category}' no encontrada."
+tags-tag-not-found: "&#ff0000Tag '{tag}' no encontrado en la categoría '{category}'."
+tags-list-header: "&#FFAFFBTags en {category}:"
+tags-usage: "&#ffffffUso: &#FFAFFB/tags <set|list|reset|reload>"
+tags-usage-set: "&#ffffffUso: &#FFAFFB/tags set <categoría> <tag> [jugador]"
+tags-usage-list: "&#ffffffUso: &#FFAFFB/tags list <categoría>"
+tags-usage-reset: "&#ffffffUso: &#FFAFFB/tags reset <categoría> <jugador>"
+tags-usage-menu: "&#ffffffUso: &#FFAFFB/tags menu <categoría>"
+
+tags-help-header: "&8&m------------------------\n&6Sistema de Tags NonChat"
+tags-help-footer: "&8&m------------------------"
+tags-help-list: "&e/tags list <categoría> &7- Listar tags disponibles"
+tags-help-set: "&e/tags set <categoría> <tag> [jugador] &7- Seleccionar un tag"
+tags-help-reset: "&e/tags reset <categoría> <jugador> &7- Resetear tag de un jugador"
+tags-help-menu: "&e/tags menu <categoría> &7- Abrir menú de tags"
+tags-help-reload: "&e/tags reload &7- Recargar configuración"
+
+random-enabled: "&aModo aleatorio activado para {category}."
+random-disabled: "&cModo aleatorio desactivado para {category}."
+
+# Filtros
+filter-caps: "&c¡Por favor no uses tantas mayúsculas!"
+filter-spam: "&c¡Por favor no hagas spam!"
+filter-ad: "&c¡La publicidad no está permitida!"
+filter-link: "&c¡Los enlaces no están permitidos!"
+filter-badword: "&c¡Por favor cuida tu lenguaje!"
+filter-similar: "&c¡Por favor no repitas el mismo mensaje!"
