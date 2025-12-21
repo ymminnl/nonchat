@@ -34,10 +34,32 @@ public class TagManager {
     
     private final Map<UUID, Map<String, String>> playerActiveTags = new ConcurrentHashMap<>();
     private final Map<UUID, Map<String, String>> playerRandomSelections = new ConcurrentHashMap<>();
+    
+    private long localTagVersion = 0;
 
     public TagManager(Nonchat plugin, DatabaseManager databaseManager) {
         this.plugin = plugin;
         this.databaseManager = databaseManager;
+        startSyncTask();
+    }
+    
+    private void startSyncTask() {
+        if (databaseManager == null) return;
+        // Check every 5 seconds (100 ticks)
+        org.bukkit.Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+            try {
+                long remote = databaseManager.getTagSyncVersion();
+                if (remote > localTagVersion) {
+                    localTagVersion = remote;
+                    org.bukkit.Bukkit.getScheduler().runTask(plugin, () -> {
+                        plugin.getLogger().info("Remote tag update detected. Reloading tags...");
+                        loadTags();
+                    });
+                }
+            } catch (Exception e) {
+                // Suppress errors during shutdown or connection issues
+            }
+        }, 100L, 100L);
     }
 
     public void loadTags() {
@@ -49,6 +71,7 @@ public class TagManager {
         // 1. Try to load from Database (Primary Source)
         boolean loadedFromDB = false;
         if (databaseManager != null) {
+            localTagVersion = databaseManager.getTagSyncVersion();
             Map<String, String> dbConfigs = databaseManager.getAllTagConfigs();
             if (!dbConfigs.isEmpty()) {
                 plugin.getLogger().info("Loading tags from database (" + dbConfigs.size() + " categories)...");
@@ -92,6 +115,7 @@ public class TagManager {
                 try {
                     String content = Files.readString(file.toPath(), StandardCharsets.UTF_8);
                     databaseManager.saveTagConfig(category, content);
+                    databaseManager.updateTagSyncVersion();
                     plugin.getLogger().info("Imported category '" + category + "' to database.");
                     // Optional: Reload tags to reflect changes immediately
                     org.bukkit.Bukkit.getScheduler().runTask(plugin, this::loadTags);
@@ -109,6 +133,7 @@ public class TagManager {
         
         CompletableFuture.runAsync(() -> {
             databaseManager.deleteTagConfig(category);
+            databaseManager.updateTagSyncVersion();
             plugin.getLogger().info("Deleted category '" + category + "' from database.");
             
             // Reload tags to reflect changes (remove from memory)

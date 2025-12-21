@@ -47,8 +47,20 @@ public class TagCommand implements CommandExecutor, TabCompleter {
         String sub = args[0].toLowerCase();
 
         switch (sub) {
-            case "set" -> handleSet(sender, args);
-            case "list" -> handleList(sender, args);
+            case "set" -> {
+                if (!sender.hasPermission("nonchat.command.tags.set")) {
+                    sender.sendMessage(ColorUtil.parseColor(messages.getString("no-permission")));
+                    return true;
+                }
+                handleSet(sender, args);
+            }
+            case "list" -> {
+                if (!sender.hasPermission("nonchat.command.tags.list")) {
+                    sender.sendMessage(ColorUtil.parseColor(messages.getString("no-permission")));
+                    return true;
+                }
+                handleList(sender, args);
+            }
             case "reset" -> handleReset(sender, args);
             case "menu" -> handleMenu(sender, args);
             case "import" -> handleImport(sender, args);
@@ -269,9 +281,16 @@ public class TagCommand implements CommandExecutor, TabCompleter {
 
     private void sendHelp(CommandSender sender) {
         sender.sendMessage(ColorUtil.parseColor(messages.getString("tags-help-header")));
-        sender.sendMessage(ColorUtil.parseColor(messages.getString("tags-help-list")));
-        sender.sendMessage(ColorUtil.parseColor(messages.getString("tags-help-set")));
+        
+        if (sender.hasPermission("nonchat.command.tags.list")) {
+            sender.sendMessage(ColorUtil.parseColor(messages.getString("tags-help-list")));
+        }
+        if (sender.hasPermission("nonchat.command.tags.set")) {
+            sender.sendMessage(ColorUtil.parseColor(messages.getString("tags-help-set")));
+        }
+        
         sender.sendMessage(ColorUtil.parseColor(messages.getString("tags-help-menu")));
+        
         if (sender.hasPermission("nonchat.command.tags.reset")) {
             sender.sendMessage(ColorUtil.parseColor(messages.getString("tags-help-reset")));
         }
@@ -282,9 +301,14 @@ public class TagCommand implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
             List<String> completions = new ArrayList<>();
-            completions.add("set");
-            completions.add("list");
             completions.add("menu");
+            
+            if (sender.hasPermission("nonchat.command.tags.set")) {
+                completions.add("set");
+            }
+            if (sender.hasPermission("nonchat.command.tags.list")) {
+                completions.add("list");
+            }
             if (sender.hasPermission("nonchat.command.tags.reset")) {
                 completions.add("reset");
             }
@@ -296,6 +320,10 @@ public class TagCommand implements CommandExecutor, TabCompleter {
         }
         
         if (args.length == 2) {
+            // Check permissions before showing categories for specific commands
+            if (args[0].equalsIgnoreCase("set") && !sender.hasPermission("nonchat.command.tags.set")) return Collections.emptyList();
+            if (args[0].equalsIgnoreCase("list") && !sender.hasPermission("nonchat.command.tags.list")) return Collections.emptyList();
+            
             if (args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("list") || args[0].equalsIgnoreCase("reset") || args[0].equalsIgnoreCase("menu") || args[0].equalsIgnoreCase("import") || args[0].equalsIgnoreCase("delete")) {
                 return filter(new ArrayList<>(tagManager.getCategories()), args[1]);
             }
@@ -303,6 +331,8 @@ public class TagCommand implements CommandExecutor, TabCompleter {
         
         if (args.length == 3) {
             if (args[0].equalsIgnoreCase("set")) {
+                if (!sender.hasPermission("nonchat.command.tags.set")) return Collections.emptyList();
+                
                 String category = args[1];
                 Map<String, Tag> tags = tagManager.getTags(category);
                 if (tags != null) {

@@ -128,6 +128,22 @@ public class DatabaseManager {
         return configs;
     }
 
+    // --- Sync / Versioning Methods ---
+
+    public void updateTagSyncVersion() {
+        saveTagConfig("__SYNC_TIMESTAMP__", String.valueOf(System.currentTimeMillis()));
+    }
+
+    public long getTagSyncVersion() {
+        String val = loadTagConfig("__SYNC_TIMESTAMP__");
+        if (val == null) return 0L;
+        try {
+            return Long.parseLong(val);
+        } catch (NumberFormatException e) {
+            return 0L;
+        }
+    }
+
     // --- Player Tag Methods ---
 
     public void setPlayerTag(String uuid, String category, String tagId) {
