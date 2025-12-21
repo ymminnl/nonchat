@@ -21,8 +21,8 @@ public class GUIUtil {
         String name = section.getString("name", "");
         List<String> lore = section.getStringList("lore");
         int modelData = section.getInt("model-data", 0);
-        String texture = section.getString("texture", "");
-        String bedrockIcon = section.getString("bedrock-icon", "");
+        String texture = section.getString("texture", "").trim();
+        String bedrockIcon = section.getString("bedrock-icon", "").trim();
         boolean enabled = section.getBoolean("enabled", true);
         
         // Parse slots

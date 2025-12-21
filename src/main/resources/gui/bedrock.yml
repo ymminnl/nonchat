@@ -19,9 +19,11 @@ buttons:
   
   previous:
     text: "<< Página Anterior"
+    icon: "https://mc-heads.net/head/7f3e7bca5c651bba29cd359d5cd474402cc23ca7b309dc48736436b9f055b905/64.png"
   
   next:
     text: "Siguiente Página >>"
+    icon: "https://mc-heads.net/head/979beafce081edd010eeb88a46b6f2098f05aa1674783c819bbe9f93581c7e18/64.png"
   
   close:
     text: "Cerrar"

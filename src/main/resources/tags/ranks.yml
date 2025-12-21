@@ -12,9 +12,8 @@ expiration-actionbar: "&cTag removido por falta de permisos"
 menu-title: "&8Selecciona un tag"
 menu-rows: 5
 tag-slots:
-  - "10-16"
-  - "19-25"
-  - "28-34"
+  - "11-15"
+  - "20-26"
 
 # Buttons Configuration
 buttons:
@@ -72,19 +71,6 @@ bedrock-content: "Selecciona tu tag de rango:"
 tags-per-page: 10
 
 tags:
-  notag:
-    value: "&r"
-    permission: "tags.ranks.notag"
-    order: 1
-    display-item:
-      material: BRUSH
-      name: "&6&lLimpiar tu tag"
-      lore:
-        - "&7Elimina tu tag de rango"
-        - "&7y vuelve al estado por defecto."
-        - ""
-        - "&6➥ Click para limpiar"
-      bedrock-icon: "textures/items/brush"
 
   booster:
     value: "&7[&9&lBo&d&lost&9&ler&r&d] "
@@ -108,40 +94,6 @@ tags:
         - "&c➥ Bloqueado"
         - "&8(Requiere boostear nuestro Discord)"
       bedrock-icon: "https://mc-heads.net/head/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065/64.png"
-
-  vip:
-    value: " "
-    permission: "tags.ranks.vip"
-    order: 3
-    display-item:
-      material: PAPER
-      name: " &7%tags_playername%"
-      lore:
-        - "&7Tag de Rango VIP"
-        - "&a➥ Click para seleccionar"
-    locked-display-item:
-      material: PAPER
-      name: " &7%tags_playername%"
-      lore:
-        - "&7Tag de Rango VIP"
-        - "&c➥ Bloqueado (Requiere rango)"
-
-  epic:
-    value: "&d&lEPIC "
-    permission: "tags.ranks.epic"
-    order: 4
-    display-item:
-      material: PAPER
-      name: "&d&lEPIC &7%tags_playername%"
-      lore:
-        - "&7Tag de Rango Epic"
-        - "&a➥ Click para seleccionar"
-    locked-display-item:
-      material: PAPER
-      name: "&d&lEPIC &7%tags_playername%"
-      lore:
-        - "&7Tag de Rango Epic"
-        - "&c➥ Bloqueado (Requiere rango)"
 
   legendary:
     value: " "

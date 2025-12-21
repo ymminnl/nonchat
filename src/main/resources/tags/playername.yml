@@ -31,7 +31,7 @@ buttons:
 
   reset:
     enabled: true
-    slot: 49
+    slot: 48
     material: BRUSH
     name: "&eLimpiar tu color"
     lore:
@@ -39,17 +39,18 @@ buttons:
       - "&7y vuelve al color por defecto."
       - ""
       - "&6➥ Click para limpiar"
+    bedrock-icon: "textures/items/brush"
     actions:
       - "[sound] UI_BUTTON_CLICK"
 
   random:
     enabled: true
-    slot: 51
+    slot: 50
     material: ENDER_PEARL
-    name: "&dColor Aleatorio"
+    name: "&dColor Aleatorio\n&8Cuando te unes"
     lore:
       - "&7Selecciona un color al azar"
-      - "&7automáticamente."
+      - "&7automáticamente al unirte."
       - ""
       - "&d➥ Click para activar"
     bedrock-icon: "textures/items/ender_pearl"
@@ -66,8 +67,9 @@ buttons:
       - "&7Regresar a cosméticos"
       - ""
       - "&c➥ Click para volver"
+    bedrock-icon: "https://i.imgur.com/bbgDU1w.png"
     actions:
-      - "[open] cosmeticos"
+      - "[open] close"
       - "[sound] UI_BUTTON_CLICK"
 
 # Bedrock GUI Settings
