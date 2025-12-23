@@ -21,6 +21,7 @@ import com.nonxedy.nonchat.command.impl.ReplyCommand;
 import com.nonxedy.nonchat.command.impl.RollCommand;
 import com.nonxedy.nonchat.command.impl.SpyCommand;
 import com.nonxedy.nonchat.command.impl.TagCommand;
+import com.nonxedy.nonchat.command.impl.MusicCommand;
 
 /**
  * Service for registering and managing plugin commands.
@@ -81,6 +82,11 @@ public class CommandService {
     
         // Tag command
         registerCommand("tags", new TagCommand(plugin, plugin.getTagManager(), configService.getMessages()));
+        
+        // Music command
+        MusicCommand musicCommand = new MusicCommand(plugin, plugin.getMusicManager());
+        registerCommand("music", musicCommand);
+        registerCommand("musica", musicCommand);
 
         // Utility commands
         registerCommand("nonchat", new NonchatCommand(plugin, configService));

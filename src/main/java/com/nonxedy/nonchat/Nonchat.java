@@ -54,6 +54,9 @@ import com.nonxedy.nonchat.listener.MenuListener;
 import com.nonxedy.nonchat.placeholders.TagsExpansion;
 import com.nonxedy.nonchat.listener.TagListener;
 import com.nonxedy.nonchat.util.integration.metrics.Metrics;
+import com.nonxedy.nonchat.music.MusicManager;
+import com.nonxedy.nonchat.music.MusicListener;
+import com.nonxedy.nonchat.music.MusicConnectionListener;
 
 import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.text.Component;
@@ -78,6 +81,7 @@ public class Nonchat extends JavaPlugin {
     private BroadcastManager broadcastManager;
     private DatabaseManager databaseManager;
     private TagManager tagManager;
+    private MusicManager musicManager;
     private SpyCommand spyCommand;
     private Debugger debugger;
     private ChatListener chatListener;
@@ -160,6 +164,10 @@ public class Nonchat extends JavaPlugin {
             if (floodgateEnabled) {
                 this.tagMenuBedrock = new TagMenuBedrock(this, bedrockGUIConfig, tagManager, configService.getMessages());
             }
+            
+            // Initialize Music Manager
+            this.musicManager = new MusicManager(this);
+            this.musicManager.load();
 
             // Now that config is loaded, initialize the rest of the services
             this.spyCommand = new SpyCommand(this, configService.getMessages(), configService.getConfig());
@@ -310,6 +318,10 @@ public class Nonchat extends JavaPlugin {
             
             // Register menu listener
             Bukkit.getPluginManager().registerEvents(new MenuListener(tagMenuJava, javaGUIConfig, tagManager, configService.getMessages()), this);
+            
+            // Register music listener
+            Bukkit.getPluginManager().registerEvents(new MusicListener(musicManager), this);
+            Bukkit.getPluginManager().registerEvents(new MusicConnectionListener(musicManager), this);
 
             // Log successful listener registration
             if (debugger != null) {
@@ -472,6 +484,10 @@ public class Nonchat extends JavaPlugin {
             if (floodgateEnabled && bedrockGUIConfig != null) {
                 bedrockGUIConfig.load();
             }
+            
+            if (musicManager != null) {
+                musicManager.load();
+            }
 
             if (databaseManager != null) {
                 databaseManager.close();
@@ -505,6 +521,7 @@ public class Nonchat extends JavaPlugin {
             // Reload death message service (includes indirect tracking configuration hot-reload)
             if (deathMessageService != null && deathConfig != null) {
                 try {
+                    deathMessageService.setDebugger(debugger);
                     deathMessageService.reload();
                     
                     // Handle listener re-registration based on updated master toggle
@@ -685,6 +702,10 @@ public class Nonchat extends JavaPlugin {
     
     public boolean isFloodgateEnabled() {
         return floodgateEnabled;
+    }
+    
+    public MusicManager getMusicManager() {
+        return musicManager;
     }
 
 }

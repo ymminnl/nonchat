@@ -67,10 +67,51 @@ public class DatabaseManager {
                         "category_id VARCHAR(64) NOT NULL," +
                         "config_data LONGTEXT NOT NULL," +
                         "PRIMARY KEY (category_id))");
+                        
+                // Player Settings Table
+                stmt.execute("CREATE TABLE IF NOT EXISTS nonchat_player_settings (" +
+                        "uuid VARCHAR(36) NOT NULL," +
+                        "setting_key VARCHAR(64) NOT NULL," +
+                        "setting_value VARCHAR(255) NOT NULL," +
+                        "PRIMARY KEY (uuid, setting_key))");
             }
         } catch (SQLException e) {
             plugin.getLogger().log(Level.SEVERE, "Could not create database tables", e);
         }
+    }
+    
+    // --- Player Settings Methods ---
+    
+    public void savePlayerSetting(String uuid, String key, String value) {
+        try (Connection connection = getConnection();
+             PreparedStatement stmt = connection.prepareStatement(
+                     "INSERT INTO nonchat_player_settings (uuid, setting_key, setting_value) VALUES (?, ?, ?) " +
+                     "ON DUPLICATE KEY UPDATE setting_value = ?")) {
+            stmt.setString(1, uuid);
+            stmt.setString(2, key);
+            stmt.setString(3, value);
+            stmt.setString(4, value);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Could not save player setting: " + key, e);
+        }
+    }
+    
+    public String loadPlayerSetting(String uuid, String key) {
+        try (Connection connection = getConnection();
+             PreparedStatement stmt = connection.prepareStatement(
+                     "SELECT setting_value FROM nonchat_player_settings WHERE uuid = ? AND setting_key = ?")) {
+            stmt.setString(1, uuid);
+            stmt.setString(2, key);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("setting_value");
+                }
+            }
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Could not load player setting: " + key, e);
+        }
+        return null;
     }
     
     // --- Config Sync Methods ---

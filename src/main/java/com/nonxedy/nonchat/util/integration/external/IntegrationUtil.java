@@ -111,6 +111,23 @@ public class IntegrationUtil {
         }
         return "0";
     }
+    
+    // --- Economy Transaction Methods ---
+    
+    public static boolean hasEnough(Player player, double amount) {
+        if (economy == null) return false;
+        return economy.has(player, amount);
+    }
+    
+    public static boolean withdraw(Player player, double amount) {
+        if (economy == null) return false;
+        return economy.withdrawPlayer(player, amount).transactionSuccess();
+    }
+    
+    public static boolean deposit(String playerName, double amount) {
+        if (economy == null) return false;
+        return economy.depositPlayer(playerName, amount).transactionSuccess();
+    }
 
     /**
      * Gets the player's total play time using PlaceholderAPI

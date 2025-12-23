@@ -68,7 +68,7 @@ tags-per-page: 10
 
 tags:
   nivel-1:
-    value: "<glyph:level_1> "
+    value: " "
     permission: "meta.playtimelevels.1"
     order: 1
     display-item:
@@ -84,7 +84,7 @@ tags:
         - "&c➥ Bloqueado"
 
   nivel-2:
-    value: "<glyph:level_2> "
+    value: " "
     permission: "meta.playtimelevels.2"
     order: 2
     display-item:
@@ -100,7 +100,7 @@ tags:
         - "&c➥ Bloqueado"
 
   nivel-3:
-    value: "<glyph:level_3> "
+    value: " "
     permission: "meta.playtimelevels.3"
     order: 3
     display-item:
@@ -116,7 +116,7 @@ tags:
         - "&c➥ Bloqueado"
 
   nivel-4:
-    value: "<glyph:level_4> "
+    value: " "
     permission: "meta.playtimelevels.4"
     order: 4
     display-item:
@@ -132,7 +132,7 @@ tags:
         - "&c➥ Bloqueado"
 
   nivel-5:
-    value: "<glyph:level_5> "
+    value: " "
     permission: "meta.playtimelevels.5"
     order: 5
     display-item:
@@ -148,7 +148,7 @@ tags:
         - "&c➥ Bloqueado"
 
   nivel-6:
-    value: "<glyph:level_6> "
+    value: " "
     permission: "meta.playtimelevels.6"
     order: 6
     display-item:
@@ -164,7 +164,7 @@ tags:
         - "&c➥ Bloqueado"
 
   nivel-7:
-    value: "<glyph:level_7> "
+    value: " "
     permission: "meta.playtimelevels.7"
     order: 7
     display-item:
@@ -180,7 +180,7 @@ tags:
         - "&c➥ Bloqueado"
 
   nivel-8:
-    value: "<glyph:level_8> "
+    value: " "
     permission: "meta.playtimelevels.8"
     order: 8
     display-item:
@@ -196,7 +196,7 @@ tags:
         - "&c➥ Bloqueado"
 
   nivel-9:
-    value: "<glyph:level_9> "
+    value: " "
     permission: "meta.playtimelevels.9"
     order: 9
     display-item:
@@ -212,7 +212,7 @@ tags:
         - "&c➥ Bloqueado"
 
   nivel-10:
-    value: "<glyph:level_10> "
+    value: " "
     permission: "meta.playtimelevels.10"
     order: 10
     display-item:
@@ -228,7 +228,7 @@ tags:
         - "&c➥ Bloqueado"
 
   nivel-11:
-    value: "<glyph:level_11> "
+    value: " "
     permission: "meta.playtimelevels.11"
     order: 11
     display-item:
@@ -244,7 +244,7 @@ tags:
         - "&c➥ Bloqueado"
 
   nivel-12:
-    value: "<glyph:level_12> "
+    value: " "
     permission: "meta.playtimelevels.12"
     order: 12
     display-item:
@@ -260,7 +260,7 @@ tags:
         - "&c➥ Bloqueado"
 
   nivel-13:
-    value: "<glyph:level_13> "
+    value: " "
     permission: "meta.playtimelevels.13"
     order: 13
     display-item:
@@ -276,7 +276,7 @@ tags:
         - "&c➥ Bloqueado"
 
   nivel-14:
-    value: "<glyph:level_14> "
+    value: " "
     permission: "meta.playtimelevels.14"
     order: 14
     display-item:
@@ -292,7 +292,7 @@ tags:
         - "&c➥ Bloqueado"
 
   nivel-15:
-    value: "<glyph:level_15> "
+    value: " "
     permission: "meta.playtimelevels.15"
     order: 15
     display-item:
@@ -308,7 +308,7 @@ tags:
         - "&c➥ Bloqueado"
 
   nivel-16:
-    value: "<glyph:level_16> "
+    value: " "
     permission: "meta.playtimelevels.16"
     order: 16
     display-item:
@@ -324,7 +324,7 @@ tags:
         - "&c➥ Bloqueado"
 
   nivel-17:
-    value: "<glyph:level_17> "
+    value: " "
     permission: "meta.playtimelevels.17"
     order: 17
     display-item:
@@ -340,7 +340,7 @@ tags:
         - "&c➥ Bloqueado"
 
   nivel-18:
-    value: "<glyph:level_18> "
+    value: " "
     permission: "meta.playtimelevels.18"
     order: 18
     display-item:
@@ -356,7 +356,7 @@ tags:
         - "&c➥ Bloqueado"
 
   nivel-19:
-    value: "<glyph:level_19> "
+    value: " "
     permission: "meta.playtimelevels.19"
     order: 19
     display-item:
@@ -372,7 +372,7 @@ tags:
         - "&c➥ Bloqueado"
 
   nivel-20:
-    value: "<glyph:level_20> "
+    value: " "
     permission: "meta.playtimelevels.20"
     order: 20
     display-item:
@@ -388,7 +388,7 @@ tags:
         - "&c➥ Bloqueado"
 
   nivel-21:
-    value: "<glyph:level_21> "
+    value: " "
     permission: "meta.playtimelevels.21"
     order: 21
     display-item:

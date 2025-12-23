@@ -9,11 +9,12 @@ load: STARTUP
 
 depend:
   - LuckPerms
-  - PlaceholderAPI
+  - Vault
 
 softdepend:
   - DiscordSRV
-  - Vault
+  - PlaceholderAPI
+  - floodgate
 
 permissions:
   nonchat.*:
@@ -155,3 +156,7 @@ commands:
   tags:
     description: Manage player tags.
     usage: /tags <set|list|reset>
+  music:
+    description: Open music menu.
+    aliases: [musica]
+    usage: /music

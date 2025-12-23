@@ -32,7 +32,7 @@ public class DeathMessageService {
     private final Nonchat plugin;
     private final DeathMessageManager messageManager;
     private final DeathConfig deathConfig;
-    private final Debugger debugger;
+    private Debugger debugger;
     private final IndirectDeathTracker indirectDeathTracker;
 
     /**
@@ -53,6 +53,10 @@ public class DeathMessageService {
         
         // Load messages on initialization
         loadMessages();
+    }
+
+    public void setDebugger(Debugger debugger) {
+        this.debugger = debugger;
     }
 
     /**
@@ -540,7 +544,7 @@ public class DeathMessageService {
             // Clear indirect death tracking data
             if (indirectDeathTracker != null) {
                 indirectDeathTracker.clearAll();
-                if (deathConfig.isDebugEnabled()) {
+                if (deathConfig.isDebugEnabled() && debugger != null) {
                     debugger.info("DeathMessageService", "Cleared indirect death tracking data");
                 }
             }
@@ -557,37 +561,49 @@ public class DeathMessageService {
             int totalCauses = newStats.size();
 
             // Log success with statistics
-            debugger.info("DeathMessageService", "Death messages reloaded successfully: " + totalMessages + " message variants across " + totalCauses + " death causes");
+            if (debugger != null) {
+                debugger.info("DeathMessageService", "Death messages reloaded successfully: " + totalMessages + " message variants across " + totalCauses + " death causes");
+            }
             
             // Log indirect tracking status with updated configuration values
             if (deathConfig.isIndirectTrackingEnabled()) {
-                debugger.info("DeathMessageService", "Indirect death tracking is enabled (window: " + deathConfig.getTrackingWindow() + 
-                          "s, min damage: " + deathConfig.getMinimumDamage() + " hearts)");
-                
-                // Log tracked damage types
-                StringBuilder trackedTypes = new StringBuilder("Tracking damage types: ");
-                if (deathConfig.isTrackMelee()) trackedTypes.append("melee ");
-                if (deathConfig.isTrackProjectile()) trackedTypes.append("projectile ");
-                if (deathConfig.isTrackExplosion()) trackedTypes.append("explosion");
-                debugger.info("DeathMessageService", trackedTypes.toString().trim());
-                
-                // Log tracked causes
-                List<String> trackedCauses = deathConfig.getTrackedCauses();
-                debugger.info("DeathMessageService", "Tracking " + trackedCauses.size() + " environmental death causes: " + 
-                          String.join(", ", trackedCauses));
+                if (debugger != null) {
+                    debugger.info("DeathMessageService", "Indirect death tracking is enabled (window: " + deathConfig.getTrackingWindow() + 
+                              "s, min damage: " + deathConfig.getMinimumDamage() + " hearts)");
+                    
+                    // Log tracked damage types
+                    StringBuilder trackedTypes = new StringBuilder("Tracking damage types: ");
+                    if (deathConfig.isTrackMelee()) trackedTypes.append("melee ");
+                    if (deathConfig.isTrackProjectile()) trackedTypes.append("projectile ");
+                    if (deathConfig.isTrackExplosion()) trackedTypes.append("explosion");
+                    debugger.info("DeathMessageService", trackedTypes.toString().trim());
+                    
+                    // Log tracked causes
+                    List<String> trackedCauses = deathConfig.getTrackedCauses();
+                    debugger.info("DeathMessageService", "Tracking " + trackedCauses.size() + " environmental death causes: " + 
+                              String.join(", ", trackedCauses));
+                }
             } else {
-                debugger.info("DeathMessageService", "Indirect death tracking is disabled");
+                if (debugger != null) {
+                    debugger.info("DeathMessageService", "Indirect death tracking is disabled");
+                }
             }
             
         } catch (Exception e) {
-            debugger.error("DeathMessageService", "Failed to reload death messages: " + e.getMessage(), e);
+            if (debugger != null) {
+                debugger.error("DeathMessageService", "Failed to reload death messages: " + e.getMessage(), e);
+            }
             
             // If we had a previous configuration, it's still in memory
             if (hadPreviousConfig && previousStats != null) {
                 int previousTotal = previousStats.values().stream().mapToInt(Integer::intValue).sum();
-                debugger.warn("DeathMessageService", "Maintaining previous configuration with " + previousTotal + " message variants");
+                if (debugger != null) {
+                    debugger.warn("DeathMessageService", "Maintaining previous configuration with " + previousTotal + " message variants");
+                }
             } else {
-                debugger.warn("DeathMessageService", "No previous configuration available, death message system may be unavailable");
+                if (debugger != null) {
+                    debugger.warn("DeathMessageService", "No previous configuration available, death message system may be unavailable");
+                }
             }
             
             // Re-throw to notify caller of failure

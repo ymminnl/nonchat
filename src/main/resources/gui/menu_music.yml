@@ -1,0 +1,227 @@
+# ==================================================
+# MUSIC MAIN MENU CONFIGURATION
+# ==================================================
+
+# Java GUI Configuration
+title: "&8&lMÚSICA"
+rows: 3
+fill-material: "GRAY_STAINED_GLASS_PANE"
+
+# Bedrock Specific Configuration
+bedrock:
+  main-menu:
+    title: "Música"
+    content: "Costo: &a$5 &rpor canción\n\nPide tu canción personalizada en:\n&etienda.onedam.net"
+  
+  songs-menu:
+    title: "&8Seleccionar Canción"
+    content: "Elige una canción para añadir a la cola:"
+    back-button: "&c&lVOLVER"
+    
+  queue-menu:
+    title: "Cola de Reproducción"
+    back-button: "&c&lVOLVER"
+    headers:
+      now-playing: "&6En Reproducción:"
+      nothing-playing: "&7... silencio ..."
+      in-queue: "&6En Cola ({count}):"
+      empty-queue: "&7(Vacía)"
+      no-music-nearby: "&cNo se escucha nada por aquí."
+      requested-by: "&7- {player}"
+      time-left: "&7Tiempo: {time}s"
+
+  options-menu:
+    title: "Opciones"
+    toggle-label: "Música Activada"
+    slider-label: "Volumen (%)"
+
+# ==================================================
+# MAIN MENU ITEMS
+# ==================================================
+items:
+  select-songs:
+    slot: 11
+    material: "PLAYER_HEAD"
+    # Music Disc (User Provided: music)
+    texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWI2MTIwMjNhNjMyNzQ2NWNiZGEyNDcwMDZjYWJkNzJjOTM0MDZkNjYyMWI5OWRmYWJkYWEwNDk5Nzg1NmIyNCJ9fX0="
+    bedrock_icon: "https://mc-heads.net/head/9b612023a6327465cbda247006cabd72c93406d6621b99dfabdaa04997856b24.png"
+    name: "&9&lSELECCIONAR MÚSICA"
+    bedrock_name: "&9&lSELECCIONAR MÚSICA&r\n&8Elige y reproduce"
+    lore:
+      - "&7Elige una canción de la"
+      - "&7lista para reproducir."
+      - ""
+      - "&9➥ Click para abrir"
+    action: "open_songs"
+
+  options:
+    slot: 13
+    material: "PLAYER_HEAD"
+    # Settings Gear (User Provided: settings)
+    texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzc5M2YxNGMyZGQ0ZmMxY2M0NzA3MjBhNjg2YzExOGE4OWVhYTBhMjU0MWJmY2RlYWUzNWY0NzA3ZDMwYzU5YyJ9fX0="
+    bedrock_icon: "https://mc-heads.net/head/c793f14c2dd4fc1cc470720a686c118a89eaa0a2541bfcdeae35f4707d30c59c.png"
+    name: "&d&lOPCIONES"
+    bedrock_name: "&d&lOPCIONES&r\n&8Ajustes del juego"
+    lore:
+      - "&7Configura el volumen y"
+      - "&7estado de la música."
+      - ""
+      - "&d➥ Click para abrir"
+    action: "open_options"
+
+  view-queue:
+    slot: 15
+    material: "PLAYER_HEAD"
+    # List/Queue (User Provided: Lista)
+    texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjQ4NWM5M2M4ZTc1ZDFiZTVjMDkyZWE4ZWVlMTQ3MTYzZjljY2FjMTcwMTlkZDcyNzYyODExMWNkNGIxYTE0MSJ9fX0="
+    bedrock_icon: "https://mc-heads.net/head/6485c93c8e75d1be5c092ea8eee147163f9ccac17019dd727628111cd4b1a141.png"
+    name: "&e&lVER COLA"
+    bedrock_name: "&e&lVER COLA&r\n&8Lista de espera"
+    lore:
+      - "&7Mira las canciones que"
+      - "&7están en espera."
+      - ""
+      - "&e➥ Click para ver"
+    action: "open_queue"
+
+  back:
+    slot: 26
+    material: "PLAYER_HEAD"
+    # Red Arrow Left (User Provided: Arrow Left)
+    texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDAyY2YwZGVhNGQwNmVmMWRlMjU1YmI4MTVmNjQyNjhkNjhiYjNiOTAzZDYwNjIxYWU5MmUwMDdlMjg4MTk4YyJ9fX0="
+    bedrock_icon: "https://mc-heads.net/head/d02cf0dea4d06ef1de255bb815f64268d68bb3b903d60621ae92e007e288198c.png"
+    name: "&c&lVOLVER"
+    bedrock_name: "&c&lVOLVER&r\n&8Al menú principal"
+    lore:
+      - "&7Regresar al menú principal."
+      - ""
+      - "&c➥ Click para volver"
+    action: "[console] cp open menu {player}"
+
+  # Admin items (Visible only with permission)
+  admin-skip:
+    slot: 0
+    material: "PLAYER_HEAD"
+    # Green Arrow Right (User Provided: Arrow Right)
+    texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjVkYTE4NDU0NmEwNWRlOTZhNGQxZmI4MjBmNzJjMDlmMTU5N2RmNTZkODhhNGFiMzVlOWI0YTJjNzgwYWI4NCJ9fX0="
+    bedrock_icon: "https://mc-heads.net/head/65da184546a05de96a4d1fb820f72c09f1597df56d88a4ab35e9b4a2c780ab84.png"
+    name: "&c&l[ADMIN] SALTAR"
+    bedrock_name: "&c&l[ADMIN] SALTAR&r\n&8Siguiente canción"
+    lore:
+      - "&7Saltar la canción actual."
+      - ""
+      - "&c➥ Click para saltar"
+    action: "admin_skip"
+    permission: "nonchat.music.admin"
+
+  admin-stop:
+    slot: 8
+    material: "PLAYER_HEAD"
+    # Stop Sign (User Provided: stop)
+    texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWU0NTFkNzRkYTM5NTNjMjZhMTFhNmI1YzdkNDMwMDg2NDMxYWI3YmMyZjczNmFiNWE3MDIzYzA2ZDQxMmM1YyJ9fX0="
+    bedrock_icon: "https://mc-heads.net/head/1e451d74da3953c26a11a6b5c7d430086431ab7bc2f736ab5a7023c06d412c5c.png"
+    name: "&4&l[ADMIN] DETENER"
+    bedrock_name: "&4&l[ADMIN] DETENER&r\n&8Parar todo"
+    lore:
+      - "&7Detener música y limpiar cola."
+      - ""
+      - "&4➥ Click para detener"
+    action: "admin_stop"
+    permission: "nonchat.music.admin"
+
+# ==================================================
+# OPTIONS MENU (JAVA)
+# ==================================================
+java:
+  options-menu:
+    title: "&8&lMÚSICA - OPCIONES"
+    rows: 3
+  queue-menu:
+    title: "&8&lMÚSICA - COLA"
+    rows: 3
+
+queue-menu:
+  items:
+    no-music:
+      slot: 13
+      material: "PLAYER_HEAD"
+      # Stop Sign (User Provided: stop) - Reused for 'No Music'
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWU0NTFkNzRkYTM5NTNjMjZhMTFhNmI1YzdkNDMwMDg2NDMxYWI3YmMyZjczNmFiNWE3MDIzYzA2ZDQxMmM1YyJ9fX0="
+      bedrock_icon: "https://mc-heads.net/head/1e451d74da3953c26a11a6b5c7d430086431ab7bc2f736ab5a7023c06d412c5c.png"
+      name: "&c&lNO HAY MÚSICA"
+      lore:
+        - "&7No hay música sonando"
+        - "&7cerca de ti en este momento."
+    back:
+      slot: 26
+      material: "PLAYER_HEAD"
+      # Red Arrow Left (User Provided: Arrow Left)
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTE4YTJkZDViZWYwYjA3M2IxMzI3MWE3ZWViOWNmZWE3YWZlODU5M2M1N2E5MzgyMWU0MzE3NTU3MjQ2MTgxMiJ9fX0="
+      bedrock_icon: "https://mc-heads.net/head/d02cf0dea4d06ef1de255bb815f64268d68bb3b903d60621ae92e007e288198c.png"
+      name: "&c&lVOLVER"
+      lore:
+        - "&7Regresar al menú de música."
+        - ""
+        - "&c➥ Click para volver"
+      action: "back"
+
+options-menu:
+  items:
+    mute-toggle:
+      slot: 13
+      material: "PLAYER_HEAD"
+      # Speaker (User Provided: speaker)
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTFmMjZjMjFjYmUxZjNlNTg4MmVjNTk1MDFlNTBjNTUyNzU3ZjgxODI5YzY1YzNmYzQzMjEwNTVhZTU2ZDIxYyJ9fX0="
+      bedrock_icon: "https://mc-heads.net/head/91f26c21cbe1f3e5882ec59501e50c552757f81829c65c3fc4321055ae56d21c.png"
+      name: "&b&lESTADO"
+      lore:
+        - "&7Activa o desactiva la"
+        - "&7música del servidor."
+        - ""
+        - "&7Estado: {status}"
+        - ""
+        - "&b➥ Click para alternar"
+      action: "toggle_mute"
+    
+    vol-down:
+      slot: 11
+      material: "PLAYER_HEAD"
+      # Red Minus (User Provided: minus)
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0="
+      bedrock_icon: "https://mc-heads.net/head/14c48a661a524b01427fd1c34ae07076c570a0711f0ab703737501af37231631.png"
+      name: "&c&lVOLVER VOLUMEN -"
+      lore:
+        - "&7Bajar volumen un 10%"
+        - ""
+        - "&7Actual: &e{volume}%"
+        - ""
+        - "&c➥ Click para bajar"
+      action: "vol_down"
+
+    vol-up:
+      slot: 15
+      material: "PLAYER_HEAD"
+      # Green Plus (User Provided: Green Plus)
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19"
+      bedrock_icon: "https://mc-heads.net/head/5ff31431d64587ff6ef98c0675810681f8c13bf96f51d9cb07ed7852b2fffd1.png"
+      name: "&a&lSUBIR VOLUMEN +"
+      lore:
+        - "&7Subir volumen un 10%"
+        - ""
+        - "&7Actual: &e{volume}%"
+        - ""
+        - "&a➥ Click para subir"
+      action: "vol_up"
+
+    back:
+      slot: 26
+      material: "PLAYER_HEAD"
+      # Red Arrow Left (User Provided: Arrow Left)
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTE4YTJkZDViZWYwYjA3M2IxMzI3MWE3ZWViOWNmZWE3YWZlODU5M2M1N2E5MzgyMWU0MzE3NTU3MjQ2MTgxMiJ9fX0="
+      bedrock_icon: "https://mc-heads.net/head/d02cf0dea4d06ef1de255bb815f64268d68bb3b903d60621ae92e007e288198c.png"
+      name: "&c&lVOLVER"
+      lore:
+        - "&7Regresar al menú de música."
+        - ""
+        - "&c➥ Click para volver"
+      action: "back"
